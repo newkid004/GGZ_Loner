@@ -193,7 +193,7 @@ namespace GGZ
 
 					/* ActiveType
 					 * 0 : Bullet 생성			- [BulletID / ]
-					 * 1 : 버프 적용			- [BuffID / Time, Tick, Value]
+					 * 1 : 버프 적용			- [BuffID / Time, Tick, Value] - Floats는 비율로 적용
 					 * 2 : 또다른 Skill 발동	- [SkillID, .. / ]
 					 */
 					public int ActiveType;
@@ -232,9 +232,10 @@ namespace GGZ
 
 					/* ActiveType - 각 수치가 적용되는 형식 분류
 					 * 
-					 * 0 : Time동안 Tick시간에 따라 작용
-					 * 1 : 총 계수가 Time, Tick에 나누어 작용
-					 * 2 : Tick이 Time을 비율로 나누어 고정된 횟수로 작용
+					 * 0 : 단발 작용
+					 * 1 : Time동안 Tick시간에 따라 작용
+					 * 2 : 총 계수가 Time, Tick에 나누어 작용
+					 * 3 : Tick이 Time을 비율로 나누어 고정된 횟수로 작용
 					 */
 					public int ActiveType;
 

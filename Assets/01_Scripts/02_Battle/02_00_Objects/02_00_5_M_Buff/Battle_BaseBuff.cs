@@ -35,6 +35,10 @@ namespace GGZ
 
 			fTimeLeft = fCalcedTime;
 			fNextTickLeft = fCalcedTick;
+
+			fTimeLeft *= 0 < info.arrfEffection.Length ? info.arrfEffection[0] : 1;
+			fActiveTick *= 1 < info.arrfEffection.Length ? info.arrfEffection[1] : 1;
+			fActiveValue *= 2 < info.arrfEffection.Length ? info.arrfEffection[2] : 1;
 		}
 
 		public virtual void FixedUpdate(float fFixedDeltaTime)
@@ -44,7 +48,7 @@ namespace GGZ
 
 			fNextTickLeft -= fFixedDeltaTime;
 
-			float fTickAddition = fCalcedTick;
+			float fTickAddition = fActiveTick;
 			while (fNextTickLeft < 0)
 			{
 				var OwnSkillInfo = CreateOwnSkillProcess(csvBuffInfo.ActiveSkillIDTick);
@@ -72,7 +76,7 @@ namespace GGZ
 
 			stSkillInfo.bltHit = null;
 
-			stSkillInfo.fParamPercent *= fActiveValue;
+			stSkillInfo.fFParamPercent *= fActiveValue;
 
 			return stSkillInfo;
 		}

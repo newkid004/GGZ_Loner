@@ -64,8 +64,10 @@ namespace GGZ
 		public void SpawnBullet(int iID)
 		{
 			isAllyBullet = !isAllyBullet;
-			Battle_BaseCharacter Owner = isAllyBullet ?
-				charPlayer : (Battle_BaseCharacter)mcsMonster.GetRandom();
+			// Battle_BaseCharacter Owner = isAllyBullet ?
+			// 	charPlayer : (Battle_BaseCharacter)mcsMonster.GetRandom();
+			
+			Battle_BaseCharacter Owner = mcsMonster.GetRandom();
 
 			Battle_BaseBullet bullet = _mcsBullet.Create(iID, Owner);
 			bullet.transform.position = mcsField.GetOutsideRandomPos(bullet.transform);

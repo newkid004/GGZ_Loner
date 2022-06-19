@@ -511,7 +511,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -816,18 +816,6 @@ MonoBehaviour:
   _RigidbodyOwn: {fileID: 616768536}
   _behaviorOwn: {fileID: 616768533}
   lCharacterID: -1
-  _csStatEffect:
-    fWeight: 1
-    fAirHold: 1
-  _csStatBasic:
-    iLife: 1
-    fHealthMax: 5
-    fHealthNow: 5
-    fAttackPower: 1
-    fDefendPower: 0
-    fPropertyAttackPower: 1
-    fAttackSpeed: 1
-    fMoveSpeed: 25
   _csStatMonster:
     fAlertRadius: 1
     fAlertTime: 1
@@ -1449,6 +1437,9 @@ MonoBehaviour:
       trContainRoot: {fileID: 595822922}
       iPrePoolingCount: 20
       _tOrigin: {fileID: 1631356499}
+  _mcsBuff:
+    mPool:
+      iPrePoolingCount: 0
   trCharParent: {fileID: 287535431}
   camMain: {fileID: 1977548837}
   charPlayer: {fileID: 1469785542}
@@ -2173,18 +2164,6 @@ MonoBehaviour:
   _RigidbodyOwn: {fileID: 1469785546}
   _behaviorOwn: {fileID: 1469785545}
   lCharacterID: -1
-  _csStatEffect:
-    fWeight: 1
-    fAirHold: 1
-  _csStatBasic:
-    iLife: 1
-    fHealthMax: 5
-    fHealthNow: 5
-    fAttackPower: 1
-    fDefendPower: 0
-    fPropertyAttackPower: 1
-    fAttackSpeed: 1
-    fMoveSpeed: 1
   _csPlayerStatus:
     fHuntingGroundAttackPower: 1
     fHuntlineDrawReturnSpeed: 1.5

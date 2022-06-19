@@ -99,12 +99,12 @@ namespace GGZ
 			public Battle_BaseBullet bltHit;
 
 			// 값 보정 ( 정수 )
-			public int		iParamAddition;
-			public float	fParamAddition;
+			public int		iIParamAddition;
+			public float	fFParamAddition;
 
 			// 값 보정 ( 비율 )
-			public int		iParamPercent;
-			public float	fParamPercent;
+			public float	fIParamPercent;
+			public float	fFParamPercent;
 
 			public stSkillProcessInfo(CSVData.Battle.Skill.SkillActive arg_csvSkillActive)
 			{
@@ -118,11 +118,11 @@ namespace GGZ
 
 				bltHit = null;
 
-				iParamAddition = 0;
-				fParamAddition = 0;
+				iIParamAddition = 0;
+				fFParamAddition = 0;
 
-				iParamPercent = 1;
-				fParamPercent = 1;
+				fIParamPercent = 1;
+				fFParamPercent = 1;
 			}
 		}
 
@@ -144,17 +144,23 @@ namespace GGZ
 
 				case 1:		// Buff 적용			- [BuffID / Time, Tick, Value]
 				{
-					int iBuffID = info.csvSkillActive.ParamInts[0];
+					int iBuffID = -1;
 
-					Battle_BuffManager.stBuffProcessInfo stBuffInfo = new Battle_BuffManager.stBuffProcessInfo();
+					if (0 < info.csvSkillActive.ParamInts.Length)
+						iBuffID = info.csvSkillActive.ParamInts[0];
+
+					var stBuffInfo = new Battle_BuffManager.stBuffProcessInfo();
 
 					stBuffInfo.csvBuffInfo = CSVData.Battle.Skill.BuffInfo.Manager.Get(iBuffID);
 
-					stBuffInfo.objOwner = info.objOwner;
-					stBuffInfo.objTarget = info.objTarget;
+					if (stBuffInfo.csvBuffInfo != null)
+					{
+						stBuffInfo.objOwner = info.objOwner;
+						stBuffInfo.objTarget = info.objTarget;
+						stBuffInfo.arrfEffection = info.csvSkillActive.ParamFloats;
 
-					SceneMain_Battle.Single.mcsBuff.ProcessBuff(ref stBuffInfo);
-
+						SceneMain_Battle.Single.mcsBuff.ProcessBuff(ref stBuffInfo);
+					}
 					break;
 				}
 

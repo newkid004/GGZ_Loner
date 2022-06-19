@@ -39,6 +39,8 @@ namespace GGZ
 
 			public Battle_BaseObject objOwner;
 			public Battle_BaseObject objTarget;
+
+			public float[] arrfEffection;
 		}
 
 		private Battle_BaseBuff PopToID(int iID)
@@ -47,6 +49,9 @@ namespace GGZ
 
 			switch (iID)
 			{
+				case 5: objResult = mPool.Pop<Battle_BuffTest5>(); break;
+				case 6: objResult = mPool.Pop<Battle_BuffTest6>(); break;
+				case 7: objResult = mPool.Pop<Battle_BuffTest7>(); break;
 				default: objResult = mPool.Pop(); break;
 			}
 
