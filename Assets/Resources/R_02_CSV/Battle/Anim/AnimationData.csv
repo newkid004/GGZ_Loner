@@ -1,0 +1,13 @@
+﻿ID,SpriteNames,TimeLengths
+0,Player_idle_side_idle01|Player_idle_side_idle02|Player_idle_side_idle03|Player_idle_side_idle04,0.2|0.2|0.2|0.2
+1,Player_run_back_idle01|Player_run_back_idle02|Player_run_back_idle03|Player_run_back_idle04,0.2|0.2|0.2|0.2
+4,|Hero_001_idle01,|1.0
+8,|Hero_001_idle01,|1.0
+5,|Hero_001_idle01,|1.0
+6,|Hero_001_idle01,|1.0
+7,|Hero_001_idle01,|1.0
+2,Monster_002_idle01|Monster_002_idle02|Monster_002_idle03|Monster_002_idle04,0.2|0.2|0.2|0.2
+3,Monster_002_AttactReady01|Monster_002_AttactReady02|Monster_002_AttactReady03|Monster_002_AttactReady04,0.2|0.2|0.2|0.2
+9,Monster_001_idle01|Hero_001_idle01,0.1550388|0.8449612
+10,|Hero_001_idle01,|1.0
+11,Monster_001_idle01|Monster_001_idle01|Hero_001_idle01,0.07364346|0.364341|0.5620155

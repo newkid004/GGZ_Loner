@@ -1,0 +1,4 @@
+﻿문서,대상,입력값,설명,추가 설명
+TargetingPreset,Flag,2진 비트,타격하는 대상,
+SkillActive,ActiveType,정수,작동 형태,
+BulletInfo,MoveType,정수,이동 형태,0 : 선형
