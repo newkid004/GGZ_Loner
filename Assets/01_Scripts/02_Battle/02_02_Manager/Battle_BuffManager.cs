@@ -7,29 +7,99 @@ namespace GGZ
 	[System.Serializable]
 	public class Battle_BuffManager
 	{
-		private class BuffActivation
+		public static Battle_BuffManager Single { get => SceneMain_Battle.Single.mcsBuff; }
+
+		public class BuffActivation : PooledMemory
 		{
 			public bool isComplate;
 			public Dictionary<int, LinkedList<Battle_BaseBuff>> dictBuff =	// key : BelongID
 				new Dictionary<int, LinkedList<Battle_BaseBuff>>();
 
+			private Queue<int> quUpdateBelong = new Queue<int>();
+			private HashSet<int> hsUpdateContain = new HashSet<int>();
+
+			public void OnAddBuffBelong(int iBelongID)
+			{
+				if (hsUpdateContain.Add(iBelongID))
+				{
+					quUpdateBelong.Enqueue(iBelongID);
+				}
+			}
+
 			public void FixedUpdate(float fFixedDeltaTime)
 			{
 				isComplate = true;
 
+				// 갱신 항목 설정
+				quUpdateBelong.Clear();
+				hsUpdateContain.Clear();
+
+				foreach (var iBelongID in dictBuff.Keys)
+				{
+					quUpdateBelong.Enqueue(iBelongID);
+					hsUpdateContain.Add(iBelongID);
+				}
+
+				// 항목이 빌때까지 갱신
+				while (0 < quUpdateBelong.Count)
+				{
+					int iBelongID = quUpdateBelong.Peek();
+					var list = dictBuff[iBelongID];
+
+					bool bComplateLocal = true;
+
+					for (var node = list.First; node != null;)
+					{
+						var bf = node.Value;
+
+						bf.FixedUpdate(fFixedDeltaTime);
+						bComplateLocal = bComplateLocal && bf.isComplate;
+
+						if (bf.isComplate)
+						{
+							node.Value.Push();
+							node = list.RemovePop(node);
+						}
+						else
+						{
+							node = node.Next;
+						}
+					}
+
+					if (bComplateLocal)
+					{
+						foreach (var bf in list)
+						{
+							bf.Push();
+						}
+						dictBuff.Remove(iBelongID);
+					}
+
+					isComplate = isComplate && bComplateLocal;
+
+					quUpdateBelong.Dequeue();
+				}
+			}
+
+			public override void OnPushedToPool()
+			{
 				foreach (var list in dictBuff)
 				{
 					foreach (var bf in list.Value)
 					{
-						bf.FixedUpdate(fFixedDeltaTime);
-
-						isComplate = isComplate && bf.IsCompleted;
+						bf.Push();
 					}
 				}
+
+				quUpdateBelong.Clear();
+				hsUpdateContain.Clear();
+
+				base.OnPushedToPool();
 			}
 		}
 
-		[SerializeField] private MemoryPool<Battle_BaseBuff> mPool = new MemoryPool<Battle_BaseBuff>();
+		[SerializeField] private MemoryPool<Battle_BaseBuff> mPoolBuff = new MemoryPool<Battle_BaseBuff>();
+		[SerializeField] private MemoryPool<BuffActivation> mPoolActivation = new MemoryPool<BuffActivation>();
 
 		private Dictionary<Battle_BaseObject, BuffActivation> dictActiveBuff = new Dictionary<Battle_BaseObject, BuffActivation>();
 
@@ -49,10 +119,10 @@ namespace GGZ
 
 			switch (iID)
 			{
-				case 5: objResult = mPool.Pop<Battle_BuffTest5>(); break;
-				case 6: objResult = mPool.Pop<Battle_BuffTest6>(); break;
-				case 7: objResult = mPool.Pop<Battle_BuffTest7>(); break;
-				default: objResult = mPool.Pop(); break;
+				case 5: objResult = mPoolBuff.Pop<Battle_BuffTest5>(); break;
+				case 6: objResult = mPoolBuff.Pop<Battle_BuffTest6>(); break;
+				case 7: objResult = mPoolBuff.Pop<Battle_BuffTest7>(); break;
+				default: objResult = mPoolBuff.Pop(); break;
 			}
 
 			return objResult;
@@ -77,17 +147,30 @@ namespace GGZ
 			}
 		}
 
+		public bool RemoveBuff(Battle_BaseObject obj)
+		{
+			var buff = dictActiveBuff.GetDef(obj);
+
+			if (buff != null && dictActiveBuff.Remove(obj))
+			{
+				buff.Push();
+				return true;
+			}
+
+			return false;
+		}
+
 		private List<Battle_BaseObject> listCollectBuffActObject = new List<Battle_BaseObject>();
 		public void FixedUpdate(float fFixedDeltaTime)
 		{
 			if (dictActiveBuff.Count == 0)
 				return;
 
-			dictActiveBuff.LoopLinear((obj, b) =>
+			dictActiveBuff.LoopLinear((obj, buffActivation) =>
 			{
-				b.FixedUpdate(fFixedDeltaTime);
+				buffActivation.FixedUpdate(fFixedDeltaTime);
 
-				if (b.isComplate)
+				if (buffActivation.isComplate)
 				{
 					listCollectBuffActObject.Add(obj);
 				}
@@ -95,7 +178,11 @@ namespace GGZ
 
 			if (0 < listCollectBuffActObject.Count)
 			{
-				listCollectBuffActObject.ForEach(obj => dictActiveBuff.Remove(obj));
+				listCollectBuffActObject.ForEach(obj =>
+				{
+					dictActiveBuff[obj].Push();
+					dictActiveBuff.Remove(obj);
+				});
 				listCollectBuffActObject.Clear();
 			}
 		}
@@ -107,7 +194,12 @@ namespace GGZ
 
 			Battle_BaseBuff bfAddition = null;
 
-			BuffActivation ba = dictActiveBuff.GetSafe(info.objTarget);
+			if (dictActiveBuff.TryGetValue(info.objTarget, out BuffActivation ba) == false)
+			{
+				ba = mPoolActivation.Pop();
+				dictActiveBuff.Add(info.objTarget, ba);
+			}
+
 			LinkedList<Battle_BaseBuff> listBelong = ba.dictBuff.GetSafe(info.csvBuffInfo.BelongID);
 
 			bool isTriggerd_Begin = false;
@@ -135,7 +227,7 @@ namespace GGZ
 					{
 						Battle_BaseBuff bfRemove = listBelong.First.Value;
 
-						var OwnSkillInfo = bfAddition.CreateOwnSkillProcess(bfAddition.csvBuffInfo.ActiveSkillIDEnd);
+						var OwnSkillInfo = bfRemove.CreateOwnSkillProcess(bfRemove.csvBuffInfo.ActiveSkillIDEnd);
 						bfRemove.TriggeredByEndBuff(ref OwnSkillInfo);
 
 						listBelong.RemoveFirst();
@@ -151,8 +243,9 @@ namespace GGZ
 					if (0 == listBelong.Count)
 					{
 						bfAddition = PopToID(info.csvBuffInfo.ID);
-						listBelong.AddLast(bfAddition);
 						bfAddition.Init(ref info);
+						listBelong.AddLast(bfAddition);
+						ba.OnAddBuffBelong(info.csvBuffInfo.BelongID);
 
 						var OwnSkillInfo = bfAddition.CreateOwnSkillProcess(bfAddition.csvBuffInfo.ActiveSkillIDBegin);
 						bfAddition.TriggeredByBeginBuff(ref OwnSkillInfo);
@@ -174,8 +267,9 @@ namespace GGZ
 					if (0 == listBelong.Count)
 					{
 						bfAddition = PopToID(info.csvBuffInfo.ID);
-						listBelong.AddLast(bfAddition);
 						bfAddition.Init(ref info);
+						listBelong.AddLast(bfAddition);
+						ba.OnAddBuffBelong(info.csvBuffInfo.BelongID);
 
 						if (isTriggerd_Begin)
 						{
@@ -192,8 +286,9 @@ namespace GGZ
 					if (listBelong.Count < info.csvBuffInfo.MaximumStack)
 					{
 						bfAddition = PopToID(info.csvBuffInfo.ID);
-						listBelong.AddLast(bfAddition);
 						bfAddition.Init(ref info);
+						listBelong.AddLast(bfAddition);
+						ba.OnAddBuffBelong(info.csvBuffInfo.BelongID);
 
 						var OwnSkillInfo = bfAddition.CreateOwnSkillProcess(bfAddition.csvBuffInfo.ActiveSkillIDBegin);
 						bfAddition.TriggeredByBeginBuff(ref OwnSkillInfo);

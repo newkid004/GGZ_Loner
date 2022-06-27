@@ -51,10 +51,18 @@ namespace GGZ
 
 		public Battle_BaseMonster CreateMonster(int iID)
 		{
-			Battle_BaseMonster tResult = PopObj<Battle_BaseMonster>(SceneMain_Battle.Single.mcsField.trCharacterGround);
+			Battle_BaseMonster tResult;
 
-			InitMonsterStatus(tResult, iID);
-			InitMonsterPosition(tResult);
+			switch (iID)
+			{
+				default: tResult = PopObj<Battle_BaseMonster>(SceneMain_Battle.Single.mcsField.trCharacterGround); break;
+			}
+
+			if (tResult != null)
+			{
+				InitMonsterStatus(tResult, iID);
+				InitMonsterPosition(tResult);
+			}
 
 			return tResult;
 		}

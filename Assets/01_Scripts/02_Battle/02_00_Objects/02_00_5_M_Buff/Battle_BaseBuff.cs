@@ -18,14 +18,16 @@ namespace GGZ
 		public Battle_BaseObject objOwner;
 		public Battle_BaseObject objTarget;
 
+		public bool isComplate;
+
 		public virtual float fCalcedValue => csvBuffInfo.ActValue;
 		public virtual float fCalcedTime => csvBuffInfo.ActTime;
 		public virtual float fCalcedTick => csvBuffInfo.ActTick;
 
-		public virtual bool IsCompleted { get => fTimeLeft< 0; }
-
 		public virtual void Init(ref Battle_BuffManager.stBuffProcessInfo info)
 		{
+			isComplate = false;
+
 			csvBuffInfo = info.csvBuffInfo;
 			objOwner = info.objOwner;
 			objTarget = info.objTarget;
@@ -43,21 +45,33 @@ namespace GGZ
 
 		public virtual void FixedUpdate(float fFixedDeltaTime)
 		{
-			if (IsCompleted)
+			if (isComplate)
 				return;
 
 			fNextTickLeft -= fFixedDeltaTime;
-
-			float fTickAddition = fActiveTick;
-			while (fNextTickLeft < 0)
-			{
-				var OwnSkillInfo = CreateOwnSkillProcess(csvBuffInfo.ActiveSkillIDTick);
-				TriggeredByTickBuff(ref OwnSkillInfo);
-
-				fNextTickLeft += fTickAddition;
-			}
-
 			fTimeLeft -= fFixedDeltaTime;
+
+			if (0 < fTimeLeft)
+			{
+				float fTickAddition = fActiveTick;
+				while (fNextTickLeft < 0)
+				{
+					var OwnSkillInfo = CreateOwnSkillProcess(csvBuffInfo.ActiveSkillIDTick);
+					TriggeredByTickBuff(ref OwnSkillInfo);
+
+					if (fTickAddition <= 0)
+						break;
+
+					fNextTickLeft += fTickAddition;
+				}
+			}
+			else
+			{
+				isComplate = true;
+
+				var OwnSkillInfo = CreateOwnSkillProcess(csvBuffInfo.ActiveSkillIDEnd);
+				TriggeredByEndBuff(ref OwnSkillInfo);
+			}
 		}
 
 		public Battle_SkillManager.stSkillProcessInfo CreateOwnSkillProcess(int iSkillID)

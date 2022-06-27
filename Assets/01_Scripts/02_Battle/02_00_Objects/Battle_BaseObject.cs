@@ -21,6 +21,19 @@ namespace GGZ
 			iAttribute = GlobalDefine.ObjectData.Attribute.ciNone;
 		}
 
+		public Battle_BuffManager.BuffActivation buffActivation = null;
+
+		public override void OnPushedToPool()
+		{
+			if (buffActivation != null)
+			{
+				Battle_BuffManager.Single.RemoveBuff(this);
+				buffActivation = null;
+			}
+
+			base.OnPushedToPool();
+		}
+
 		// 트리거 : 해당 오브젝트와 겹치는 곳에 사냥터가 생성됨
 		public virtual void TriggeredByHuntZoneSpawnPlaced(Battle_HZone hzSpawned) { }
 

@@ -25,6 +25,7 @@ namespace GGZ
 
 			switch (iID)
 			{
+				case 4: obj = oPool.Pop<Battle_BulletActiveSkill>(trParent); break;
 				default: obj = oPool.Pop<Battle_BulletTest>(trParent); break;
 			}
 

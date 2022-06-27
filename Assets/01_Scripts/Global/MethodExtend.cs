@@ -162,6 +162,17 @@ public static class MethodExtend
 
 	#endregion
 
+	#region // ----- LinkedList ----- //
+
+	public static LinkedListNode<T> RemovePop<T>(this LinkedList<T> list, LinkedListNode<T> node)
+	{
+		LinkedListNode<T> nodeNext = node.Next;
+		list.Remove(node);
+		return nodeNext;
+	}
+
+	#endregion
+
 	#region // ----- Dictionary ----- //
 
 	#region Dictionary.LoopLinear - Dictionary enumerator 내 foreach에 의한 boxing, unboxing 차단 메소드, 4.x에선 미사용

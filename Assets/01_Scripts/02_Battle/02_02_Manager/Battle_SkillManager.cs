@@ -166,11 +166,11 @@ namespace GGZ
 
 				case 2:		// 또다른 Skill 발동	- [SkillID, .. / ]
 				{
+					var stSkillInfo = info;
+
 					foreach (int iSkillID in info.csvSkillActive.ParamInts)
 					{
-						var stSkillInfo = info;
 						stSkillInfo.csvSkillActive = CSVData.Battle.Skill.SkillActive.Manager.Get(iSkillID);
-
 						ProcessSkill(ref stSkillInfo);
 					}
 					break;

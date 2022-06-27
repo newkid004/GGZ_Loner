@@ -9,21 +9,23 @@ namespace GGZ
 		public static SceneMain_Battle Single { get; private set; }
 
 		[Header("----- Manager -----")]
-		[SerializeField] private Battle_MonsterManager _mcsMonster;
-		[SerializeField] private Battle_HLineManager _mcsHLine;
-		[SerializeField] private Battle_HZoneManager _mcsHZone;
-		[SerializeField] private Battle_FieldManager _mcsField;
-		[SerializeField] private Battle_BulletManager _mcsBullet;
-		[SerializeField] private Battle_SkillManager _mcsSkill;
-		[SerializeField] private Battle_BuffManager _mcsBuff;
+		[SerializeField] private Battle_MonsterManager		_mcsMonster;
+		[SerializeField] private Battle_HLineManager		_mcsHLine;
+		[SerializeField] private Battle_HZoneManager		_mcsHZone;
+		[SerializeField] private Battle_FieldManager		_mcsField;
+		[SerializeField] private Battle_BulletManager		_mcsBullet;
+		[SerializeField] private Battle_SkillManager		_mcsSkill;
+		[SerializeField] private Battle_BuffManager			_mcsBuff;
+		[SerializeField] private Battle_PatternManager		_mcsPattern;
 
-		public Battle_MonsterManager mcsMonster { get => _mcsMonster; }
-		public Battle_HLineManager mcsHLine { get => _mcsHLine; }
-		public Battle_HZoneManager mcsHZone { get => _mcsHZone; }
-		public Battle_FieldManager mcsField { get => _mcsField; }
-		public Battle_BulletManager mcsBullet { get => _mcsBullet; }
-		public Battle_SkillManager mcsSkill { get => _mcsSkill; }
-		public Battle_BuffManager mcsBuff { get => _mcsBuff; }
+		public Battle_MonsterManager	mcsMonster	{ get => _mcsMonster; }
+		public Battle_HLineManager		mcsHLine	{ get => _mcsHLine; }
+		public Battle_HZoneManager		mcsHZone	{ get => _mcsHZone; }
+		public Battle_FieldManager		mcsField	{ get => _mcsField; }
+		public Battle_BulletManager		mcsBullet	{ get => _mcsBullet; }
+		public Battle_SkillManager		mcsSkill	{ get => _mcsSkill; }
+		public Battle_BuffManager		mcsBuff		{ get => _mcsBuff; }
+		public Battle_PatternManager	mcsPattern	{ get => _mcsPattern; }
 
 		[Header("----- Character -----")]
 		[SerializeField] private Transform trCharParent;
@@ -51,6 +53,11 @@ namespace GGZ
 			_mcsField.Init();
 
 			mcsBullet.Init();
+		}
+
+		private void FixedUpdate()
+		{
+			_mcsBuff.FixedUpdate(Time.fixedDeltaTime);
 		}
 
 		// Test

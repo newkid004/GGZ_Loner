@@ -28,18 +28,22 @@ namespace GGZ
 	[System.Serializable]
 	public abstract class MemoryPoolBase
 	{
-		[SerializeField]
-		protected Queue<PooledMemory> qPooledObject;
-		protected HashSet<PooledMemory> hsActiveObject;
-
 		// 자식 객체에서 초기화
 		protected MemoryPoolBase opRoot;
+
 		public int iSequenceID { get; protected set; }
 		public Dictionary<int, PooledMemory> dictTotalObject { get; protected set; }
 
+		protected Queue<PooledMemory> qPooledObject;
+		protected HashSet<PooledMemory> hsActiveObject;
+
 		protected MemoryPoolBase()
 		{
+			opRoot = this;
+
 			iSequenceID = 0;
+			dictTotalObject = new Dictionary<int, PooledMemory>();
+
 			qPooledObject = new Queue<PooledMemory>();
 			hsActiveObject = new HashSet<PooledMemory>();
 		}
