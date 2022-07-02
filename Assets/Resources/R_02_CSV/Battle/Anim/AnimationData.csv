@@ -11,4 +11,7 @@
 9,Player_run_front_idle03|Player_run_front_idle04,0.1550388|0.8449612
 10,|Player_run_front_idle04,|1.0
 11,Player_run_front_idle03|Player_run_front_idle03|Player_run_front_idle04,0.07364346|0.364341|0.5620155
-12,Monster_001_idle01|Monster_001_idle02|Monster_001_idle04|Monster_001_idle05|Monster_001_idle01,0.1541479|0.15|0.15|0.15|0.7958522
+12,Monster_001_idle01|Monster_001_idle02|Monster_001_idle03|Monster_001_idle04|Monster_001_idle05|Monster_001_idle04,0.1541479|0.15|0.15|0.15|0.15|0.7458522
+13,Monster_001_walk01|Monster_001_walk02|Monster_001_walk03|Monster_001_walk04,0.15|0.15|0.15|0.15
+14,Monster_001_idle01|Monster_001_die01|Monster_001_die02,0.15|0.15|0.1
+15,Monster_001_atk01|Monster_001_atk02|Monster_001_atk03|Monster_001_atk04,0.15|0.15|0.15|0.15
