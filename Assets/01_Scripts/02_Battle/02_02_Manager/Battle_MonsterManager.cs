@@ -51,20 +51,22 @@ namespace GGZ
 
 		public Battle_BaseMonster CreateMonster(int iID)
 		{
-			Battle_BaseMonster tResult;
+			Battle_BaseMonster monResult;
 
 			switch (iID)
 			{
-				default: tResult = PopObj<Battle_BaseMonster>(SceneMain_Battle.Single.mcsField.trCharacterGround); break;
+				default: monResult = PopObj<Battle_BaseMonster>(SceneMain_Battle.Single.mcsField.trCharacterGround); break;
 			}
 
-			if (tResult != null)
+			if (monResult != null)
 			{
-				InitMonsterStatus(tResult, iID);
-				InitMonsterPosition(tResult);
+				monResult.iCharacterID = iID;
+
+				InitMonsterStatus(monResult, iID);
+				InitMonsterPosition(monResult);
 			}
 
-			return tResult;
+			return monResult;
 		}
 
 		private void InitMonsterStatus(Battle_BaseMonster monObject, int iID)
@@ -88,5 +90,50 @@ namespace GGZ
 		{
 
 		}
+
+#if _debug
+		public bool IsDebug;
+		private const float GIZMO_DISK_THICKNESS = 0.01f;
+		public void OnDrawGizmo()
+		{
+
+			oPool.LoopOnActiveTotal(mon =>
+			{
+				// Alert
+				Gizmos.color = new Color(1, 0.2f, 0.2f, 0.25f);
+				float corners = 19; // How many corners the circle should have
+				float size = mon.csvMonster.AlertRadius; // How wide the circle should be
+				Vector3 origin = mon.transform.position; // Where the circle will be drawn around
+				Vector3 startRotation = mon.transform.right * size; // Where the first point of the circle starts
+				Vector3 lastPosition = origin + startRotation;
+				float angle = 0;
+				while (angle <= 360)
+				{
+					angle += 360 / corners;
+					Vector3 nextPosition = origin + (Quaternion.Euler(0, 0, angle) * startRotation);
+					Gizmos.DrawLine(lastPosition, nextPosition);
+					// Gizmos.DrawSphere(nextPosition, 1);
+
+					lastPosition = nextPosition;
+				}
+
+				// Attack
+				Gizmos.color = new Color(1, 0.2f, 0.2f, 0.5f);
+				size = mon.csvMonster.AttackRadius;
+				startRotation = mon.transform.right * size;
+				lastPosition = origin + startRotation;
+				angle = 0;
+				while (angle <= 360)
+				{
+					angle += 360 / corners;
+					Vector3 nextPosition = origin + (Quaternion.Euler(0, 0, angle) * startRotation);
+					Gizmos.DrawLine(lastPosition, nextPosition);
+					// Gizmos.DrawSphere(nextPosition, 1);
+
+					lastPosition = nextPosition;
+				}
+			});
+		}
+#endif
 	}
 }

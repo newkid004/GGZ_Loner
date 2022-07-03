@@ -14,23 +14,27 @@ namespace GGZ
 		private ObjectData.StatusMonster _csStatMonster = new ObjectData.StatusMonster();
 		public ObjectData.StatusMonster csStatMonster { get => _csStatMonster; }
 
-		private CSVData.Battle.UnitBehaviour.PatternGroup csvBhvPatternGroup;
-
 		public bool isAlert = false;
 		private float fAlertEndTime = 0;
 
+		public CSVData.Battle.Status.Monster csvMonster = null;
+
 		public void InitToCSV(int iMonsterID)
 		{
-			var csvMonster = CSVData.Battle.Status.Monster.Manager.Get(iMonsterID);
+			csvMonster = CSVData.Battle.Status.Monster.Manager.Get(iMonsterID);
 			ObjectData.StatusMonster statMonster = csStatMonster;
 
 			statMonster.fAlertRadius = csvMonster.AlertRadius;
 			statMonster.fAlertTime = csvMonster.AlertTime;
 			statMonster.fAggressiveMoveSpeed = csvMonster.AggressiveMoveSpeed;
 
-			csvBhvPatternGroup = CSVData.Battle.UnitBehaviour.PatternGroup.Manager.Get(csvMonster.BehaviourGroupID);
-
 			// Renderer.sprite = SpriteManager.Single.Get(SpriteManager.Container.EType.Animation, (int)SpriteDefine.Animation.Monster_001_idle01);
+		}
+
+		public override void OnPushedToPool()
+		{
+			csvMonster = null;
+			base.OnPushedToPool();
 		}
 
 		public override void TriggeredByHuntZoneExtendPlaced(Battle_HZone hzSpawned, List<Vector2> listExtendPoint)

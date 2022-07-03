@@ -14,7 +14,7 @@ namespace GGZ
 			var objTargetChar = (Battle_BaseCharacter)stSkillInfo.objTarget;
 
 			objTargetChar.AniModule.spriteRenderer.color = Color.red;
-			objTargetChar.AniModule.spriteRenderer.DOColor(Color.white, 0.5f);
+			objTargetChar.AniModule.spriteRenderer.DOColor(Color.white, 0.25f);
 		}
 	}
 
@@ -27,7 +27,7 @@ namespace GGZ
 			var objTargetChar = (Battle_BaseCharacter)stSkillInfo.objTarget;
 
 			objTargetChar.AniModule.spriteRenderer.color = Color.blue;
-			objTargetChar.AniModule.spriteRenderer.DOColor(Color.white, 0.5f);
+			objTargetChar.AniModule.spriteRenderer.DOColor(Color.white, 0.25f);
 		}
 	}
 
@@ -40,7 +40,7 @@ namespace GGZ
 			var objTargetChar = (Battle_BaseCharacter)stSkillInfo.objTarget;
 
 			objTargetChar.AniModule.spriteRenderer.color = Color.green;
-			objTargetChar.AniModule.spriteRenderer.DOColor(Color.white, 0.5f);
+			objTargetChar.AniModule.spriteRenderer.DOColor(Color.white, 0.25f);
 		}
 	}
 }

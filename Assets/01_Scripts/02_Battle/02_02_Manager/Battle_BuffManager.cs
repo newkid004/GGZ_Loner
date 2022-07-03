@@ -113,6 +113,12 @@ namespace GGZ
 			public float[] arrfEffection;
 		}
 
+		public void Init()
+		{
+			mPoolBuff.Init();
+			mPoolActivation.Init();
+		}
+
 		private Battle_BaseBuff PopToID(int iID)
 		{
 			Battle_BaseBuff objResult;

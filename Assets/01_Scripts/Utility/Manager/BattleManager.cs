@@ -49,26 +49,28 @@ namespace GGZ
 					switch (nowSpawnInfo.SpawnType)
 					{
 						case 0:
+						{
+							for (int i = 0; i < nowSpawnInfo.Params[0]; ++i)
 							{
-								for (int i = 0; i < nowSpawnInfo.Params[0]; ++i)
+								Battle_BaseMonster mon = SceneMain_Battle.Single.mcsMonster.CreateMonster(nowSpawnInfo.MonsterID);
+								mon.transform.position = GlobalUtility.Trigonometric.GetRandomPointInPolygon(listPolygonTriangle, mon.transform);
+
+								if (GlobalUtility.Digit.Include(mon.iObjectType, GlobalDefine.ObjectData.ObjectType.ciBoss))
 								{
-									Battle_BaseMonster mon = SceneMain_Battle.Single.mcsMonster.CreateMonster(nowSpawnInfo.MonsterID);
-									mon.transform.position = GlobalUtility.Trigonometric.GetRandomPointInPolygon(listPolygonTriangle, mon.transform);
-
-									if (GlobalUtility.Digit.Include(mon.iObjectType, GlobalDefine.ObjectData.ObjectType.ciBoss))
-									{
-										// 보스
-									}
-									else
-									{
-										// 일반
-										mon.InitToCSV(nowSpawnInfo.MonsterID);
-									}
+									// 보스
 								}
+								else
+								{
+									// 일반
+									mon.InitToCSV(nowSpawnInfo.MonsterID);
 
-								iMonsterTotalCount += nowSpawnInfo.Params[0];
+									Battle_PatternManager.Single.SetMonsterBehaviour(mon);
+								}
 							}
+
+							iMonsterTotalCount += nowSpawnInfo.Params[0];
 							break;
+						}
 					}
 				});
 			}

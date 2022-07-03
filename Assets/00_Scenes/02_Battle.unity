@@ -742,7 +742,7 @@ GameObject:
   m_Component:
   - component: {fileID: 595822922}
   m_Layer: 0
-  m_Name: BulletPool
+  m_Name: Pool_Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -773,7 +773,6 @@ GameObject:
   m_Component:
   - component: {fileID: 616768531}
   - component: {fileID: 616768537}
-  - component: {fileID: 616768533}
   - component: {fileID: 616768532}
   - component: {fileID: 616768535}
   - component: {fileID: 616768534}
@@ -811,11 +810,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171d88e7100ff0242a74b4e653f8dcf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _AniModule: {fileID: 0}
+  _AniModule: {fileID: 616768537}
   _colliderOwn: {fileID: 616768534}
   _RigidbodyOwn: {fileID: 616768536}
-  _behaviorOwn: {fileID: 616768533}
-  lCharacterID: -1
+  behaviorOwn: {fileID: 0}
+  iCharacterID: -1
   _csStatMonster:
     fAlertRadius: 1
     fAlertTime: 1
@@ -823,24 +822,6 @@ MonoBehaviour:
     isAlly: 0
     isSummoned: 0
   isAlert: 0
---- !u!114 &616768533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 616768530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35a60a3905ec6254eb5bbb87f611f5ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _characterOwn: {fileID: 616768532}
-  fMoveTime: 0.5
-  fMoveTimeRange: 1
-  fWaitAfterMove: 0.5
-  fWaitAfterMoveRange: 0.34
-  eNowState: 1
 --- !u!58 &616768534
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -944,7 +925,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rdrSprite: {fileID: 616768535}
   isPlay: 0
-  isStepNextData: 0
   OnProcess:
     m_PersistentCalls:
       m_Calls: []
@@ -1078,8 +1058,40 @@ Transform:
   - {fileID: 1119020729}
   - {fileID: 1835891541}
   - {fileID: 595822922}
+  - {fileID: 757443865}
   m_Father: {fileID: 2048152230}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &757443864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 757443865}
+  m_Layer: 0
+  m_Name: Pool_Behaviour
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &757443865
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757443864}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1399089966}
+  m_Father: {fileID: 685774685}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &994542607
 GameObject:
@@ -1259,6 +1271,7 @@ MonoBehaviour:
       trContainRoot: {fileID: 1119020729}
       iPrePoolingCount: 20
       _tOrigin: {fileID: 616768532}
+    IsDebug: 0
   _mcsHLine:
     oPoolLine:
       trContainRoot: {fileID: 2048152230}
@@ -1438,8 +1451,15 @@ MonoBehaviour:
       iPrePoolingCount: 20
       _tOrigin: {fileID: 1631356499}
   _mcsBuff:
-    mPool:
+    mPoolBuff:
       iPrePoolingCount: 0
+    mPoolActivation:
+      iPrePoolingCount: 0
+  _mcsPattern:
+    oPool:
+      trContainRoot: {fileID: 757443865}
+      iPrePoolingCount: 10
+      _tOrigin: {fileID: 1399089967}
   trCharParent: {fileID: 287535431}
   camMain: {fileID: 1977548837}
   charPlayer: {fileID: 1469785542}
@@ -1487,7 +1507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1119020729}
   m_Layer: 0
-  m_Name: MonsterPool
+  m_Name: Pool_Monster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1898,6 +1918,50 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1399089965
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1399089966}
+  - component: {fileID: 1399089967}
+  m_Layer: 0
+  m_Name: BehaviourBase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1399089966
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399089965}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 757443865}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1399089967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399089965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a9cc3ba47a405498efc45803130c94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterOwn: {fileID: 0}
 --- !u!1 &1408396573
 GameObject:
   m_ObjectHideFlags: 0
@@ -2162,8 +2226,8 @@ MonoBehaviour:
   _AniModule: {fileID: 1469785547}
   _colliderOwn: {fileID: 1469785543}
   _RigidbodyOwn: {fileID: 1469785546}
-  _behaviorOwn: {fileID: 1469785545}
-  lCharacterID: -1
+  behaviorOwn: {fileID: 1469785545}
+  iCharacterID: -1
   _csPlayerStatus:
     fHuntingGroundAttackPower: 1
     fHuntlineDrawReturnSpeed: 1.5
@@ -2248,7 +2312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8117d57b7336fbd43ab6ff9ccb1748a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterOwn: {fileID: 1469785542}
+  characterOwn: {fileID: 1469785542}
 --- !u!50 &1469785546
 Rigidbody2D:
   serializedVersion: 4
@@ -2284,7 +2348,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rdrSprite: {fileID: 1469785544}
   isPlay: 0
-  isStepNextData: 0
   OnProcess:
     m_PersistentCalls:
       m_Calls: []
@@ -2521,7 +2584,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rdrSprite: {fileID: 1631356498}
   isPlay: 0
-  isStepNextData: 0
   OnProcess:
     m_PersistentCalls:
       m_Calls: []

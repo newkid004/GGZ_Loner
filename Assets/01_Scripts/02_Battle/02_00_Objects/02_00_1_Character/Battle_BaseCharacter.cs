@@ -24,11 +24,10 @@ namespace GGZ
 		public Rigidbody2D RigidbodyOwn { get => _RigidbodyOwn; }
 
 		[SerializeField]
-		private Battle_BaseBehaviour _behaviorOwn;
-		public Battle_BaseBehaviour behaviorOwn { get => _behaviorOwn; set => SetBehavior(value, true); }
+		public Battle_BaseBehaviour behaviorOwn = null;
 
 		[Header("Info : Character")]
-		public long lCharacterID = -1;
+		public int iCharacterID = -1;
 
 		[SerializeField]
 		private ObjectData.StatusEffect _csStatEffect = new ObjectData.StatusEffect();
@@ -70,7 +69,7 @@ namespace GGZ
 			base.iObjectType |= ObjectData.ObjectType.ciCharacter;
 			base.iAttribute |= ObjectData.Attribute.ciBasic_Character;
 
-			lCharacterID = -1;
+			iCharacterID = -1;
 
 			_iDirection = Direction8.ciDir_5;
 			iLastMovedDirection = Direction8.ciDir_5;
@@ -81,8 +80,6 @@ namespace GGZ
 		public override void OnPopedFromPool()
 		{
 			base.OnPopedFromPool();
-
-			behaviorOwn?.SetCharacter(this, false);
 		}
 
 		public override void ReconnectRefSelf()
@@ -92,7 +89,6 @@ namespace GGZ
 			_AniModule = GetComponent<AnimationModule>();
 			_colliderOwn = GetComponent<Collider2D>();
 			_RigidbodyOwn = GetComponent<Rigidbody2D>();
-			behaviorOwn = GetComponent<Battle_BaseBehaviour>();
 		}
 
 		public virtual void ProcessUpdateMove()
@@ -186,16 +182,6 @@ namespace GGZ
 			// this.iDirection = SCDirection8.ciDir_5;
 			isMove = false;
 			RigidbodyOwn.velocity = Vector3.zero;
-		}
-
-		public void SetBehavior(Battle_BaseBehaviour csBehavior, bool isSetBehaviorCharacter = true)
-		{
-			_behaviorOwn = csBehavior;
-
-			if (isSetBehaviorCharacter)
-			{
-				_behaviorOwn?.SetCharacter(this, false);
-			}
 		}
 
 		public virtual void ProcessLossLife()

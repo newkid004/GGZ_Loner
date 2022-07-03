@@ -125,10 +125,15 @@ namespace GGZ
 
 					public int BehaviourGroupID;
 
+					public float AttackRadius;
+
 					public float AlertRadius;
 					public float AlertTime;
 
 					public float AggressiveMoveSpeed;
+
+					public float MoveTime;
+					public float WaitAfterMove;
 				}
 			}
 

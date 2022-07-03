@@ -107,13 +107,20 @@ namespace GGZ
 			if (null == aniPage)
 				aniPage = Dev_PageBase.Get<Dev_PageAnimation>();
 
-			if (-1 == iRoutineIndex)
+			switch (eventData.button)
 			{
-				OnSingleClick();
-			}
-			else
-			{
-				OnDoubleClick();
+				case PointerEventData.InputButton.Left:
+				{
+					if (-1 == iRoutineIndex)
+					{
+						OnSingleClick();
+					}
+					else
+					{
+						OnDoubleClick();
+					}
+					break;
+				}
 			}
 		}
 

@@ -56,6 +56,7 @@ namespace GGZ
 
 		[Header("----- Dev Ref -----")]
 		[SerializeField] RectTransform rtPopupRoot;
+		[SerializeField] RectTransform rtPageAnimation;
 
 		protected override void Start()
 		{
@@ -77,7 +78,11 @@ namespace GGZ
 
 		private void Update()
 		{
+			if (rtPageAnimation.gameObject.activeInHierarchy == false)
+				return;
+
 			UpdatePlayControl();
+			UpdateMarkControl();
 		}
 
 		#region Func : AniSetType
@@ -110,9 +115,10 @@ namespace GGZ
 							if (string.IsNullOrEmpty(strUnitName))
 							{
 								AniSelectionItem itemType = listAniSelectionItem[(int)AniSelectionItem.EType.AniType];
+								AniSelectionItem itemUnit = listAniSelectionItem[(int)AniSelectionItem.EType.UnitID];
 								AnimationManager.Single.AddGroup((AnimationManager.EAniType)itemType.iSelectionIndex, iUnitID);
 
-								itemType.iSelectionIndex = AnimationManager.Single.GetGroupCount((AnimationManager.EAniType)itemType.iSelectionIndex) - 1;
+								itemUnit.iSelectionIndex = AnimationManager.Single.GetGroupCount((AnimationManager.EAniType)itemType.iSelectionIndex) - 1;
 
 								iAniSelectionItemIndex = (int)AniSelectionItem.EType.AniType;
 								OnChangeAniSelectionItem(-1);
@@ -439,6 +445,8 @@ namespace GGZ
 				AniSelectionItem itemType = listAniSelectionItem[(int)AniSelectionItem.EType.AniType];
 				AniSelectionItem itemUnit = listAniSelectionItem[(int)AniSelectionItem.EType.UnitID];
 
+				itemUnit.dropdown.SetValueWithoutNotify(itemUnit.iSelectionIndex);
+
 				int iUnitID = int.Parse(itemUnit.dropdown.options[itemUnit.iSelectionIndex].text.Split(',')[0]);
 
 				List<string> listOption = new List<string>();
@@ -522,43 +530,94 @@ namespace GGZ
 			{
 				sldAniSection.SetValueWithoutNotify(aniModule.fPlaySection);
 			}
+		}
 
+		private void UpdateMarkControl()
+		{
 			if (0 < slistSelectMarkIndex.Count)
 			{
-				int iMoveDirection = 0;
+				UpdateMarkControl_MoveMark();
+				UpdateMarkControl_Ctrl_ModifyMark();
+			}
+		}
 
-				if (Input.GetKeyDown(KeyCode.LeftArrow))
-				{
-					iMoveDirection = -1;
-				}
-				else if (Input.GetKeyDown(KeyCode.RightArrow))
-				{
-					iMoveDirection = 1;
-				}
+		private void UpdateMarkControl_MoveMark()
+		{
+			int iMoveDirection = 0;
 
-				if (iMoveDirection != 0)
-				{
-					List<AnimationModule.Data.Pair> pairList = new List<AnimationModule.Data.Pair>();
-					slistSelectMarkIndex.ForEach((i, i2) => pairList.Add(adSelection.listPair[i]));
+			if (Input.GetKeyDown(KeyCode.LeftArrow))
+			{
+				iMoveDirection = -1;
+			}
+			else if (Input.GetKeyDown(KeyCode.RightArrow))
+			{
+				iMoveDirection = 1;
+			}
 
-					float fInterval = AniOptionFloat.Main.fMarkMoveInterval * iMoveDirection;
-					pairList.ForEach(pair =>
+			if (iMoveDirection != 0)
+			{
+				List<AnimationModule.Data.Pair> pairList = new List<AnimationModule.Data.Pair>();
+				slistSelectMarkIndex.ForEach((i, i2) => pairList.Add(adSelection.listPair[i]));
+
+				float fInterval = AniOptionFloat.Main.fMarkMoveInterval * iMoveDirection;
+				pairList.ForEach(pair =>
+				{
+					adSelection.ModifySpriteSection(
+						adSelection.listPair.BinarySearch(pair),
+						pair.accumulate + fInterval);
+				});
+
+				iAniSelectionItemIndex = (int)AniSelectionItem.EType.AniName;
+				OnChangeAniSelectionItem(listAniSelectionItem[iAniSelectionItemIndex].iSelectionIndex);
+
+				pairList.ForEach(pair =>
+				{
+					int i = adSelection.listPair.BinarySearch(pair);
+					slistSelectMarkIndex.Add(i, i);
+				});
+
+				SpreadAniDataMark();
+			}
+		}
+
+		private void UpdateMarkControl_Ctrl_ModifyMark()
+		{
+			if (Input.GetKey(KeyCode.LeftControl))
+			{
+				if (Input.GetKeyDown(KeyCode.E)) // Equal ( 사이에 선택된 마크들을 모두 같은 간격으로 )
+				{
+					if (3 <= slistSelectMarkIndex.Count)
 					{
-						adSelection.ModifySpriteSection(
-							adSelection.listPair.BinarySearch(pair), 
-							pair.accumulate + fInterval);
-					});
+						List<AnimationModule.Data.Pair> pairList = new List<AnimationModule.Data.Pair>();
+						slistSelectMarkIndex.ForEach((i, i2) => pairList.Add(adSelection.listPair[i]));
 
-					iAniSelectionItemIndex = (int)AniSelectionItem.EType.AniName;
-					OnChangeAniSelectionItem(listAniSelectionItem[iAniSelectionItemIndex].iSelectionIndex);
+						float fOnceInterval = (pairList.Back().accumulate - pairList[0].accumulate) / (pairList.Count - 1);
+						int iCount = pairList.Count - 1;
+						for (int i = 1; i < iCount; i++)
+						{
+							var pair = pairList[i];
 
-					pairList.ForEach(pair =>
-					{
-						int i = adSelection.listPair.BinarySearch(pair);
-						slistSelectMarkIndex.Add(i, i);
-					});
+							adSelection.ModifySpriteSection(
+								adSelection.listPair.BinarySearch(pair),
+								pairList[0].accumulate + (fOnceInterval * i));
+						}
 
-					SpreadAniDataMark();
+						iAniSelectionItemIndex = (int)AniSelectionItem.EType.AniName;
+						OnChangeAniSelectionItem(listAniSelectionItem[iAniSelectionItemIndex].iSelectionIndex);
+
+						pairList.ForEach(pair =>
+						{
+							int i = adSelection.listPair.BinarySearch(pair);
+							slistSelectMarkIndex.Add(i, i);
+						});
+
+						SpreadAniDataMark();
+					}
+				}
+
+				if (Input.GetKeyDown(KeyCode.S))	// Save
+				{
+					OnClickAniSave();
 				}
 			}
 		}
@@ -633,7 +692,7 @@ namespace GGZ
 			txtAniPlay.text = "▶";
 		}
 
-		public void OnComplateAnimation(bool isRepeat)
+		public void OnComplateAnimation(bool isComplate, bool isRepeat)
 		{
 			if (tglAniRepeat.isOn)
 			{
@@ -654,7 +713,7 @@ namespace GGZ
 		[System.Serializable]
 		public class AniOptionBool : SaveSingleObjectBase<AniOptionBool>
 		{
-			public override string strPathSave => $"Assets/Editor/Animation/Option";
+			public override string strPathSave => $"UserSettings/Editor/Animation/Option";
 
 			public enum EValue
 			{
@@ -716,7 +775,7 @@ namespace GGZ
 		[System.Serializable]
 		public class AniOptionFloat : SaveSingleObjectBase<AniOptionFloat>
 		{
-			public override string strPathSave => $"Assets/Editor/Animation/Option";
+			public override string strPathSave => $"UserSettings/Editor/Animation/Option";
 
 			public enum EValue
 			{

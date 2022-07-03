@@ -1,13 +1,29 @@
-using GGZ.GlobalDefine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GGZ
 {
-	// 무작위 8방향으로 이동
-	public class Battle_BehaviourWander : Battle_BaseBehaviour
+	using GlobalDefine;
+
+	public class Battle_BehaviourMonster : Battle_BaseBehaviour
 	{
+		public enum EMoveState
+		{
+			Wait,
+			Move,
+			Aggressive,
+			MAX
+		}
+
+		public enum ESubState
+		{
+			None,
+			Attack,
+			Skill,
+			MAX
+		}
+
 		public enum EState
 		{
 			Move, Wait,
@@ -15,6 +31,8 @@ namespace GGZ
 		}
 
 		[Header("----- Wander -----")]
+
+		public CSVData.Battle.UnitBehaviour.PatternGroup csvPatternGroup = null;
 
 		[Tooltip("최대 이동 시간")]
 		public float fMoveTime = 0.5f;
@@ -26,6 +44,8 @@ namespace GGZ
 
 		private float fNextChangeStateTime = 0;
 
+		public EMoveState eMoveState = EMoveState.Wait;
+		public ESubState eSubState = ESubState.None;
 		public EState eNowState = EState.Wait;
 
 		protected override void FixedUpdate()
@@ -49,18 +69,18 @@ namespace GGZ
 			switch (eNowState)
 			{
 				case EState.Move:
-					fMinNextTimeRange = fMoveTimeRange;
-					fMaxNextTimeInterval = fMoveTime;
-					break;
+				fMinNextTimeRange = fMoveTimeRange;
+				fMaxNextTimeInterval = fMoveTime;
+				break;
 				case EState.Wait:
-					fMinNextTimeRange = fWaitAfterMoveRange;
-					fMaxNextTimeInterval = fWaitAfterMove;
-					break;
+				fMinNextTimeRange = fWaitAfterMoveRange;
+				fMaxNextTimeInterval = fWaitAfterMove;
+				break;
 
 				default:
-					fMinNextTimeRange = 0;
-					fMaxNextTimeInterval = 0;
-					break;
+				fMinNextTimeRange = 0;
+				fMaxNextTimeInterval = 0;
+				break;
 			}
 
 			fMinNextTimeInterval = fMaxNextTimeInterval * fMinNextTimeRange;
@@ -74,14 +94,15 @@ namespace GGZ
 			switch (eState)
 			{
 				case EState.Move:
-					characterOwn.ProcessEnterMove(Direction8.GetRandomDirection());
+				characterOwn.ProcessEnterMove(Direction8.GetRandomDirection());
 
-					break;
+				break;
 				case EState.Wait:
-					characterOwn.ProcessExitMove();
+				characterOwn.ProcessExitMove();
 
-					break;
+				break;
 			}
 		}
 	}
 }
+

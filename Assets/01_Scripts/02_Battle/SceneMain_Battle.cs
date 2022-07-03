@@ -47,12 +47,16 @@ namespace GGZ
 			CustomRoutine.Init();
 
 			_mcsMonster.Init();
+
 			_mcsHLine.Init();
 
 			_mcsHZone.Init();
 			_mcsField.Init();
 
-			mcsBullet.Init();
+			_mcsBullet.Init();
+			_mcsBuff.Init();
+
+			_mcsPattern.Init();
 		}
 
 		private void FixedUpdate()
@@ -87,12 +91,15 @@ namespace GGZ
 #if _debug
 		private void OnDrawGizmos()
 		{
-			//*/ // Draw Field
 			if (_mcsField.IsDebug && (_mcsField.fldCurrentField != null && _mcsField.trCurrentBattleField != null))
 			{
 				OnDrawGizmosField();
 			}
-			//*/
+
+			if (_mcsMonster.IsDebug)
+			{
+				_mcsMonster.OnDrawGizmo();
+			}
 		}
 
 		private void OnDrawGizmosField()

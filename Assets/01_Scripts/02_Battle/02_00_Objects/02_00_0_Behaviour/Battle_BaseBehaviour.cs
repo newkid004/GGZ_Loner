@@ -5,13 +5,12 @@ using UnityEngine;
 
 namespace GGZ
 {
-	public class Battle_BaseBehaviour : MonoBehaviour
+	public class Battle_BaseBehaviour : PooledObject
 	{
 		[Header("----- Base -----")]
 		[Header("Own Component")]
 		[SerializeField]
-		private Battle_BaseCharacter _characterOwn;
-		public Battle_BaseCharacter characterOwn { get => _characterOwn; set => SetCharacter(value, true); }
+		public Battle_BaseCharacter characterOwn;
 
 		protected virtual void Init(Battle_BaseCharacter initChar)
 		{
@@ -27,17 +26,6 @@ namespace GGZ
 			if (collision.gameObject.layer == GlobalDefine.CollideLayer.Field_Total)
 			{
 				OnExitField();
-			}
-		}
-
-		public void SetCharacter(Battle_BaseCharacter csCharacter, bool isSetCharacterBehavior = true)
-		{
-			_characterOwn = csCharacter;
-			Init(csCharacter);
-
-			if (isSetCharacterBehavior)
-			{
-				_characterOwn?.SetBehavior(this, false);
 			}
 		}
 

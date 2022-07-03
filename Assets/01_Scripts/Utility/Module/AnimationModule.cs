@@ -312,7 +312,6 @@ namespace GGZ
 		public int iCurrentSpriteIndex { get; private set; } = -1;
 
 		public bool isPlay = false;
-		public bool isStepNextData = false;
 		public bool isComplate { get; private set; } = true;
 
 		// event
@@ -449,6 +448,7 @@ namespace GGZ
 			if (aniGroup == null || aniData == null)
 				return;
 
+			int iBeforeIndex = iCurrentSpriteIndex;
 			float fLerp = fCurrentTimer / fTotalTimeLength;
 			while (	iCurrentSpriteIndex < aniData.listPair.Count &&
 					aniData.listPair[iCurrentSpriteIndex].accumulate < aniData.TotalLength * fLerp)
@@ -458,38 +458,29 @@ namespace GGZ
 
 			if (aniData.Count <= iCurrentSpriteIndex)
 			{
-				if (isStepNextData)
-				{
-
-				}
-				else
-				{
-
-				}
-
 				if (aniData.isRepeat)
 				{
 					Replay();
 				}
 				else
 				{
-					isComplate = true;
 					Pause();
+					isComplate = true;
 				}
 
-				// OnComplate?.Invoke(aniData.isRepeat);
+				OnComplate?.Invoke(isComplate, aniData.isRepeat);
 			}
 			else
 			{
+				if (iBeforeIndex != iCurrentSpriteIndex)
+				{
+					OnProcess?.Invoke(iCurrentSpriteIndex);
+				}
+
 				rdrSprite.sprite = aniData.listPair[iCurrentSpriteIndex].sprite;
 			}
 
 			fCurrentTimer += Time.deltaTime;
-		}
-
-		private void ComplateAniData()
-		{
-
 		}
 
 		public void RefreshSection()

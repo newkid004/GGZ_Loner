@@ -32,8 +32,8 @@ namespace GGZ
 		[SerializeField]
 		protected Transform trContainRoot;
 
-		protected Queue<PooledObject> qPooledObject;
-		protected HashSet<PooledObject> hsActiveObject;
+		public Queue<PooledObject> qPooledObject { get; protected set; }
+		public HashSet<PooledObject> hsActiveObject { get; protected set; }
 
 		// 자식 객체에서 초기화
 		protected ObjectPoolBase opRoot;
@@ -274,7 +274,17 @@ namespace GGZ
 			}
 		}
 
-		public void CollectAllObject() => LoopOnActive(obj => obj.Push());
+		public void LoopOnActiveTotal(System.Action<T> act)
+		{
+			List<PooledObject> listUsing = new List<PooledObject>(hsActiveObject);
+			foreach (var pair in dictDerivedPool)
+			{
+				listUsing.AddRange(pair.Value.hsActiveObject);
+			}
 
+			listUsing.ForEach(obj => act((T)obj));
+		}
+
+		public void CollectAllObject() => LoopOnActive(obj => obj.Push());
 	}
 }

@@ -48,7 +48,7 @@ namespace GGZ
 				ObjectData.ObjectType.ciAlly;
 			base.iAttribute |= ObjectData.Attribute.ciBasic_Player;
 
-			lCharacterID = 0;
+			iCharacterID = 0;
 		}
 
 		public override void ProcessUpdateMove()
