@@ -9,6 +9,11 @@
 7,|Player_run_front_idle04,|1.0
 2,Monster_002_idle01|Monster_002_idle02|Monster_002_idle03|Monster_002_idle04,0.15|0.2166667|0.2166667|0.2166667
 9,Monster_002_walk01|Monster_002_walk02|Monster_002_walk03,0.15|0.1704545|0.1704545
+43,Monster_002_idle01|Monster_002_atk01|Monster_002_atk02|Monster_002_atk03,0.08999999|0.17|0.17|0.17
+44,Monster_002_Attact02|Monster_002_Attact03|Monster_002_Attact04,0.03749999|0.13125|0.13125
+45,Monster_002_AttactReady01|Monster_002_AttactReady02|Monster_002_AttactReady03|Monster_002_AttactReady04,0.0576923|0.1411332|0.1537387|0.1474359
+46,Monster_002_idle01|Monster_002_die01|Monster_002_die02,0.1268456|0.1459732|0.3271812
+47,Monster_002_special01|Monster_002_special02|Monster_002_special03|Monster_002_special04|Monster_002_special05|Monster_002_special06|Monster_002_special07,0.07499999|0.1208334|0.1208333|0.1208333|0.1208334|0.1208333|0.1208333
 12,Monster_001_idle01|Monster_001_idle02|Monster_001_idle03|Monster_001_idle04|Monster_001_idle05|Monster_001_idle04,0.15|0.13|0.13|0.13|0.1300001|0.13
 13,Monster_001_walk01|Monster_001_walk02|Monster_001_walk03|Monster_001_walk04,0.15|0.15|0.15|0.15
 14,Monster_001_idle01|Monster_001_die01|Monster_001_die02,0.1604136|0.1471197|0.2924667
