@@ -607,7 +607,7 @@ MonoBehaviour:
   listCollectPage:
   - {fileID: 489736031}
   - {fileID: 1281483846}
-  isLoadDevScene: 0
+  isLoadDevScene: 1
 --- !u!4 &897453560
 Transform:
   m_ObjectHideFlags: 0
