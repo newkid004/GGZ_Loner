@@ -615,7 +615,22 @@ namespace GGZ
 					}
 				}
 
-				if (Input.GetKeyDown(KeyCode.S))	// Save
+				if (Input.GetKeyDown(KeyCode.A)) // All ( 모든 마크 선택 )
+				{
+					slistSelectMarkIndex.Clear();
+
+					for (int i = 0; i < adSelection.listPair.Count; ++i)
+					{
+						slistSelectMarkIndex.Add(i, i);
+					}
+
+					SpreadAniDataMark();
+				}
+			}
+
+			if (Input.GetKey(KeyCode.LeftAlt))
+			{
+				if (Input.GetKeyDown(KeyCode.S))    // Save
 				{
 					OnClickAniSave();
 				}
