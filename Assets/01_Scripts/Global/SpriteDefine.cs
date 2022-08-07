@@ -170,6 +170,7 @@
 			effect_breath03,
 			effect_breath02,
 			effect_breath01,
+			Effect_BulletTest,
 
 			MAX
 		}

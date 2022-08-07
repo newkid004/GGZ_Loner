@@ -46,7 +46,7 @@ namespace GGZ
 
 				if (Input.GetKeyDown(KeyCode.Space))
 				{
-					bhvPlayer.OnToggleHuntLine(null);
+					bhvPlayer.bhvHuntline.OnToggleHuntLine(null);
 				}
 
 				// ¿µ¿ª ÆÄ±«

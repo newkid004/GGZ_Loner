@@ -876,6 +876,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: c38906540e724474ebf3ab9d70a9a07a, type: 3}
     - {fileID: 21300000, guid: d6cc9a9a608c97f49a50a8d1bb381898, type: 3}
     - {fileID: 21300000, guid: c95ef92cfb0e4bc4fa59b11ed5c1ab9e, type: 3}
+    - {fileID: 21300000, guid: da19350d3740804479153bc77a4f2362, type: 3}
   - strSpriteType: UI
     listSprite:
     - {fileID: 21300000, guid: 565748cd63718f745b2c19c13f694264, type: 3}

@@ -427,7 +427,7 @@ namespace GGZ
 			// 필드 : 외부 영역 적용
 			SceneMain_Battle.Single.mcsField.ApplyCreateZone(zoneStart);
 
-			SceneMain_Battle.Single.charPlayer.behaviorOwn.OnEnterHuntZone(zoneStart);
+			SceneMain_Battle.Single.charPlayer.behaviorOwn.bhvHuntline.OnEnterHuntZone(zoneStart);
 		}
 
 		public Battle_HZone ContactLine(Vector2 vec2ContactPoint, Battle_HPoint hlpContact)
@@ -458,7 +458,7 @@ namespace GGZ
 			Battle_HZone hZoneContact = hlcContact.hZone;
 		
 			Battle_BehaviourPlayer bhvPlayer = SceneMain_Battle.Single.charPlayer.behaviorOwn;
-			if (bhvPlayer.hzPlaced != hZoneContact)
+			if (bhvPlayer.bhvHuntline.hzPlaced != hZoneContact)
 				return;
 
 			// 충돌한 접점 획득, 추가
@@ -466,7 +466,7 @@ namespace GGZ
 
 			var tpProcessInfo = (
 				vec2ContactPoint,						// 접점 위치
-				bhvPlayer.hlpLastPlaced.iContainIndex,	// 마지막으로 위치했던 사냥선 외곽
+				bhvPlayer.bhvHuntline.hlpLastPlaced.iContainIndex,	// 마지막으로 위치했던 사냥선 외곽
 				hlpContact.iContainIndex				// 접점 사냥선 외곽
 				);
 

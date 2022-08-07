@@ -10,7 +10,7 @@ namespace GGZ
 	{
 		[Header("----- Base Bullet -----")]
 		public SpriteRenderer rdrSplite;
-		public Rigidbody2D rigidbody;
+		public new Rigidbody2D rigidbody;
 		public CircleCollider2D colCircle;
 
 		[Header("----- Bullet Info -----")]

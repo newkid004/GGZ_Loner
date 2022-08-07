@@ -114,7 +114,7 @@ namespace GGZ
 		public override void OnPushedToPool()
 		{
 			Battle_BehaviourPlayer bhvPlayer = SceneMain_Battle.Single.charPlayer.behaviorOwn;
-			bhvPlayer.OnExitHuntZoneOutline(this);
+			bhvPlayer.bhvHuntline.OnExitHuntZoneOutline(this);
 
 			Reset();
 
@@ -195,7 +195,7 @@ namespace GGZ
 			}
 
 			colEdge.SetPoints(listOutlineCollider);
-			colEdge.isTrigger = SceneMain_Battle.Single.charPlayer.behaviorOwn.isDownHuntLineBtn;
+			colEdge.isTrigger = SceneMain_Battle.Single.charPlayer.behaviorOwn.bhvHuntline.isDownHuntLineBtn;
 
 			rdrLine.SetPosition(0, listOutlineCollider[0]);
 			rdrLine.SetPosition(1, listOutlineCollider[1]);

@@ -29,7 +29,7 @@ namespace GGZ
 				if (value != _iDirection)
 				{
 					// 사냥선을 그릴 때, 반대 방향이면 전환하지 않음
-					if (behaviorOwn.isCharDrawingHuntLine)
+					if (behaviorOwn.bhvHuntline.isCharDrawingHuntLine)
 					{
 						Battle_HPoint hlpDrawing = SceneMain_Battle.Single.mcsHLine.nowDrawingPoint;
 						if (hlpDrawing.iDirectionDraw == Direction8.GetInverseDirection(value))
@@ -109,7 +109,7 @@ namespace GGZ
 		{
 			Battle_BehaviourPlayer bhvPlayer = behaviorOwn;
 
-			if (bhvPlayer.isCharInHuntZone)
+			if (bhvPlayer.bhvHuntline.isCharInHuntZone)
 			{
 				if (isMove)
 				{
@@ -128,7 +128,7 @@ namespace GGZ
 					// 사냥선 작성 이동
 					MoveDirectional();
 				}
-				else if (false == bhvPlayer.isDownHuntLineBtn && false == bhvPlayer.isCharInHuntZone)
+				else if (false == bhvPlayer.bhvHuntline.isDownHuntLineBtn && false == bhvPlayer.bhvHuntline.isCharInHuntZone)
 				{
 					// 사냥선 되돌아오기
 					MoveReturnToHuntZone();
