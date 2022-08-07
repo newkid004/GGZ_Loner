@@ -72,7 +72,7 @@ namespace GGZ
 			base.OnPushedToPool();
 		}
 
-		public Battle_HPoint AddLinePoint(Vector2 vec2Position)
+		public Battle_HPoint AddLinePoint(Vector2 vec2Position, int iSetDirection = Direction8.ciDir_5)
 		{
 			Battle_HPoint hlp = SceneMain_Battle.Single.mcsHLine.PopPoint(this.transform);
 
@@ -85,7 +85,7 @@ namespace GGZ
 
 			hlp.RefreshLineInfo();
 			hlp.ApplyLine();
-			hlp.CalcOwnAngle(false);
+ 			hlp.CalcOwnAngle(false, iSetDirection);
 
 			// 작성중인 사냥선 적용
 			if (this == SceneMain_Battle.Single.mcsHLine.nowDrawingLine)
@@ -204,10 +204,17 @@ namespace GGZ
 			}
 		}
 
-		public Battle_HPoint GetLinePoint(int iIndex)
+		public Battle_HPoint GetLinePoint(int iIndex, bool isCircle = false)
 		{
-			if (iIndex < 0 || listPoint.Count <= iIndex)
-				return null;
+			if (isCircle)
+			{
+				iIndex = iIndex.ModStep(0, listPoint.Count);
+			}
+			else
+			{
+				if (iIndex < 0 || listPoint.Count <= iIndex)
+					return null;
+			}
 
 			return listPoint[iIndex];
 		}
@@ -224,8 +231,11 @@ namespace GGZ
 			// 충돌정보 갱신
 			hpNow.RefreshLineInfo();
 			hpNow.ApplyLine();
-			hpNext.RefreshLineInfo();
-			hpNext.ApplyLine();
+			if (hpNext != null)
+			{
+				hpNext.RefreshLineInfo();
+				hpNext.ApplyLine();
+			}
 
 			// 충돌 지점 제외 제거 : 제거되는 각도 보정
 			for (int i = 0; i < iContactIndex; ++i)

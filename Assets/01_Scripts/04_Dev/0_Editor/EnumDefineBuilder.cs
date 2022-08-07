@@ -64,6 +64,8 @@ namespace GGZ
 				}
 				sw.WriteLine("}");
 			}
+
+			Debug.Log("Build Complate");
 		}
 
 		private bool CalcLeaf(BuildDataBase.InnerData data)

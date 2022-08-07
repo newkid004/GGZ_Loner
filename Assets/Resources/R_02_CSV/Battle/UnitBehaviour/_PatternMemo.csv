@@ -1,7 +1,7 @@
 ﻿DataType,,,,,
-Type,Name,Arg1,Arg2,Arg3,Arg4
-0,무작위 선택,AniGroupIndex : min,AniGroupIndex : max,,
-1,대기,시간,일반 완료 후 PatternGroupID,(경계 등으로) 변동 변경 후 PatternGroupID,
-2,이동,시간,일반 완료 후 PatternGroupID,(경계 등으로) 변동 변경 후 PatternGroupID,
-3,행동,행동 판정 AniDataIndex,행동 시간 범위 ( 0.0 ~ 1.0 ),행동 대기 후 BulletIndex,행동 완료 후 PatternGroupID
-4,탐색,경계 범위,탐색 성공 시 PatternGroupID,탐색 실패 시 PatternGroupID,
+Type,Name,Arg0,Arg1,Arg2,Arg3
+0,무작위 선택,PatternDataIndex ( Arg 제한 없음 ),,,
+1,대기,시간,일반 완료 후 PatternDataIndex,(경계 등으로) 변동 변경 후 PatternDataIndex,공격 범위 내 PatternDataIndex
+2,이동,시간,일반 완료 후 PatternDataIndex,(경계 등으로) 변동 변경 후 PatternDataIndex,공격 범위 내 PatternDataIndex
+3,행동,행동 판정 AniGroupIndex,행동 시간 범위 ( 0.0 ~ 1.0 ),행동 대기 후 SkillID,행동 완료 후 PatternDataIndex
+4,탐색,시간,탐색 성공 시 PatternDataIndex,공격 범위 내 PatternDataIndex,탐색 실패 시 PatternDataIndex

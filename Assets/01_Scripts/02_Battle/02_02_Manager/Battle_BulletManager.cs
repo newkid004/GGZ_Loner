@@ -10,6 +10,8 @@ namespace GGZ
 	[System.Serializable]
 	public class Battle_BulletManager
 	{
+		public static Battle_BulletManager Single { get => SceneMain_Battle.Single.mcsBullet; }
+
 		[SerializeField] private ObjectPool<Battle_BaseBullet> oPool = new ObjectPool<Battle_BaseBullet>();
 
 		public void Init()
@@ -25,8 +27,7 @@ namespace GGZ
 
 			switch (iID)
 			{
-				case 4: obj = oPool.Pop<Battle_BulletActiveSkill>(trParent); break;
-				default: obj = oPool.Pop<Battle_BulletTest>(trParent); break;
+				default: obj = oPool.Pop<Battle_BulletActiveSkill>(trParent); break;
 			}
 
 			obj.ReconnectRefSelf();
@@ -64,6 +65,20 @@ namespace GGZ
 
 			obj.charOwner = charOwner;
 			obj.isAlly = 0 < (charOwner.iObjectType & ObjectData.ObjectType.ciAlly);
+		}
+
+		public Vector2 GetBulletPosition(Battle_BaseCharacter charOwner, Battle_BaseObject charTarget, Battle_BaseBullet blt)
+		{
+			var colOwner = (CircleCollider2D)charOwner.colliderOwn;
+
+			return charOwner.transform.position.Vec2() +
+				(blt.vec2Direction * blt.colCircle.radius) +
+				(blt.vec2Direction * colOwner.radius * blt.csvInfo.Interval);
+		}
+
+		public Vector2 GetBulletDirection(Battle_BaseObject charOwner, Battle_BaseObject charTarget)
+		{
+			return Vector3.Normalize(charTarget.transform.position - charOwner.transform.position);
 		}
 	}
 }

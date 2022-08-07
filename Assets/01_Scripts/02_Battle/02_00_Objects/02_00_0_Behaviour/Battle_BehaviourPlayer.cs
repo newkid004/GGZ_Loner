@@ -221,12 +221,12 @@ namespace GGZ
 							if (false == isCharInHuntZoneOutLine)
 							{
 								// 방향(noraml) 비교 후 사냥선 작성 시작
-								Direction8.JoinState eJoinState = Direction8.GetJoinState(characterOwn.iDirection, hlpCollide.iDirectionNormal);
+								Direction8.EJoinState eJoinState = Direction8.GetJoinState(characterOwn.iDirection, hlpCollide.iDirectionNormal);
 
 								switch (eJoinState)
 								{
-									case Direction8.JoinState.Own:
-									case Direction8.JoinState.Diagonal:
+									case Direction8.EJoinState.Own:
+									case Direction8.EJoinState.Diagonal:
 										// case Direction8.JoinState.Perpendicular:
 										{
 											// 외부로 이동
@@ -236,10 +236,10 @@ namespace GGZ
 												Vector2 vec2PlayerPos = transform.position;
 												Vector2 vec2PlayerBackPos = vec2PlayerPos - (Direction8.GetNormalByDirection(characterOwn.iDirection) * characterOwn.csStatBasic.fMoveSpeed);
 
-												if (GlobalUtility.PPhysics.CollideLineLine(vec2PlayerPos, vec2PlayerBackPos, hlpCollide.transform.position, hlpCollide.PointPrev.transform.position, out Vector2 vec2CreatePosition))
+												if (GlobalUtility.PPhysics.CollideLineLine(vec2PlayerPos, vec2PlayerBackPos, hlpCollide.transform.position, hlpCollide.PointPrevCircle.transform.position, out Vector2 vec2CreatePosition))
 												{
 													// 사냥선 작성 시작
-													SceneMain_Battle.Single.mcsHLine.StartDrawLine(vec2CreatePosition);
+													SceneMain_Battle.Single.mcsHLine.StartDrawLine(vec2CreatePosition, characterOwn.iDirection);
 
 													// 퇴장 처리
 													OnExitHuntZone();
@@ -319,27 +319,27 @@ namespace GGZ
 					OnEnterHuntZone(hzCreated);
 
 					// 방향(noraml) 비교
-					Direction8.JoinState eJoinState = Direction8.GetJoinState(characterOwn.iDirection, hlpCollide.iDirectionNormal);
+					Direction8.EJoinState eJoinState = Direction8.GetJoinState(characterOwn.iDirection, hlpCollide.iDirectionNormal);
 
 					switch (eJoinState)
 					{
-						case Direction8.JoinState.Obtuse:
-						case Direction8.JoinState.Inverse:
+						case Direction8.EJoinState.Obtuse:
+						case Direction8.EJoinState.Inverse:
 							{
 								// 입장 처리
 								isCharDrawingHuntLine = false;
 							}
 							break;
 
-						case Direction8.JoinState.Own:
-						case Direction8.JoinState.Diagonal:
+						case Direction8.EJoinState.Own:
+						case Direction8.EJoinState.Diagonal:
 							{
 								// 이어그리기 처리
 								hsHlpPlaced.Remove(hlpCollide);
 								OnExitHuntZone();
 
 								// 사냥선 작성 시작
-								SceneMain_Battle.Single.mcsHLine.StartDrawLine(vec2CreatePosition);
+								SceneMain_Battle.Single.mcsHLine.StartDrawLine(vec2CreatePosition, characterOwn.iDirection);
 							}
 							break;
 					}

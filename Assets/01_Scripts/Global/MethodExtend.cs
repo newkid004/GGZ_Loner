@@ -497,9 +497,12 @@ public static class MethodExtend
 
 	public static int ModStep(this int i, int iStep, int iMin, int iMod)
 	{
-		int iRealMod = iMod - iMin;
+		if (iMod == 0)
+			return iMin;
+
 		int iRealValue = i - iMin;
-		return ((iRealValue + iStep + iRealMod) % iRealMod) + iMin;
+
+		return ((iRealValue + iStep + iMod) % iMod) + iMin;
 	}
 
 	public static int Between(this int val, int min, int max) => Mathf.Max(min, Mathf.Min(val, max));

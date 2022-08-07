@@ -1,4 +1,6 @@
 ﻿문서,대상,입력값,설명,추가 설명
 TargetingPreset,Flag,2진 비트,타격하는 대상,
-SkillActive,ActiveType,정수,작동 형태,
+SkillActive,ActiveType,정수,작동 형태,"0 : Bullet 생성 - [BulletID / ]
+1 : 버프 적용 - [BuffID / Time, Tick, Value] - Floats는 비율로 적용
+2 : 또다른 Skill 발동 - [SkillID, .. / ]"
 BulletInfo,MoveType,정수,이동 형태,0 : 선형

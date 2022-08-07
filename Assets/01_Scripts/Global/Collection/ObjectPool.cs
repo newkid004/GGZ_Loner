@@ -285,6 +285,44 @@ namespace GGZ
 			listUsing.ForEach(obj => act((T)obj));
 		}
 
+		public void LoopOnActive(System.Func<T, bool> act)
+		{
+			List<PooledObject> listUsing = new List<PooledObject>(hsActiveObject);
+
+			int iCount = listUsing.Count;
+			for (int i = 0; i < iCount; ++i)
+			{
+				if (act((T)listUsing[i]) == false)
+					break;
+			}
+		}
+
+		public void LoopOnActive<TDerived>(System.Func<TDerived, bool> act) where TDerived : T
+		{
+			ObjectPool<TDerived> dictDerived = (ObjectPool<TDerived>)dictDerivedPool.GetDef(typeof(TDerived));
+
+			if (dictDerived != null)
+			{
+				dictDerived.LoopOnActive(act);
+			}
+		}
+
+		public void LoopOnActiveTotal(System.Func<T, bool> act)
+		{
+			List<PooledObject> listUsing = new List<PooledObject>(hsActiveObject);
+			foreach (var pair in dictDerivedPool)
+			{
+				listUsing.AddRange(pair.Value.hsActiveObject);
+			}
+
+			int iCount = listUsing.Count;
+			for (int i = 0; i < iCount; ++i)
+			{
+				if (act((T)listUsing[i]) == false)
+					break;
+			}
+		}
+
 		public void CollectAllObject() => LoopOnActive(obj => obj.Push());
 	}
 }

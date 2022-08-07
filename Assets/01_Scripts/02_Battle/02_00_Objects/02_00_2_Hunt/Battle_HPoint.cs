@@ -31,6 +31,9 @@ namespace GGZ
 
 		public Battle_HPoint PointPrev => hLine.GetLinePoint(iContainIndex - 1);
 		public Battle_HPoint PointNext => hLine.GetLinePoint(iContainIndex + 1);
+		public Battle_HPoint PointPrevCircle => hLine.GetLinePoint(iContainIndex - 1, true);
+		public Battle_HPoint PointNextCircle => hLine.GetLinePoint(iContainIndex + 1, true);
+
 		public float Length => listLinePos[0].magnitude;
 
 		public Vector2 PosWorld
@@ -199,7 +202,7 @@ namespace GGZ
 		}
 
 		// 이전 사냥선 지점에 대한 각도 계산
-		public void CalcOwnAngle(bool isCalcNextPointAngle)
+		public void CalcOwnAngle(bool isCalcNextPointAngle, int iSetDirection = Direction8.ciDir_5)
 		{
 			// 컨테이너 내 기존 각도 제거
 			if (null != hLine)
@@ -215,7 +218,14 @@ namespace GGZ
 			{
 				if (this.iContainIndex != 0)
 				{
-					this.fDegreeByPrevPoint = Vector2.SignedAngle(PointPrev.vec2Interval.normalized, vec2Interval.normalized);
+					if (iSetDirection == Direction8.ciDir_5)
+					{
+						this.fDegreeByPrevPoint = Vector2.SignedAngle(PointPrev.vec2Interval.normalized, vec2Interval.normalized);
+					}
+					else
+					{
+						this.fDegreeByPrevPoint = Vector2.SignedAngle(PointPrev.vec2Interval.normalized, Direction8.GetNormalByDirection(iSetDirection));
+					}
 				}
 				else
 				{

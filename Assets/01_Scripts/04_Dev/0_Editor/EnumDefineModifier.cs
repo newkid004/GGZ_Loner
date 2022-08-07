@@ -59,6 +59,8 @@ namespace GGZ
 		public void SaveTotal()
 		{
 			listClassData.ForEach(data => ClassData.Save(data.className, ref data));
+
+			Debug.Log("Save Complate");
 		}
 
 		public int LoadTotal()
@@ -84,6 +86,10 @@ namespace GGZ
 				string strError = $"{this.GetType().Name} : {System.Reflection.MethodBase.GetCurrentMethod().Name}\n";
 				listError.ForEach(str => strError += $"{str}\n");
 				Debug.LogAssertion(strError);
+			}
+			else
+			{
+				Debug.Log("Load Complate");
 			}
 
 			return listError.Count;
@@ -115,6 +121,8 @@ namespace GGZ
 
 				listClassData[i] = cData;
 			}
+
+			Debug.Log("Collect Complate");
 		}
 
 		public int SpreadTotal()
@@ -134,6 +142,10 @@ namespace GGZ
 				string strError = $"{this.GetType().Name} : {System.Reflection.MethodBase.GetCurrentMethod().Name}\n";
 				listError.ForEach(str => strError += $"{str}\n");
 				Debug.LogAssertion(strError);
+			}
+			else
+			{
+				Debug.Log("Spread Complate");
 			}
 
 			return listError.Count;

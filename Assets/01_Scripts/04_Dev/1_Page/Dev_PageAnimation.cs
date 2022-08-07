@@ -538,6 +538,7 @@ namespace GGZ
 			{
 				UpdateMarkControl_MoveMark();
 				UpdateMarkControl_Ctrl_ModifyMark();
+				UpdateMarkControl_Shift_ModifyMark();
 			}
 		}
 
@@ -627,8 +628,11 @@ namespace GGZ
 					SpreadAniDataMark();
 				}
 			}
+		}
 
-			if (Input.GetKey(KeyCode.LeftAlt))
+		private void UpdateMarkControl_Shift_ModifyMark()
+		{
+			if (Input.GetKey(KeyCode.LeftShift))
 			{
 				if (Input.GetKeyDown(KeyCode.S))    // Save
 				{
@@ -1062,6 +1066,12 @@ namespace GGZ
 
 		public void OnClickSelectionModifyAddFront()
 		{
+			if (pobjSelectionModifyItem == null || pobjSelectionModifyItem.imgThumbnail == null)
+			{
+				Debug.LogWarning("선택된 스프라이트가 없음");
+				return;
+			}
+
 			adSelection.AddSpriteFront(pobjSelectionModifyItem.imgThumbnail.sprite, 0);
 
 			iAniSelectionItemIndex = (int)AniSelectionItem.EType.AniName;
@@ -1070,6 +1080,12 @@ namespace GGZ
 
 		public void OnClickSelectionModifyAddBack()
 		{
+			if (pobjSelectionModifyItem == null || pobjSelectionModifyItem.imgThumbnail == null)
+			{
+				Debug.LogWarning("선택된 스프라이트가 없음");
+				return;
+			}
+
 			adSelection.AddSprite(pobjSelectionModifyItem.imgThumbnail.sprite, 0.1f);
 
 			iAniSelectionItemIndex = (int)AniSelectionItem.EType.AniName;

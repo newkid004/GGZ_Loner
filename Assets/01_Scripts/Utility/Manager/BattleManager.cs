@@ -52,7 +52,7 @@ namespace GGZ
 						{
 							for (int i = 0; i < nowSpawnInfo.Params[0]; ++i)
 							{
-								Battle_BaseMonster mon = SceneMain_Battle.Single.mcsMonster.CreateMonster(nowSpawnInfo.MonsterID);
+								Battle_BaseMonster mon = Battle_MonsterManager.Single.CreateMonster(nowSpawnInfo.MonsterID);
 								mon.transform.position = GlobalUtility.Trigonometric.GetRandomPointInPolygon(listPolygonTriangle, mon.transform);
 
 								if (GlobalUtility.Digit.Include(mon.iObjectType, GlobalDefine.ObjectData.ObjectType.ciBoss))
@@ -62,7 +62,7 @@ namespace GGZ
 								else
 								{
 									// 일반
-									mon.InitToCSV(nowSpawnInfo.MonsterID);
+									mon.InitObjectDataToCSV(nowSpawnInfo.MonsterID);
 
 									Battle_PatternManager.Single.SetMonsterBehaviour(mon);
 								}
@@ -100,7 +100,43 @@ namespace GGZ
 			};
 		}
 
-		public void OnCharacterDead(Battle_BaseCharacter dead, Battle_BaseCharacter killer)
+		public void ProcessCharacterHit(ref Battle_SkillManager.stSkillProcessInfo stSkillInfo)
+		{
+			var charTarget = (Battle_BaseCharacter)stSkillInfo.objTarget;
+			var charOwner = (Battle_BaseCharacter)stSkillInfo.objOwner;
+
+			float fBeforeHealth = charTarget.csStatBasic.fHealthNow;
+			float fAfterHealth = fBeforeHealth;
+
+			float fDamage = Mathf.Abs(charTarget.csStatBasic.fDefendPower - charOwner.csStatBasic.fAttackPower);
+
+			if (0 < fDamage)
+			{
+				fAfterHealth -= fDamage;
+
+				charTarget.csStatBasic.fHealthNow = fAfterHealth;
+				charTarget.TriggeredByTakeDamage(charOwner);
+
+				// 체력 소진에 따른 라이프 감소
+				if (charTarget.csStatBasic.fHealthNow <= 0)
+				{
+					charTarget.TriggeredByLifeDecrease(charOwner);
+
+					if (0 < charTarget.csStatBasic.iLife)
+					{
+						// 라이프 감소에 따른 체력 회복
+						charTarget.csStatBasic.fHealthNow = charTarget.csStatBasic.fHealthMax;
+					}
+					else
+					{
+						// 라이프가 모두 감소 (사망 처리는 트리거 내 기본 동작으로 구성)
+						charTarget.TriggeredByLifeZero(charOwner);
+					}
+				}
+			}
+		}
+
+		public void ProcessCharacterDead(Battle_BaseCharacter dead, Battle_BaseCharacter killer)
 		{
 			if (GlobalUtility.Digit.Include(dead.iObjectType, GlobalDefine.ObjectData.ObjectType.ciPlayer))
 			{
@@ -124,7 +160,7 @@ namespace GGZ
 				{
 					// 마지막 필드
 
-				}	
+				}
 				else
 				{
 					// 일반 필드

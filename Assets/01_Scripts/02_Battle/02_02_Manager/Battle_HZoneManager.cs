@@ -536,8 +536,8 @@ namespace GGZ
 			}
 
 			// 3. 기존 사냥터 시작 -> 접점 사냥선 Index 까지 진행
-			int iContactBeginIndex = tpProcessInfo.Item3;
-			int iContactEndIndex = tpProcessInfo.Item2;
+			int iContactBeginIndex = tpProcessInfo.Item2;
+			int iContactEndIndex = tpProcessInfo.Item3;
 			{
 				// 작성 방향에 따른 사냥터 입력 진행방향 설정
 				GVar.EWindingOrder eSourceWindingOrder = hzSource.lineEdge.eWindingOrder;
@@ -547,13 +547,18 @@ namespace GGZ
 				if (iCountExtend == 1)
 				{
 					// Index 간격 획득
-					int iPointIndexInterval = iCountSource - Mathf.Abs(tpProcessInfo.Item2 - tpProcessInfo.Item3);
+					int iPointIndexInterval = Mathf.Min(
+						iCountSource - Mathf.Abs(iContactEndIndex - iContactBeginIndex),
+						Mathf.Abs(iContactEndIndex - iContactBeginIndex));
 
-					// 방향 입력 후, 정방향이 아니라면 방향 반전
-					eProcessWindingOrder = eSourceWindingOrder;
-					if (tpProcessInfo.Item2.ModStep(iPointIndexInterval, iCountSource) != tpProcessInfo.Item3)
+					// 간격에서 떨어진 만큼의 방향 확인
+					if (iContactBeginIndex.ModStep(iPointIndexInterval, iCountSource) == iContactEndIndex)
 					{
-						eProcessWindingOrder = (GVar.EWindingOrder)((int)eSourceWindingOrder).ModStep(1, 2);
+						eProcessWindingOrder = eSourceWindingOrder;
+					}
+					else
+					{
+						eProcessWindingOrder = (GVar.EWindingOrder)((int)eSourceWindingOrder).ModStep(1, 1, 2);
 					}
 				}
 				else
@@ -573,8 +578,8 @@ namespace GGZ
 					iContactEndIndex	= iContactEndIndex.ModStep(iStep, iCountSource);
 				}
 
-				iIndex = iContactBeginIndex;
-				iEndIndex = iContactEndIndex;
+				iIndex = iContactEndIndex;
+				iEndIndex = iContactBeginIndex;
 
 				do // 작성 사냥선 Vertex Index 추가
 				{
@@ -592,8 +597,8 @@ namespace GGZ
 
 			// 5. 사용되지 않는 사냥선 제거
 			{
-				iIndex = iContactEndIndex;
-				iEndIndex = iContactBeginIndex;
+				iIndex = iContactBeginIndex;
+				iEndIndex = iContactEndIndex;
 
 				while (iIndex != iEndIndex)
 				{

@@ -20,9 +20,12 @@ namespace GGZ
 
 			public void OnAddBuffBelong(int iBelongID)
 			{
-				if (hsUpdateContain.Add(iBelongID))
+				if (0 <= iBelongID)
 				{
-					quUpdateBelong.Enqueue(iBelongID);
+					if (hsUpdateContain.Add(iBelongID))
+					{
+						quUpdateBelong.Enqueue(iBelongID);
+					}
 				}
 			}
 
@@ -128,7 +131,7 @@ namespace GGZ
 				case 5: objResult = mPoolBuff.Pop<Battle_BuffTest5>(); break;
 				case 6: objResult = mPoolBuff.Pop<Battle_BuffTest6>(); break;
 				case 7: objResult = mPoolBuff.Pop<Battle_BuffTest7>(); break;
-				default: objResult = mPoolBuff.Pop(); break;
+				default: objResult = mPoolBuff.Pop<Battle_BuffProcessHit>(); break;
 			}
 
 			return objResult;

@@ -44,12 +44,12 @@ namespace GGZ
 		} // Push는 관리되며 구현할 필요 없음
 
 		/// <summary> 사냥선 그리기 시작 </summary>
-		public void StartDrawLine(Vector2 vec2StartPos)
+		public void StartDrawLine(Vector2 vec2StartPos, int iDirection)
 		{
 			nowDrawingLine = PopLine();
 			nowDrawingLine.transform.position = vec2StartPos;
 
-			nowDrawingPoint = nowDrawingLine.AddLinePoint(vec2StartPos);
+			nowDrawingPoint = nowDrawingLine.AddLinePoint(vec2StartPos, iDirection);
 			nowDrawingPoint.ApplyDrawLine(true);
 #if _debug
 			Debug.Log($"Draw Huntline Start\nLine : { nowDrawingLine.iOwnSequenceID } / Point : { nowDrawingPoint.iOwnSequenceID }");
@@ -59,10 +59,11 @@ namespace GGZ
 		/// <summary> 사냥선 작성 중 방향 변경 </summary>
 		public void ChangeLineDirection()
 		{
-			Vector2 vec2PlayerPos = SceneMain_Battle.Single.charPlayer.transform.position;
+			var charPlayer = SceneMain_Battle.Single.charPlayer;
+			Vector2 vec2PlayerPos = charPlayer.transform.position;
 
 			Battle_HPoint hlpCurrentDrawed = nowDrawingPoint;
-			Battle_HPoint hlpCurrentDrawing = nowDrawingLine.AddLinePoint(vec2PlayerPos);
+			Battle_HPoint hlpCurrentDrawing = nowDrawingLine.AddLinePoint(vec2PlayerPos, charPlayer.iDirection);
 
 			hlpCurrentDrawed.transform.position = vec2PlayerPos;
 

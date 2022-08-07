@@ -65,7 +65,7 @@ namespace GGZ
 		// 위치에 따른 8방향 정의
 		public static class Direction8
 		{
-			public enum JoinState
+			public enum EJoinState
 			{
 				Error,
 				/// <summary> 자신 </summary>
@@ -267,12 +267,12 @@ namespace GGZ
 				return Vector2.Angle(vec2NormalFrom, vec2NormalTo);
 			}
 
-			public static JoinState GetJoinState(int iDirFrom, int iDirTo)
+			public static EJoinState GetJoinState(int iDirFrom, int iDirTo)
 			{
 				int[] arriJoin = cdictJoinDirArray.GetDef(iDirFrom);
 				if (arriJoin == null)
 				{
-					return JoinState.Error;
+					return EJoinState.Error;
 				}
 
 				int iIndex = 0;
@@ -285,15 +285,15 @@ namespace GGZ
 
 				return iIndex switch
 				{
-					0 => JoinState.Own,
-					1 => JoinState.Diagonal,
-					2 => JoinState.Diagonal,
-					3 => JoinState.Perpendicular,
-					4 => JoinState.Perpendicular,
-					5 => JoinState.Obtuse,
-					6 => JoinState.Obtuse,
-					7 => JoinState.Inverse,
-					_ => JoinState.Error
+					0 => EJoinState.Own,
+					1 => EJoinState.Diagonal,
+					2 => EJoinState.Diagonal,
+					3 => EJoinState.Perpendicular,
+					4 => EJoinState.Perpendicular,
+					5 => EJoinState.Obtuse,
+					6 => EJoinState.Obtuse,
+					7 => EJoinState.Inverse,
+					_ => EJoinState.Error
 				};
 			}
 		}
@@ -350,24 +350,16 @@ namespace GGZ
 
 				public T Get(int i) => varValueArray[i];
 				public T Set(int i, T value) => varValueArray[i] = value;
-			}
 
-			// 효과 부여 스테이터스
-			[System.Serializable]
-			public class StatusEffect : StatusBase<float>
-			{
-				public enum EDefine
+				public void Merger<TDerived>(TDerived other, System.Func<T, T, T> funcSummer) where TDerived : StatusBase<T>
 				{
-					Weight,		// 무게			: 해당 수치가 높을수록 낮게, 짧게 튕겨남 ( 0일 경우 오류 )
-					AirHold,	// 체공			: 해당 수치가 높을수록 오래 튕겨남 ( 0일 경우 오류 )
+					int iCount = varValueArray.Length;
 
-					MAX
+					for (int i = 0; i < iCount; ++i)
+					{
+						Set(i, funcSummer(Get(i), other.Get(i)));
+					}
 				}
-
-				public override int iValueRange		{ get => (int)EDefine.MAX; }
-
-				public float fWeight				{ get => Get((int)EDefine.Weight); set => Set((int)EDefine.Weight, value); }
-				public float fAirHold				{ get => Get((int)EDefine.AirHold); set => Set((int)EDefine.AirHold, value); }
 			}
 
 			// 기본 부여 스테이터스
@@ -392,7 +384,6 @@ namespace GGZ
 
 					MAX
 				}
-
 				public override int iValueRange		{ get => (int)EDefine.MAX; }
 
 				public int iLife					{ get => (int)Get((int)EDefine.Life); set => Set((int)EDefine.Life, value); }
@@ -407,20 +398,53 @@ namespace GGZ
 				public float fMoveSpeed				{ get => Get((int)EDefine.MoveSpeed); set => Set((int)EDefine.MoveSpeed, value); }
 			}
 
+			// 효과 부여 스테이터스
+			[System.Serializable]
+			public class StatusEffect : StatusBase<float>
+			{
+				public enum EDefine
+				{
+					Weight,							// 무게 : 해당 수치가 높을수록 낮게, 짧게 튕겨남 ( 0일 경우 오류 )
+					AirHold,						// 체공 : 해당 수치가 높을수록 오래 튕겨남 ( 0일 경우 오류 )
+
+					MAX
+				}
+				public override int iValueRange		{ get => (int)EDefine.MAX; }
+
+				public float fWeight				{ get => Get((int)EDefine.Weight); set => Set((int)EDefine.Weight, value); }
+				public float fAirHold				{ get => Get((int)EDefine.AirHold); set => Set((int)EDefine.AirHold, value); }
+			}
+
 			// 전투 부여 스테이터스
 			[System.Serializable]
-			public class StatusBattle
+			public class StatusBattle : StatusBase<float>
 			{
-				public float fSkillCooltimeRate = 1.0f;		// 스킬 쿨타임 비율 (1.0 = 100%)
+				public enum EDefine
+				{
+					SkillCooltimeRate,				// 스킬 쿨타임 비율 (1.0 = 100%)
+
+					MAX
+				}
+				public override int iValueRange { get => (int)EDefine.MAX; }
+
+				public float fSkillCooltimeRate { get => Get((int)EDefine.SkillCooltimeRate); set => Set((int)EDefine.SkillCooltimeRate, value); }
 			}
 
 			// 플레이어 부여 스테이터스
 			[System.Serializable]
-			public class StatusPlayer
+			public class StatusPlayer : StatusBase<float>
 			{
-				public float fHuntingGroundAttackPower = 1.0f;	// 사냥터 공격력
+				public enum EDefine
+				{
+					HuntingGroundAttackPower,		// 사냥터 공격력
+					HuntlineDrawReturnSpeed,		// 사냥선 작성 되돌리기 속도
 
-				public float fHuntlineDrawReturnSpeed = 1.5f;	// 사냥선 작성 되돌리기 속도
+					MAX
+				}
+				public override int iValueRange { get => (int)EDefine.MAX; }
+
+				public float fHuntingGroundAttackPower { get => Get((int)EDefine.HuntingGroundAttackPower); set => Set((int)EDefine.HuntingGroundAttackPower, value); }
+				public float fHuntlineDrawReturnSpeed { get => Get((int)EDefine.HuntlineDrawReturnSpeed); set => Set((int)EDefine.HuntlineDrawReturnSpeed, value); }
 			}
 
 			// 몬스터 부여 스테이터스
@@ -431,11 +455,75 @@ namespace GGZ
 				public float fAlertTime = 1.0f;				// 경계 시간 : 0이면 행동 없음
 				public float fAggressiveMoveSpeed = 1.5f;	// 발각 시 이동 속도 증가율
 
+				public float fAttackRadius = 1.0f;			// 공격 반경 : 경계상태일 경우 해당 범위 내라면 공격
+
 				public bool isAlly = false;					// 아군 여부
 				public bool isSummoned = false;				// 소환물 여부
 			}
 
 
+		}
+
+		// 게임 내 정의
+		public static class Game
+		{
+			public static class Item
+			{
+				public enum ETypeMain
+				{
+					Common,
+					Equipment,
+
+					MAX
+				}
+
+				// 일반 : 0
+				public static class Common
+				{
+					public static class TypeSub
+					{
+
+					}
+				}
+
+				// 장비 : 1
+				public static class Equipment
+				{
+					// 착용 부위
+					public enum ESlot
+					{
+						Weapon,		// 무기
+
+						// 갑옷
+						Head,		// 머리
+						Body,		// 상체
+						Leg,		// 하체
+						Foot,		// 신발
+						Glove,		// 장갑
+
+						// 장신구
+						Necklace,	// 목걸이
+						Earring,	// 귀걸이
+						Bracelet,	// 팔찌
+						Ring,		// 반지
+
+						Max
+					}
+					public const int ciSlotCount = (int)ESlot.Max;
+
+					// 필수 착용 장비 ( 무기, 클래스 )
+					public enum EClass
+					{
+						All			= 0x00,
+
+						Summon		= 0x10,
+						Worrier		= 0x20,
+						Caster		= 0x30,
+						Explorer	= 0x40,
+						Gunner		= 0x50,
+					}
+				}
+			}
 		}
 
 		public static class Environment

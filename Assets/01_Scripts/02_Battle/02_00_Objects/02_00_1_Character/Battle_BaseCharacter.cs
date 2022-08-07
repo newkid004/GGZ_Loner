@@ -55,8 +55,8 @@ namespace GGZ
 		}
 
 		// 상태 참조 프로퍼티
-		public bool isMove { get; protected set; }
-		public bool isAlive { get => 0 < csStatBasic.iLife; }
+		public virtual bool isMove { get; protected set; }
+		public virtual bool isAlive { get => 0 < csStatBasic.iLife; }
 
 		protected override void Init()
 		{
@@ -77,9 +77,14 @@ namespace GGZ
 			isMove = false;
 		}
 
-		public override void OnPopedFromPool()
+		public override void OnPushedToPool()
 		{
-			base.OnPopedFromPool();
+			base.OnPushedToPool();
+			
+			if (behaviorOwn != null)
+			{
+				behaviorOwn.Push();
+			}
 		}
 
 		public override void ReconnectRefSelf()
@@ -114,7 +119,7 @@ namespace GGZ
 				Vector2 vec2MoveFromWorld = transform.position;
 				Vector2 vec2MoveFromLocal = transform.localPosition;
 
-				RaycastHit2D[] refArrHit = SceneMain_Battle.Single.mcsMonster.arrRch2CharMoveResult;
+				RaycastHit2D[] refArrHit = Battle_MonsterManager.Single.arrRch2CharMoveResult;
 
 				// 충돌 계산
 				int iHitCount = Physics2D.RaycastNonAlloc(
@@ -190,40 +195,15 @@ namespace GGZ
 			TriggeredByLifeDecrease(SceneMain_Battle.Single.charPlayer);
 		}
 
-		public virtual void TriggeredByTakeDamage(Battle_BaseCharacter charAttacker, float fAttackPower)
+		public virtual void TriggeredByTakeDamage(Battle_BaseCharacter charAttacker)
 		{
-			ObjectData.StatusBasic statOwn = csStatBasic;
-
-			float fDamage = Mathf.Max(0f, fAttackPower - statOwn.fDefendPower);
-			if (fDamage < 0)
-				return;
-
-			statOwn.fHealthNow -= fDamage;
-
 			// 피격 연출
 			AniModule.spriteRenderer.material.color = Color.red;
 			AniModule.spriteRenderer.material.DOColor(Color.white, 1.0f);
-
-			if (statOwn.fHealthNow <= 0)
-			{
-				ProcessLossLife();
-			}
 		}
 
 		public virtual void TriggeredByLifeDecrease(Battle_BaseCharacter charKiller)
 		{
-			ObjectData.StatusBasic statOwn = csStatBasic;
-
-			if (0 < statOwn.iLife)
-			{
-				// 라이프 감소에 따른 체력 회복
-				statOwn.fHealthNow = statOwn.fHealthMax;
-			}
-			else
-			{
-				// 라이프가 모두 감소
-				TriggeredByLifeZero(charKiller);
-			}
 		}
 
 		public virtual void TriggeredByLifeZero(Battle_BaseCharacter charKiller)
@@ -232,17 +212,45 @@ namespace GGZ
 			AniModule.spriteRenderer.material.color = Color.red;
 			AniModule.spriteRenderer.material.DOColor(new Color(1, 1, 1, 0), 1.0f);
 
+			TriggeredByDeadBegin(charKiller);
+
 			CustomRoutine.CallLate(1.0f, () =>
 			{
-				TriggeredByDead(charKiller);
+				TriggeredByDeadComplate(charKiller);
 				Push();
 				AniModule.spriteRenderer.material.color = Color.white;
-			});   
+			});
 		}
 
-		public virtual void TriggeredByDead(Battle_BaseCharacter charKiller)
+		public virtual void TriggeredByDeadBegin(Battle_BaseCharacter charKiller)
 		{
-			BattleManager.Single.OnCharacterDead(this, charKiller);
+		}
+
+		public virtual void TriggeredByDeadComplate(Battle_BaseCharacter charKiller)
+		{
+			BattleManager.Single.ProcessCharacterDead(this, charKiller);
+		}
+
+		public void RefreshDirection()
+		{
+			switch (iDirection)
+			{
+				case Direction8.ciDir_1:
+				case Direction8.ciDir_4:
+				case Direction8.ciDir_7:
+				{
+					AniModule.spriteRenderer.flipX = true;
+				}
+				break;
+
+				case Direction8.ciDir_3:
+				case Direction8.ciDir_6:
+				case Direction8.ciDir_9:
+				{
+					AniModule.spriteRenderer.flipX = false;
+				}
+				break;
+			}
 		}
 	}
 }

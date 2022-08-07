@@ -108,6 +108,12 @@ namespace GGZ
 		{
 			// 기본 로딩 완료 이후, 객체 초기화
 			AnimationManager.Single.JustCall();
+			BattleManager.Single.JustCall();
+			SpriteManager.Single.JustCall();
+
+			ItemManager.Single.JustCall();
+
+			MainManager.Single.JustCall();
 		}
 
 		public void OnComplatedPage(Loading_PageBase lPage, Loading_PageBase.EAsyncType eAsyncType)
@@ -168,13 +174,14 @@ namespace GGZ
 
 			if (isComplatePageAll)
 			{
+				PostLoading();
+
 				LoadComplate();
 			}
 		}
 
 		private void LoadComplate()
 		{
-			PostLoading();
 #if _debug
 			Debug.Log($"Load Complate!!!, Time : {sw.ElapsedMilliseconds}");
 			sw.Stop();

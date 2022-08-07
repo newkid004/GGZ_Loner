@@ -14,19 +14,36 @@ namespace GGZ
 		private ObjectData.StatusMonster _csStatMonster = new ObjectData.StatusMonster();
 		public ObjectData.StatusMonster csStatMonster { get => _csStatMonster; }
 
-		public bool isAlert = false;
-		private float fAlertEndTime = 0;
-
 		public CSVData.Battle.Status.Monster csvMonster = null;
+		
+		public AnimationManager.EAniType EAniType 
+		{ 
+			get
+			{
+				AnimationManager.EAniType eAniType;
 
-		public void InitToCSV(int iMonsterID)
+				if (GlobalUtility.Digit.Include(iObjectType, GlobalDefine.ObjectData.ObjectType.ciBoss))
+				{
+					eAniType = AnimationManager.EAniType.Boss;
+				}
+				else
+				{
+					eAniType = AnimationManager.EAniType.Unit;
+				}
+
+				return eAniType;
+			}
+		}
+
+		public void InitObjectDataToCSV(int iMonsterID)
 		{
 			csvMonster = CSVData.Battle.Status.Monster.Manager.Get(iMonsterID);
 			ObjectData.StatusMonster statMonster = csStatMonster;
 
 			statMonster.fAlertRadius = csvMonster.AlertRadius;
 			statMonster.fAlertTime = csvMonster.AlertTime;
-			statMonster.fAggressiveMoveSpeed = csvMonster.AggressiveMoveSpeed;
+
+			statMonster.fAttackRadius = csvMonster.AttackRadius;
 
 			// Renderer.sprite = SpriteManager.Single.Get(SpriteManager.Container.EType.Animation, (int)SpriteDefine.Animation.Monster_001_idle01);
 		}
@@ -52,7 +69,7 @@ namespace GGZ
 		protected virtual void TriggeredByHuntZoneIntersect(Battle_HZone hzSpawned, List<Vector2> listExtendPoint)
 		{
 			Battle_CharacterPlayer charPlayer = SceneMain_Battle.Single.charPlayer;
-			TriggeredByTakeDamage(charPlayer, charPlayer.csStatBasic.fAttackPower);
+			TriggeredByTakeDamage(charPlayer);
 
 			if (false == isAlive)
 				return;
@@ -144,6 +161,11 @@ namespace GGZ
 			{
 				// 오류 메세지 출력
 			}
+		}
+
+		public override void TriggeredByDeadBegin(Battle_BaseCharacter charKiller)
+		{
+			base.TriggeredByDeadBegin(charKiller);
 		}
 	}
 }

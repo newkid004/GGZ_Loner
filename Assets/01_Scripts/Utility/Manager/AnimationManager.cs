@@ -23,7 +23,7 @@ namespace GGZ
 		private int iAniGroupSequence = 0;
 		private int iAniDataSequence = 0;
 
-		public int GetNextAniGroupSequence() => ++iAniGroupSequence;
+		private int GetNextAniGroupSequence() => ++iAniGroupSequence;
 		public int GetNextAniDataSequence() => ++iAniDataSequence;
 
 		protected override void Init()

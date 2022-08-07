@@ -10,8 +10,12 @@ namespace GGZ
 	public class Battle_CharacterPlayer : Battle_BaseCharacter
 	{
 		[SerializeField]
-		private ObjectData.StatusPlayer _csPlayerStatus = new ObjectData.StatusPlayer();
-		public ObjectData.StatusPlayer csPlayerStatus { get => _csPlayerStatus; }
+		private ObjectData.StatusBattle _csStatBattle = new ObjectData.StatusBattle();
+		public ObjectData.StatusBattle csStatBattle { get => _csStatBattle; }
+
+		[SerializeField]
+		private ObjectData.StatusPlayer _csStatPlayer = new ObjectData.StatusPlayer();
+		public ObjectData.StatusPlayer csStatPlayer { get => _csStatPlayer; }
 
 		public new Battle_BehaviourPlayer behaviorOwn { get => (Battle_BehaviourPlayer)base.behaviorOwn; }
 
@@ -49,6 +53,56 @@ namespace GGZ
 			base.iAttribute |= ObjectData.Attribute.ciBasic_Player;
 
 			iCharacterID = 0;
+			InitCharacterStatus();
+			InitEquipmentStatus();
+		}
+
+		private void InitCharacterStatus()
+		{
+			var csvUnit = CSVData.Battle.Status.Unit.Manager.Get(iCharacterID);
+
+			csStatBasic.fHealthMax = csvUnit.Health;
+			csStatBasic.fHealthNow = csvUnit.Health;
+
+			csStatBasic.fAttackPower = csvUnit.Attack;
+			csStatBasic.fDefendPower = csvUnit.Defend;
+
+			csStatBasic.fAttackSpeed = csvUnit.AttackSpeed;
+			csStatBasic.fMoveSpeed = csvUnit.MoveSpeed;
+
+			csStatEffect.fWeight = csvUnit.Weight;
+			csStatEffect.fAirHold = csvUnit.AirHold;
+		}
+
+		private void InitEquipmentStatus()
+		{
+			var mainPlayer = MainManager.Single.player;
+
+			int iItemSlotCount = Game.Item.Equipment.ciSlotCount;
+			int iStatusTypeCount = (int)Battle_ItemEquipment.EStatusType.MAX;
+
+			for (int i = 0; i < iItemSlotCount; ++i)
+			{
+				var eEquipmentSlot = (Game.Item.Equipment.ESlot)i;
+				var itemEquipment = mainPlayer.GetEquipment(eEquipmentSlot);
+
+				if (itemEquipment != null)
+				{
+					for (int j = 0; j < iStatusTypeCount; ++j)
+					{
+						var eStatusType = (Battle_ItemEquipment.EStatusType)j;
+						var equipmentStat = itemEquipment.GetStatusObject(eStatusType);
+
+						switch (eStatusType)
+						{
+							case Battle_ItemEquipment.EStatusType.Basic: csStatBasic.Merger(equipmentStat, (v1, v2) => v1 + v2); break;
+							case Battle_ItemEquipment.EStatusType.Effect: csStatEffect.Merger(equipmentStat, (v1, v2) => v1 + v2); break;
+							case Battle_ItemEquipment.EStatusType.Battle: csStatBattle.Merger(equipmentStat, (v1, v2) => v1 + v2); break;
+							case Battle_ItemEquipment.EStatusType.Player: csStatPlayer.Merger(equipmentStat, (v1, v2) => v1 + v2); break;
+						}
+					}
+				}
+			}
 		}
 
 		public override void ProcessUpdateMove()
@@ -99,7 +153,7 @@ namespace GGZ
 		protected void MoveReturnToHuntZone()
 		{
 			float fMoveSpeed = csStatBasic.fMoveSpeed;
-			float fMoveReturnSpeed = fMoveSpeed * csPlayerStatus.fHuntlineDrawReturnSpeed;
+			float fMoveReturnSpeed = fMoveSpeed * csStatPlayer.fHuntlineDrawReturnSpeed;
 			float fMoveReturnSpeedInTime = fMoveReturnSpeed * Time.fixedDeltaTime;
 
 			Battle_HLine hlLast = SceneMain_Battle.Single.mcsHLine.nowDrawingLine;

@@ -38,15 +38,16 @@ namespace GGZ
 #if _debug
 						try
 						{
-#endif
 							fi.SetValue(tItem, csvItem[fi.Name]);
-#if _debug
 						}
 						catch
 						{
 							Debug.LogAssertion($"CSVObjectBase.SetValueToCSVObject : Not Match Member\n" +
 								$": {typeof(T).Name}, {fi.Name}({fi.FieldType.Name}) <- {csvItem.GetDef(fi.Name)}");
 						}
+#else
+
+						fi.SetValue(tItem, csvItem[fi.Name]);
 #endif
 					}
 
@@ -104,7 +105,9 @@ namespace GGZ
 
 						// Write Value
 						StringBuilder sbLine = new StringBuilder();
-						dictContainer.ForEach((key, value) =>
+						var data = new SortedList<TKey, T>(dictContainer);
+
+						data.ForEach((key, value) =>
 						{
 							arrTypeFieldInfo.ForEach(item =>
 							{

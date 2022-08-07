@@ -8,8 +8,10 @@ namespace GGZ
 	[System.Serializable]
 	public class Battle_MonsterManager
 	{
+		public static Battle_MonsterManager Single { get => SceneMain_Battle.Single.mcsMonster; }
+
 		[SerializeField]
-		private ObjectPool<Battle_BaseMonster> oPool = new ObjectPool<Battle_BaseMonster>();
+		public ObjectPool<Battle_BaseMonster> oPool = new ObjectPool<Battle_BaseMonster>();
 
 		public RaycastHit2D[] arrRch2CharMoveResult = new RaycastHit2D[8];
 
@@ -64,6 +66,7 @@ namespace GGZ
 
 				InitMonsterStatus(monResult, iID);
 				InitMonsterPosition(monResult);
+				InitMonsterAnimation(monResult);
 			}
 
 			return monResult;
@@ -89,6 +92,14 @@ namespace GGZ
 		private void InitMonsterPosition(Battle_BaseMonster monObject)
 		{
 
+		}
+
+		private void InitMonsterAnimation(Battle_BaseMonster monObject)
+		{
+			var aniGroup = AnimationManager.Single.GetGroupItem(monObject.EAniType, monObject.iCharacterID, "idle");
+
+			monObject.AniModule.SetGroup(aniGroup);
+			monObject.AniModule.Play(0);
 		}
 
 #if _debug

@@ -313,6 +313,7 @@ namespace GGZ
 
 		public bool isPlay = false;
 		public bool isComplate { get; private set; } = true;
+		public bool isRepeatForced = false;
 
 		// event
 		/// <summary>
@@ -458,7 +459,7 @@ namespace GGZ
 
 			if (aniData.Count <= iCurrentSpriteIndex)
 			{
-				if (aniData.isRepeat)
+				if (aniData.isRepeat || isRepeatForced)
 				{
 					Replay();
 				}
@@ -468,7 +469,7 @@ namespace GGZ
 					isComplate = true;
 				}
 
-				OnComplate?.Invoke(isComplate, aniData.isRepeat);
+				OnComplate?.Invoke(isComplate, aniData.isRepeat || isRepeatForced);
 			}
 			else
 			{

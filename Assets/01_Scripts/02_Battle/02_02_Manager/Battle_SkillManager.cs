@@ -124,6 +124,8 @@ namespace GGZ
 				fIParamPercent = 1;
 				fFParamPercent = 1;
 			}
+
+			public stSkillProcessInfo(int iCsvSkillActiveID) : this(CSVData.Battle.Skill.SkillActive.Manager.Get(iCsvSkillActiveID)) { }
 		}
 
 		public void ProcessSkill(ref stSkillProcessInfo info)
@@ -136,11 +138,35 @@ namespace GGZ
 				case 0:		// Bullet 생성			- [BulletID / ]
 				{
 					int iBulletID = info.csvSkillActive.ParamInts[0];
-					var blt = SceneMain_Battle.Single.mcsBullet.Create(iBulletID, (Battle_BaseCharacter)info.objOwner);
-					blt.transform.position = info.vec2Pos;
-					blt.vec2Direction = info.vec2Dir;
-					break;
+					var blt = Battle_BulletManager.Single.Create(iBulletID, (Battle_BaseCharacter)info.objOwner);
+
+					if (info.vec2Dir == Vector2.zero)
+					{
+						blt.vec2Direction = Battle_BulletManager.Single.GetBulletDirection(info.objOwner, info.objTarget);
+					}
+					else
+					{
+						blt.vec2Direction = info.vec2Dir;
+					}
+
+					if (info.vec2Pos == Vector2.zero)
+					{
+						if (Digit.Include(info.objOwner.iObjectType, ObjectData.ObjectType.ciCharacter))
+						{
+							blt.transform.position = Battle_BulletManager.Single.GetBulletPosition((Battle_BaseCharacter)info.objOwner, info.objTarget, blt);
+						}
+						else
+						{
+							blt.transform.position = info.objOwner.transform.position;
+						}
+
+					}
+					else
+					{
+						blt.transform.position = info.vec2Pos;
+					}
 				}
+				break;
 
 				case 1:		// Buff 적용			- [BuffID / Time, Tick, Value]
 				{
@@ -159,10 +185,10 @@ namespace GGZ
 						stBuffInfo.objTarget = info.objTarget;
 						stBuffInfo.arrfEffection = info.csvSkillActive.ParamFloats;
 
-						SceneMain_Battle.Single.mcsBuff.ProcessBuff(ref stBuffInfo);
+						Battle_BuffManager.Single.ProcessBuff(ref stBuffInfo);
 					}
-					break;
 				}
+				break;
 
 				case 2:		// 또다른 Skill 발동	- [SkillID, .. / ]
 				{
@@ -173,8 +199,8 @@ namespace GGZ
 						stSkillInfo.csvSkillActive = CSVData.Battle.Skill.SkillActive.Manager.Get(iSkillID);
 						ProcessSkill(ref stSkillInfo);
 					}
-					break;
 				}
+				break;
 			}
 		}
 	}
