@@ -38,6 +38,7 @@
 35,Monster_006_ready01|Monster_006_ready02|Monster_006_ready03|Monster_006_ready04|Monster_006_ready05,0.05|0.145302|0.1540268|0.1248323|0.1258389
 36,Monster_006_special01|Monster_006_special02|Monster_006_special03|Monster_006_special04|Monster_006_special05|Monster_006_special06,0.07999998|0.07704698|0.2109531|0.144|0.1067919|0.1812081
 37,Monster_006_walk01|Monster_006_walk02|Monster_006_walk03|Monster_006_walk04|Monster_006_walk05,0.07499998|0.15625|0.15625|0.15625|0.15625
+48,Boss_001_idle01|Boss_001_idle02,0.4444242|0.6555759
 39,effect_breath01|effect_breath02|effect_breath03|effect_breath04,0.06923076|0.1769231|0.1769231|0.1769231
 40,effect_hit01|effect_hit02,0.1194631|0.2805369
 41,effect_leaf01|effect_leaf02|effect_leaf03|effect_leaf04,0.0576923|0.1474359|0.1474359|0.1474359
