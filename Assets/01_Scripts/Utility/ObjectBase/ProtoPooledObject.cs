@@ -20,9 +20,7 @@ namespace GGZ
 			iObjectID = iObjectSequenceID++;
 		}
 
-		public virtual void ReconnectRefSelf()
-		{
-		}
+		public virtual void ReconnectRefSelf() { }
 
 		public override void OnPopedFromPool()
 		{

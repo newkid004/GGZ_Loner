@@ -819,9 +819,9 @@ MonoBehaviour:
     fAlertRadius: 1
     fAlertTime: 1
     fAggressiveMoveSpeed: 1.5
+    fAttackRadius: 1
     isAlly: 0
     isSummoned: 0
-  isAlert: 0
 --- !u!58 &616768534
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -925,6 +925,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rdrSprite: {fileID: 616768535}
   isPlay: 0
+  isRepeatForced: 0
   OnProcess:
     m_PersistentCalls:
       m_Calls: []
@@ -1278,7 +1279,7 @@ MonoBehaviour:
       iPrePoolingCount: 30
       _tOrigin: {fileID: 539832999}
     oPoolPoint:
-      trContainRoot: {fileID: 0}
+      trContainRoot: {fileID: 2048152230}
       iPrePoolingCount: 50
       _tOrigin: {fileID: 1161754204}
   _mcsHZone:
@@ -2228,9 +2229,6 @@ MonoBehaviour:
   _RigidbodyOwn: {fileID: 1469785546}
   behaviorOwn: {fileID: 1469785545}
   iCharacterID: -1
-  _csPlayerStatus:
-    fHuntingGroundAttackPower: 1
-    fHuntlineDrawReturnSpeed: 1.5
   iLastInputDirection: 0
 --- !u!58 &1469785543
 CircleCollider2D:
@@ -2348,6 +2346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rdrSprite: {fileID: 1469785544}
   isPlay: 0
+  isRepeatForced: 0
   OnProcess:
     m_PersistentCalls:
       m_Calls: []
@@ -2543,7 +2542,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 3
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.47058824}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2565,6 +2564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0ac09b17c7580d439010a586bfdf0dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AniModule: {fileID: 1631356500}
   rdrSplite: {fileID: 1631356498}
   rigidbody: {fileID: 1631356497}
   colCircle: {fileID: 1631356496}
@@ -2584,6 +2584,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rdrSprite: {fileID: 1631356498}
   isPlay: 0
+  isRepeatForced: 0
   OnProcess:
     m_PersistentCalls:
       m_Calls: []

@@ -7,9 +7,6 @@ using UnityEngine.UI;
 namespace GGZ
 {
 	using GlobalDefine;
-	using System;
-	using Unity.VisualScripting;
-	using UnityEngine.Assertions.Must;
 
 	public class Battle_MoveDirectionButton : Button, IDragHandler
 	{
@@ -23,18 +20,18 @@ namespace GGZ
 		public Image imgOwn;
 
 		[Header("Attribute")]
-		[Range(0.0f, 1.0f)] public float fDistanceThresholdOfDirection; // ºñ±¸Çö
+		[Range(0.0f, 1.0f)] public float fDistanceThresholdOfDirection; // ë¹„êµ¬í˜„
 		public long lMicroSecondOfPointerReEnter;
 
 		// Test
 		[Header("Debug")]
 		[SerializeField] private Transform trTest;
 
-		// º¸Á¸ °ª
+		// ë³´ì¡´ ê°’
 		private System.DateTime dtLastPointerUp;
 		private Vector2 vec2ButtonCenterPosInScreen;
 
-		// »óÅÂ ÂüÁ¶ ÇÁ·ÎÆÛÆ¼
+		// ìƒíƒœ ì°¸ì¡° í”„ë¡œí¼í‹°
 		public bool IsClicked { get; protected set; }
 		public int iDirection { get; protected set; }
 
@@ -72,7 +69,7 @@ namespace GGZ
 			if (System.DateTime.Now.Ticks < dtLastPointerUp.Ticks + lMicroSecondOfPointerReEnter)
 				return;
 
-			// ¹æÇâ±îÁö °Å¸® ÀÓ°è°ª È®ÀÎ
+			// ë°©í–¥ê¹Œì§€ ê±°ë¦¬ ì„ê³„ê°’ í™•ì¸
 			Vector2 vec2PointerPosition = eventData.position;
 			if (fDistanceThresholdOfDirection < Vector2.Distance(vec2ButtonCenterPosInScreen, vec2PointerPosition))
 			{
@@ -93,7 +90,7 @@ namespace GGZ
 			base.OnPointerUp(eventData);
 
 			IsClicked = false;
-			iDirection = Direction8.ciProcess_Non; // °ª : 0
+			iDirection = Direction8.ciProcess_Non; // ê°’ : 0
 			dtLastPointerUp = System.DateTime.Now;
 
 			csPlayerController.OnExitDirection();
@@ -111,7 +108,7 @@ namespace GGZ
 			vec3Size = imgOwn.transform.TransformVector(vec3Size);
 			vec2Line = vec3Size;
 
-			// ¼±ÅÃ ¹üÀ§
+			// ì„ íƒ ë²”ìœ„
 			Gizmos.color = new Color(0, 1, 1, 0.2f);
 			Gizmos.DrawCube(rtransform.position, vec3Size);
 

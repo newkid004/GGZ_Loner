@@ -12,9 +12,9 @@ namespace GGZ
 		public static SceneMain_Loading Single { get; private set; }
 
 		[Header("Managed")]
-		[SerializeField] private List<Loading_PageBase>	listSerialPage;		// Á÷·Ä ·Îµù
-		[SerializeField] private List<Loading_PageBase>	listParallelPage;	// º´·Ä ·Îµù
-		[SerializeField] private List<Loading_PageBase> listCollectPage;	// ÀÏ°ı ·Îµù
+		[SerializeField] private List<Loading_PageBase>	listSerialPage;		// ì§ë ¬ ë¡œë”©
+		[SerializeField] private List<Loading_PageBase>	listParallelPage;	// ë³‘ë ¬ ë¡œë”©
+		[SerializeField] private List<Loading_PageBase> listCollectPage;	// ì¼ê´„ ë¡œë”©
 
 		private bool[] isComplatePage = new bool[(int)Loading_PageBase.EAsyncType.Max];
 
@@ -45,7 +45,7 @@ namespace GGZ
 			iPageCountParallel = listParallelPage.Count;
 			iPageCountCollect = listCollectPage.Count;
 
-			// ·ÎµùÆäÀÌÁö ÃÊ±âÈ­
+			// ë¡œë”©í˜ì´ì§€ ì´ˆê¸°í™”
 			int i;
 
 			i = 0;
@@ -57,7 +57,7 @@ namespace GGZ
 			i = 0;
 			listParallelPage.ForEach(p => { p.Init(i++, Loading_PageBase.EAsyncType.Parallel); p.gameObject.SetActive(false); });
 
-			// ·ÎµùÆäÀÌÁö ½ÇÇà
+			// ë¡œë”©í˜ì´ì§€ ì‹¤í–‰
 #if _debug
 			sw.Start();
 #endif
@@ -100,16 +100,17 @@ namespace GGZ
 
 		private void PreLoading()
 		{
-			// ¼º´É¿¡ ¿µÇâÀÌ Å©Áö ¾ÊÀº, °£´ÜÇÑ °´Ã¼ ÃÊ±âÈ­
+			// ì„±ëŠ¥ì— ì˜í–¥ì´ í¬ì§€ ì•Šì€, ê°„ë‹¨í•œ ê°ì²´ ì´ˆê¸°í™”
 			CustomRoutine.Init();
 		}
 
 		private void PostLoading()
 		{
-			// ±âº» ·Îµù ¿Ï·á ÀÌÈÄ, °´Ã¼ ÃÊ±âÈ­
+			// ê¸°ë³¸ ë¡œë”© ì™„ë£Œ ì´í›„, ê°ì²´ ì´ˆê¸°í™”
 			AnimationManager.Single.JustCall();
 			BattleManager.Single.JustCall();
 			SpriteManager.Single.JustCall();
+			FieldGroundManager.Single.JustCall();
 
 			ItemManager.Single.JustCall();
 
@@ -165,7 +166,7 @@ namespace GGZ
 					break;
 			}
 
-			// ¸ğµç ·Îµù ÆäÀÌÁö ¿Ï·á ¿©ºÎ È®ÀÎ
+			// ëª¨ë“  ë¡œë”© í˜ì´ì§€ ì™„ë£Œ ì—¬ë¶€ í™•ì¸
 			bool isComplatePageAll = true;
 			for (int i = 0; i < isComplatePage.Length; ++i)
 			{
@@ -189,11 +190,11 @@ namespace GGZ
 
 			this.gameObject.SetActive(false);
 #if _debug
-			// ÀÌÈÄ ¸ŞÀÎ ¾À È£Ãâ
+			// ì´í›„ ë©”ì¸ ì”¬ í˜¸ì¶œ
 			UnityEngine.SceneManagement.SceneManager.LoadScene(isLoadDevScene ? CstrSceneDev : CstrSceneMain, 
 				UnityEngine.SceneManagement.LoadSceneMode.Single);
 #else
-			// ÀÌÈÄ ¸ŞÀÎ ¾À È£Ãâ
+			// ì´í›„ ë©”ì¸ ì”¬ í˜¸ì¶œ
 			UnityEngine.SceneManagement.SceneManager.LoadScene("01_Main", UnityEngine.SceneManagement.LoadSceneMode.Single);
 #endif
 		}

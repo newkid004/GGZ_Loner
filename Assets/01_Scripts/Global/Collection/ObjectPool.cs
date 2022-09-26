@@ -1,24 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace GGZ
 {
 	[System.Serializable]
 	public class PooledObject : MonoBehaviour
 	{
-		public int iOwnSequenceID { get; set; }			// Pool Á¦¿Ü ¼³Á¤ ºÒ°¡
-		public ObjectPoolBase opParent { get; set; }
-		public System.Type typeOwn { get; set; }
+		public int iOwnSequenceID { get; set; }			= 0;	// Pool ì œì™¸ ì„¤ì • ë¶ˆê°€
+		public ObjectPoolBase opParent { get; set; }	= null;
+		public System.Type typeOwn { get; set; }		= null;
 
 		public void Push()
 		{
 			opParent.Push(this);
 		}
 
-		public virtual void OnPopedFromPool() { }	// »ó¼Ó¹Ş´Â °´Ã¼´Â ÇØ´ç ÇÔ¼ö¸¦ ¹İµå½Ã ¸ÕÀú È£Ãâ
-		public virtual void OnPushedToPool() { }	// »ó¼Ó¹Ş´Â °´Ã¼´Â ÇØ´ç ÇÔ¼ö¸¦ ¹İµå½Ã ¸¶Áö¸·¿¡ È£Ãâ
+		public virtual void OnPopedFromPool() { }	// ìƒì†ë°›ëŠ” ê°ì²´ëŠ” í•´ë‹¹ í•¨ìˆ˜ë¥¼ ë°˜ë“œì‹œ ë¨¼ì € í˜¸ì¶œ
+		public virtual void OnPushedToPool() { }	// ìƒì†ë°›ëŠ” ê°ì²´ëŠ” í•´ë‹¹ í•¨ìˆ˜ë¥¼ ë°˜ë“œì‹œ ë§ˆì§€ë§‰ì— í˜¸ì¶œ
 
 		public override string ToString()
 		{
@@ -35,7 +35,7 @@ namespace GGZ
 		public Queue<PooledObject> qPooledObject { get; protected set; }
 		public HashSet<PooledObject> hsActiveObject { get; protected set; }
 
-		// ÀÚ½Ä °´Ã¼¿¡¼­ ÃÊ±âÈ­
+		// ìì‹ ê°ì²´ì—ì„œ ì´ˆê¸°í™”
 		protected ObjectPoolBase opRoot;
 		public int iSequenceID { get; protected set; }
 		public Dictionary<int, PooledObject> dictTotalObject { get; protected set; }
@@ -60,6 +60,8 @@ namespace GGZ
 
 		[SerializeField] private int iPrePoolingCount;
 		[SerializeField] private T _tOrigin;
+		[SerializeField] private List<T> listPreRegistPoolObject;
+
 		private Transform trOrigin;
 
 		public int iPooledCount { get => qPooledObject.Count; }
@@ -98,6 +100,42 @@ namespace GGZ
 				tOrigin.gameObject.SetActive(false);
 				trOrigin = _tOrigin.transform;
 
+				if (0 < listPreRegistPoolObject.Count)
+				{
+					var dictDerived = dictDerivedPool.GetDef(listPreRegistPoolObject[0].GetType());
+					if (null == dictDerived)
+					{
+						dictDerived = RegistDerivePool(listPreRegistPoolObject[0].GetType());
+					}
+
+					for (int i = 0; i < listPreRegistPoolObject.Count; ++i)
+					{
+						T tObject = listPreRegistPoolObject[i];
+
+						if (0 < tObject.iOwnSequenceID)
+						{
+#if _debug
+							string strError = $"{this.GetType().Name} : {System.Reflection.MethodBase.GetCurrentMethod().Name}\n";
+							Debug.LogError(strError + $"Already pooling object \n" +
+								$"ObjectType : {listPreRegistPoolObject[i].GetType()} / SequenceID : {tObject.iOwnSequenceID}");
+							return;
+#endif
+						}
+						else if (null == tObject.opParent)
+						{
+							opRoot.IncreaseSequenceID();
+							tObject.iOwnSequenceID = opRoot.iSequenceID;
+							tObject.opParent = dictDerived;
+							tObject.typeOwn = tObject.GetType();
+
+							// ì „ì²´ í’€ë§ ê´€ë¦¬ëª©ë¡ì— ì¶”ê°€
+							opRoot.dictTotalObject.Add(tObject.iOwnSequenceID, tObject);
+							dictDerived.hsActiveObject.Add(tObject);
+						}
+					}
+					listPreRegistPoolObject.Clear();
+				}
+
 				if (0 < iPrePoolingCount)
 				{
 					List<T> listObject = new List<T>(iPrePoolingCount);
@@ -114,6 +152,61 @@ namespace GGZ
 			}
 		}
 
+		public bool RegistObject(PooledObject obj, System.Type type)
+		{
+			if (0 < obj.iOwnSequenceID)
+			{
+#if _debug
+				string strError = $"{this.GetType().Name} : {System.Reflection.MethodBase.GetCurrentMethod().Name}\n";
+				Debug.LogError(strError + $"Already pooling object \n" +
+					$"ObjectType : {type} / SequenceID : {obj.iOwnSequenceID}");
+#endif
+				return false;
+			}
+
+			ObjectPoolBase opBase = null;
+
+			if (type == typeof(T))
+			{
+				opBase = this;
+			}
+			else
+			{
+				opBase = RegistDerivePool(type);
+			}
+
+			if (obj.opParent != null)
+			{
+#if _debug
+				string strError = $"{this.GetType().Name} : {System.Reflection.MethodBase.GetCurrentMethod().Name}\n";
+				Debug.LogError(strError + $"Already pooling object \n" +
+					$"ObjectType : {type} / ObjectPool Parent : {obj.opParent}");
+#endif
+				return false;
+			}
+
+			opRoot.IncreaseSequenceID();
+			obj.iOwnSequenceID = opRoot.iSequenceID;
+			obj.opParent = opBase;
+			obj.typeOwn = type;
+
+			// ì „ì²´ í’€ë§ ê´€ë¦¬ëª©ë¡ì— ì¶”ê°€
+			opRoot.dictTotalObject.Add(obj.iOwnSequenceID, obj);
+			opBase.hsActiveObject.Add(obj);
+
+			return true;
+		}
+
+		public bool RegistObject(T obj)
+		{
+			return RegistObject(obj, typeof(T));
+		}
+
+		public bool RegistObject<TDerived>(TDerived obj) where TDerived : T
+		{
+			return RegistObject(obj, typeof(TDerived));
+		}
+
 		public T Pop(Transform trParent = null)
 		{
 			return Pop(trParent, this);
@@ -125,14 +218,14 @@ namespace GGZ
 
 			if (0 < qPooledObject.Count)
 			{
-				// Ç®¸µµÈ °´Ã¼°¡ ÀÖÀ» ¶§
+				// í’€ë§ëœ ê°ì²´ê°€ ìˆì„ ë•Œ
 				objResult = qPooledObject.Dequeue();
 			}
 			else
 			{
-				// Ç®¸µµÈ °´Ã¼°¡ ¾øÀ» ¶§ : »ı¼º
+				// í’€ë§ëœ ê°ì²´ê°€ ì—†ì„ ë•Œ : ìƒì„±
 				objResult = tOrigin != null ?
-					Object.Instantiate(tOrigin.gameObject).GetComponent<T>() :
+					UnityEngine.Object.Instantiate(tOrigin.gameObject).GetComponent<T>() :
 					new GameObject().AddComponent<T>();
 
 				if (oPoolParent == null)
@@ -148,7 +241,7 @@ namespace GGZ
 				objResult.iOwnSequenceID = opRoot.iSequenceID;
 				objResult.typeOwn = typeof(T);
 
-				// ÀüÃ¼ Ç®¸µ °ü¸®¸ñ·Ï¿¡ Ãß°¡
+				// ì „ì²´ í’€ë§ ê´€ë¦¬ëª©ë¡ì— ì¶”ê°€
 				opRoot.dictTotalObject.Add(objResult.iOwnSequenceID, objResult);
 			}
 
@@ -189,20 +282,21 @@ namespace GGZ
 
 		protected ObjectPool<TDerived> RegistDerivePool<TDerived>() where TDerived : T
 		{
+			/*
 			ObjectPool<TDerived> oPoolDerived = new ObjectPool<TDerived>();
 			Component cDerivedOrigin = tOrigin.GetType() == typeof(TDerived) ?
-				tOrigin : 
+				tOrigin :
 				Object.Instantiate(tOrigin);
 
 			GameObject objDerivedOrigin = cDerivedOrigin.gameObject;
 
-			// ±âÁ¸°ª Á¦°Å
+			// ê¸°ì¡´ê°’ ì œê±°
 			Object.DestroyImmediate(cDerivedOrigin);
 
-			// º¯°æµÈ Derived ÄÄÆ÷³ÍÆ® Ãß°¡
+			// ë³€ê²½ëœ Derived ì»´í¬ë„ŒíŠ¸ ì¶”ê°€
 			cDerivedOrigin = objDerivedOrigin.AddComponent<TDerived>();
 
-			// °ª ÀÔ·Â
+			// ê°’ ì…ë ¥
 			cDerivedOrigin.GetCopyOf(this.tOrigin);
 
 			oPoolDerived.opRoot = this.opRoot;
@@ -212,11 +306,50 @@ namespace GGZ
 			objDerivedOrigin.gameObject.SetActive(false);
 
 			dictDerivedPool.SetSafe(typeof(TDerived), oPoolDerived);
+			*/
+
+			return (ObjectPool<TDerived>)RegistDerivePool(typeof(TDerived));
+		}
+
+		protected ObjectPoolBase RegistDerivePool(System.Type type)
+		{
+			ObjectPoolBase oPoolDerived = dictDerivedPool.GetDef(type);
+			if (oPoolDerived != null)
+				return oPoolDerived;
+
+			System.Type tPoolDerivedType = typeof(ObjectPool<>).MakeGenericType(type);
+
+			oPoolDerived = (ObjectPoolBase)System.Activator.CreateInstance(tPoolDerivedType, args:new object[] { null });
+			Component cDerivedOrigin = tOrigin.GetType() == type ?
+				tOrigin :
+				Object.Instantiate(tOrigin);
+
+			GameObject objDerivedOrigin = cDerivedOrigin.gameObject;
+
+			// ê¸°ì¡´ê°’ ì œê±°
+			Object.DestroyImmediate(cDerivedOrigin);
+
+			// ë³€ê²½ëœ Derived ì»´í¬ë„ŒíŠ¸ ì¶”ê°€
+			cDerivedOrigin = objDerivedOrigin.AddComponent(type);
+
+			// ê°’ ì…ë ¥
+			cDerivedOrigin.GetCopyOf(this.tOrigin);
+
+			// ë³€ìˆ˜ ì…ë ¥
+			System.Reflection.BindingFlags eBindingFlags = (System.Reflection.BindingFlags)0b00110100;
+
+			tPoolDerivedType.GetField("opRoot", eBindingFlags).SetValue(oPoolDerived, this.opRoot == null ? this : this.opRoot);
+			tPoolDerivedType.GetField("trContainRoot", eBindingFlags).SetValue(oPoolDerived, this.trContainRoot);
+			tPoolDerivedType.GetProperty("tOrigin", eBindingFlags).SetValue(oPoolDerived, cDerivedOrigin);
+
+			objDerivedOrigin.gameObject.SetActive(false);
+
+			dictDerivedPool.SetSafe(type, oPoolDerived);
 
 			return oPoolDerived;
 		}
 
-		// GameObjectÀÇ Active ºñÈ°¼ºÈ­ ½Ã ÀÚµ¿ È£Ãâ
+		// GameObjectì˜ Active ë¹„í™œì„±í™” ì‹œ ìë™ í˜¸ì¶œ
 		public override void Push(PooledObject objPooled)
 		{
 			if (false == objPooled.gameObject.activeSelf)
@@ -254,7 +387,7 @@ namespace GGZ
 				listUsing = new List<PooledObject>(oPoolDerived.hsActiveObject);
 			}
 
-			return (TDerived)listUsing[Random.Range(0, listUsing.Count)];
+			return (TDerived)listUsing[UnityEngine.Random.Range(0, listUsing.Count)];
 		}
 
 		public void LoopOnActive(System.Action<T> act)

@@ -49,7 +49,8 @@ namespace GGZ
 					bhvPlayer.bhvHuntline.OnToggleHuntLine(null);
 				}
 
-				// ¿µ¿ª ÆÄ±«
+#if _debug
+				// ì˜ì—­ íŒŒê´´
 				if (Input.GetMouseButtonDown(0))
 				{
 					if (Input.GetKey(KeyCode.D))
@@ -77,6 +78,7 @@ namespace GGZ
 						SceneMain_Battle.Single.mcsHZone.DestroyZone(listDestroy);
 					}
 				}
+#endif
 			}
 		}
 

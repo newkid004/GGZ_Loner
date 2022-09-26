@@ -9,6 +9,7 @@ namespace GGZ
 	public class Battle_BaseBullet : Battle_BaseObject
 	{
 		[Header("----- Base Bullet -----")]
+		public AnimationModule AniModule;
 		public SpriteRenderer rdrSplite;
 		public new Rigidbody2D rigidbody;
 		public CircleCollider2D colCircle;
@@ -21,7 +22,17 @@ namespace GGZ
 		public float fDeadTime { get; set; }
 
 		public bool isAlive { get; set; }
-		public bool isAlly { get; set; }
+
+		private bool _isAlly;
+		public bool isAlly 
+		{
+			get => _isAlly;
+			set
+			{
+				_isAlly = value;
+				iObjectType = GlobalUtility.Digit.BOOL(iObjectType, ObjectData.ObjectType.ciAlly, isAlly);
+			}
+		}
 		public Battle_BaseCharacter charOwner { get; set; }
 		
 		public Vector2 vec2Velocity => vec2Direction * fSpeed;
@@ -42,13 +53,16 @@ namespace GGZ
 		{
 			base.Init();
 
-			iObjectType = GlobalDefine.ObjectData.ObjectType.ciBullet;
+			iObjectType |= ObjectData.ObjectType.ciBullet;
 		}
 
 		public override void OnPopedFromPool()
 		{
 			base.OnPopedFromPool();
 			
+			transform.position = Vector3.zero;
+			vec2Direction = Vector2.zero;
+
 			isAlive = true;
 			dictHittedCharacter.Clear();
 		}
@@ -63,6 +77,7 @@ namespace GGZ
 		{
 			base.ReconnectRefSelf();
 
+			AniModule = GetComponent<AnimationModule>();
 			rdrSplite = GetComponent<SpriteRenderer>();
 			rigidbody = GetComponent<Rigidbody2D>();
 			colCircle = GetComponent<CircleCollider2D>();

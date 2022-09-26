@@ -12,8 +12,9 @@ namespace GGZ
 		[SerializeField]
 		public Battle_BaseCharacter characterOwn;
 
-		protected virtual void Init(Battle_BaseCharacter initChar)
+		public virtual void Init(Battle_BaseCharacter initChar)
 		{
+			characterOwn = initChar;
 		}
 
 		protected virtual void FixedUpdate()

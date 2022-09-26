@@ -39,6 +39,8 @@ namespace GGZ
 		{
 			Single = this;
 
+			charPlayer.DoInit();
+
 			Init();
 		}
 
@@ -64,6 +66,7 @@ namespace GGZ
 			_mcsBuff.FixedUpdate(Time.fixedDeltaTime);
 		}
 
+#if _debug
 		// Test
 		public void SpawnMonsterTest()
 		{
@@ -88,7 +91,6 @@ namespace GGZ
 				Color.blue : Color.red;
 		}
 
-#if _debug
 		private void OnDrawGizmos()
 		{
 			if (_mcsField.IsDebug && (_mcsField.fldCurrentField != null && _mcsField.trCurrentBattleField != null))

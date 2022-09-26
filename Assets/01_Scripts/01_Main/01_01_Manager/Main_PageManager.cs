@@ -8,6 +8,8 @@ namespace GGZ
 	[System.Serializable]
 	public class Main_PageManager
 	{
+		public static Main_PageManager Single => SceneMain_Main.Single.mcsPage;
+
 		// Prev Input Resource
 		[Header("Resource")]
 		[SerializeField] private List<Main_PageBase> listInputPage;
@@ -30,7 +32,7 @@ namespace GGZ
 
 			InitInput();
 
-			OpenPage(Main_PageBase.EID.Preview);
+			// OpenPage(Main_PageBase.EID.Preview);
 		}
 
 		private void InitInput()

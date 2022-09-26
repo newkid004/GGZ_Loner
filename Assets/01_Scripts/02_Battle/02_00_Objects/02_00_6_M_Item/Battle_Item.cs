@@ -7,20 +7,20 @@ namespace GGZ
 	using GlobalDefine;
 	using GlobalUtility;
 
-	[System.Serializable]
 	public class Battle_BaseItem : PooledMemory
 	{
+		public int iID { get; private set; }
 		public Game.Item.ETypeMain eTypeMain { get; protected set; }
 		public int iTypeSub { get; protected set; }
 
 		public virtual void InitToCSV(CSVData.Battle.Item.Define csvData) 
 		{
+			iID = csvData.ID;
 			eTypeMain = (Game.Item.ETypeMain)csvData.TypeMain;
 			iTypeSub = csvData.TypeSub;
 		}
 	}
 
-	[System.Serializable]
 	public class Battle_ItemCommon : Battle_BaseItem
 	{
 		public override void InitToCSV(CSVData.Battle.Item.Define csvData)
@@ -29,7 +29,6 @@ namespace GGZ
 		}
 	}
 
-	[System.Serializable]
 	public class Battle_ItemEquipment : Battle_BaseItem
 	{
 		public enum EStatusType
@@ -41,6 +40,11 @@ namespace GGZ
 
 			MAX
 		}
+
+		public ObjectData.StatusBasic statBasic { get; protected set; } = new ObjectData.StatusBasic();
+		public ObjectData.StatusEffect statEffect { get; protected set; } = new ObjectData.StatusEffect();
+		public ObjectData.StatusBattle statBattle { get; protected set; } = new ObjectData.StatusBattle();
+		public ObjectData.StatusPlayer statPlayer { get; protected set; } = new ObjectData.StatusPlayer();
 
 		public override void InitToCSV(CSVData.Battle.Item.Define csvData)
 		{
@@ -66,11 +70,6 @@ namespace GGZ
 			get => (Game.Item.Equipment.EClass)Digit.OR(iTypeSub, 0xF0);
 			set => iTypeSub = Digit.OR(Digit.PICK(iTypeSub, 0xF0), (int)value);
 		}
-
-		public ObjectData.StatusBasic statBasic { get; protected set; } = new ObjectData.StatusBasic();
-		public ObjectData.StatusEffect statEffect { get; protected set; } = new ObjectData.StatusEffect();
-		public ObjectData.StatusBattle statBattle { get; protected set; } = new ObjectData.StatusBattle();
-		public ObjectData.StatusPlayer statPlayer { get; protected set; } = new ObjectData.StatusPlayer();
 
 		public ObjectData.StatusBase<float> GetStatusObject(EStatusType eType)
 		{

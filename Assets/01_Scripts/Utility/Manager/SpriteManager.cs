@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -160,6 +160,8 @@ namespace GGZ
 				Background_Loading,
 				Background_Main,
 				Background_Battle,
+
+				Field,
 				
 				UI,
 				

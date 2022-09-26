@@ -25,7 +25,7 @@ namespace GGZ
 		{
 			base.OnForward();
 			isPress = false;
-			SceneMain_Main.Single.mcsPage.FadeIn(3.0f);
+			SceneMain_OMain.Single.mcsPage.FadeIn(3.0f);
 		}
 
 		private void FixedUpdate()
@@ -43,7 +43,7 @@ namespace GGZ
 			if (isPress == false)
 			{
 				isPress = true;
-				SceneMain_Main.Single.mcsPage.FadeOut(2.0f, () => { SceneMain_Main.Single.mcsPage.OpenPage(EID.Main); });
+				SceneMain_OMain.Single.mcsPage.FadeOut(2.0f, () => { SceneMain_OMain.Single.mcsPage.OpenPage(EID.Main); });
 			}
 		}
 	}

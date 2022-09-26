@@ -14,14 +14,39 @@ namespace GGZ
 			Effect,
 			Object,
 			Stage,
+			Field,
 			UI,
 			MAX
 		}
+
+		public enum EImportSetting
+		{
+			// TextureImporter
+			TextureCompression,
+			M_TextureImporter,
+
+			// TextureImporterSettings
+			FilterMode,
+			SpritePixelsPerUnit,
+			SpriteMeshType,
+			M_TextureImporterSettings,
+
+			// PlatformTextureSettings
+			MaxTextureSize,
+			ResizeAlgorithm,
+			CompressionQuality,
+			M_PlatformTextureSettings,
+
+			MAX
+		}
+
+		private delegate bool delImportSettingFunc(ref object obj);
 
 		private static bool isInit = false;
 		private static string[] arrPathResource;
 		private static List<List<string>> listTexurePath;
 		private static List<HashSet<string>> listHsIgnoreFileName;
+		private static List<List<delImportSettingFunc>> listImportSettingFunc;		// Result : isDirty;
 
 		private static Queue<ETextureType> qSearchKey;
 
@@ -30,7 +55,7 @@ namespace GGZ
 			TextureImporter texImporter = (TextureImporter)assetImporter;
 			string[] strPath = texImporter.assetPath.Split('/');
 
-			// png ≈∏¿‘∏∏ »Æ¿Œ
+			// png ÌÉÄÏûÖÎßå ÌôïÏù∏
 			if (false == strPath.Back().EndsWith(".png", System.StringComparison.OrdinalIgnoreCase))
 				return;
 
@@ -72,19 +97,139 @@ namespace GGZ
 			listTexurePath.Back().Add("Stage");
 
 			listTexurePath.Add(new List<string>(listPathImage));
+			listTexurePath.Back().Add("Field");
+
+			listTexurePath.Add(new List<string>(listPathImage));
 			listTexurePath.Back().Add("UI");
 
-			listHsIgnoreFileName = new List<HashSet<string>>();
-			listHsIgnoreFileName.Resize((int)ETextureType.MAX);
 			InitIgnoreFileList();
+			InitImportSetting();
 
 			qSearchKey = new Queue<ETextureType>();
 		}
 
 		private static void InitIgnoreFileList()
 		{
+			listHsIgnoreFileName = new List<HashSet<string>>();
+			listHsIgnoreFileName.Resize((int)ETextureType.MAX);
+
 			listHsIgnoreFileName[(int)ETextureType.Stage].Add("Stage_001_Background.png");
 			listHsIgnoreFileName[(int)ETextureType.Stage].Add("Stage_001_Field.png");
+		}
+
+		private static void InitImportSetting()
+		{
+			listImportSettingFunc = new List<List<delImportSettingFunc>>();
+			listImportSettingFunc.Resize((int)ETextureType.MAX);
+
+			for (int i = 0; i < listImportSettingFunc.Count; ++i)
+			{
+				listImportSettingFunc[i].Resize((int)EImportSetting.MAX, () => null);
+			}
+
+			var listImport = listImportSettingFunc[(int)ETextureType.BaseImage];
+
+			listImport[(int)EImportSetting.TextureCompression] = (ref object obj) =>
+			{
+				TextureImporter ti = (TextureImporter)obj;
+
+				if (ti.textureCompression != TextureImporterCompression.Uncompressed)
+				{
+					ti.textureCompression = TextureImporterCompression.Uncompressed;
+					return true;
+				}
+				return false;
+			};
+			listImport[(int)EImportSetting.FilterMode] = (ref object obj) =>
+			{
+				TextureImporterSettings ti = (TextureImporterSettings)obj;
+
+				if (ti.filterMode != FilterMode.Point)
+				{
+					ti.filterMode = FilterMode.Point;
+					return true;
+				}
+				return false;
+			};
+			listImport[(int)EImportSetting.SpritePixelsPerUnit] = (ref object obj) =>
+			{
+				TextureImporterSettings ti = (TextureImporterSettings)obj;
+
+				if (ti.spritePixelsPerUnit != 20)
+				{
+					ti.spritePixelsPerUnit = 20;
+					return true;
+				}
+				return false;
+			};
+			listImport[(int)EImportSetting.SpriteMeshType] = (ref object obj) =>
+			{
+				TextureImporterSettings ti = (TextureImporterSettings)obj;
+
+				if (ti.spriteMeshType != SpriteMeshType.FullRect)
+				{
+					ti.spriteMeshType = SpriteMeshType.FullRect;
+					return true;
+				}
+				return false;
+			};
+			listImport[(int)EImportSetting.MaxTextureSize] = (ref object obj) =>
+			{
+				TextureImporterPlatformSettings ti = (TextureImporterPlatformSettings)obj;
+
+				if (ti.maxTextureSize != 512)
+				{
+					ti.maxTextureSize = 512;
+					return true;
+				}
+				return false;
+			};
+			listImport[(int)EImportSetting.ResizeAlgorithm] = (ref object obj) =>
+			{
+				TextureImporterPlatformSettings ti = (TextureImporterPlatformSettings)obj;
+				
+				if (ti.resizeAlgorithm != TextureResizeAlgorithm.Bilinear)
+				{
+					ti.resizeAlgorithm = TextureResizeAlgorithm.Bilinear;
+					return true;
+				}
+				return false;
+			};
+			listImport[(int)EImportSetting.CompressionQuality] = (ref object obj) =>
+			{
+				TextureImporterPlatformSettings ti = (TextureImporterPlatformSettings)obj;
+
+				if (ti.compressionQuality != 0)
+				{
+					ti.compressionQuality = 0;
+					return true;
+				}
+				return false;
+			};
+
+			listImport = listImportSettingFunc[(int)ETextureType.Field];
+			listImport[(int)EImportSetting.MaxTextureSize] = (ref object obj) =>
+			{
+				TextureImporterPlatformSettings ti = (TextureImporterPlatformSettings)obj;
+
+				if (ti.maxTextureSize != 1024)
+				{
+					ti.maxTextureSize = 1024;
+					return true;
+				}
+				return false;
+			};
+			listImport[(int)EImportSetting.SpritePixelsPerUnit] = (ref object obj) =>
+			{
+				TextureImporterSettings ti = (TextureImporterSettings)obj;
+
+				if (ti.spritePixelsPerUnit != 20)
+				{
+					ti.spritePixelsPerUnit = 20;
+					return true;
+				}
+				return false;
+			};
 		}
 
 		private static ETextureType CheckTextureImport(string[] strPath)
@@ -158,52 +303,53 @@ namespace GGZ
 				return isDirty;
 			}
 
-			if (importer.spritePixelsPerUnit != 20)
-			{
-				importer.spritePixelsPerUnit = 20;
-				isDirty = true;
-			}
-
-			if (importer.textureCompression != TextureImporterCompression.Uncompressed)
-			{
-				importer.textureCompression = TextureImporterCompression.Uncompressed;
-				isDirty = true;
-			}
-
-			if (importer.filterMode != FilterMode.Point)
-			{
-				importer.filterMode = FilterMode.Point;
-				isDirty = true;
-			}
-
-			if (importer.maxTextureSize != 512)
-			{
-				importer.maxTextureSize = 512;
-				isDirty = true;
-			}
-
 			TextureImporterSettings tSetting = new TextureImporterSettings();
 			importer.ReadTextureSettings(tSetting);
 
-			if (tSetting.spriteMeshType != SpriteMeshType.FullRect)
-			{
-				tSetting.spriteMeshType = SpriteMeshType.FullRect;
-				isDirty = true;
-			}
+			var tPlatformSetting = importer.GetDefaultPlatformTextureSettings();
 
-			switch (eType)
+			var listImportBase = listImportSettingFunc[(int)ETextureType.BaseImage];
+			var listImportTarget = listImportSettingFunc[(int)eType];
+
+			for (int i = 0; i < listImportTarget.Count; ++i)
 			{
-				case ETextureType.Character:
-				case ETextureType.Effect:
-				case ETextureType.Object:
-				case ETextureType.Stage:
-				case ETextureType.UI:
-					break;
-			}
+				EImportSetting eSetting = (EImportSetting)i;
+				delImportSettingFunc funcSetter = listImportTarget[(int)eSetting];
+
+				if (funcSetter == null)
+				{
+					funcSetter = listImportBase[(int)eSetting];
+
+					if (funcSetter == null)
+					{
+						continue;
+					}
+				}
+
+				object objSetting = null;
+				if (eSetting < EImportSetting.M_TextureImporter)
+				{
+					objSetting = importer;
+				}
+				else if (eSetting < EImportSetting.M_TextureImporterSettings)
+				{
+					objSetting = tSetting;
+				}
+				else if (eSetting < EImportSetting.M_PlatformTextureSettings)
+				{
+					objSetting = tPlatformSetting;
+				}
+
+				isDirty = funcSetter(ref objSetting) || isDirty;
+			}	
 
 			if (isDirty)
 			{
 				importer.SetTextureSettings(tSetting);
+				importer.SetPlatformTextureSettings(tPlatformSetting);
+
+				EditorUtility.SetDirty(importer);
+				importer.SaveAndReimport();
 			}
 
 			return isDirty;
@@ -223,7 +369,7 @@ namespace GGZ
 				{
 					long lSubProcessTime = GlobalUtility.Diagnostics.CheckTimeMS(() =>
 					{
-						// ∞¢ µ∑∫≈‰∏Æ¿« ≈ÿΩ∫√ƒ ø°º¬ √ﬂ√‚
+						// Í∞Å ÎîîÎ†âÌÜ†Î¶¨Ïùò ÌÖçÏä§Ï≥ê ÏóêÏÖã Ï∂îÏ∂ú
 						string strPath = string.Join<string>("/", listTexurePath[(int)iter]);
 						string[] strAssets = AssetDatabase.FindAssets("t:texture2D", new string[] { strPath });
 

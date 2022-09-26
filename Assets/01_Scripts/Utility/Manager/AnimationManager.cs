@@ -9,6 +9,7 @@ namespace GGZ
 			Unit,
 			Boss,
 			Effect,
+			Bullet,
 
 			MAX,
 		}

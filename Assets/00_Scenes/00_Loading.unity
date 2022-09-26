@@ -201,8 +201,14 @@ MonoBehaviour:
   listInput:
   - strPath: Battle/Anim
     listFile:
+    - AniGroupNameDev
     - AnimationData
     - AnimationGroup
+  - strPath: Battle/Item
+    listFile:
+    - Define
+    - Status
+    - WeaponEffect
   - strPath: Battle/Skill
     listFile:
     - BuffInfo
@@ -607,7 +613,7 @@ MonoBehaviour:
   listCollectPage:
   - {fileID: 489736031}
   - {fileID: 1281483846}
-  isLoadDevScene: 0
+  isLoadDevScene: 1
 --- !u!4 &897453560
 Transform:
   m_ObjectHideFlags: 0
@@ -884,6 +890,9 @@ MonoBehaviour:
   - strSpriteType: Background_Loading
     listSprite:
     - {fileID: 21300000, guid: 33b8ec0582e016749b424d1be9ad734b, type: 3}
+  - strSpriteType: Field
+    listSprite:
+    - {fileID: 21300000, guid: 8affbc40f4e0c6548bbc3d653e201025, type: 3}
 --- !u!4 &1281483847
 Transform:
   m_ObjectHideFlags: 0

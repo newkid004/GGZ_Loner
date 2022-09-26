@@ -19,7 +19,7 @@ namespace GGZ
 		[Header("Info : Line")]
 		public Battle_HLine hLine;
 		public int iContainIndex;
-		public float fDegreeByPrevPoint;    // ÀÌÀü »ç³É¼± ÁöÁ¡¿¡ ´ëÇÑ °¢µµ
+		public float fDegreeByPrevPoint;    // ì´ì „ ì‚¬ëƒ¥ì„  ì§€ì ì— ëŒ€í•œ ê°ë„
 
 		[Header("Info : Point")]
 		public List<Vector2> listLinePos = new List<Vector2>(new Vector2[] { Vector2.zero, Vector2.zero });
@@ -108,13 +108,15 @@ namespace GGZ
 				listLinePos[0] = Vector2.zero;
 			}
 
-			iObjectType = GlobalDefine.ObjectData.ObjectType.ciHuntLine;
+			iObjectType |= 
+				ObjectData.ObjectType.ciHuntLine |
+				ObjectData.ObjectType.ciAlly;
 		}
 
 		public override void OnPushedToPool()
 		{
 			Battle_BehaviourPlayer bhvPlayer = SceneMain_Battle.Single.charPlayer.behaviorOwn;
-			bhvPlayer.bhvHuntline.OnExitHuntZoneOutline(this);
+			bhvPlayer.bhvHuntline?.OnExitHuntZoneOutline(this);
 
 			Reset();
 
@@ -129,10 +131,10 @@ namespace GGZ
 			colEdge = GetComponent<EdgeCollider2D>();
 		}
 
-		// ¼±ºĞ °ª Àç°è»ê
+		// ì„ ë¶„ ê°’ ì¬ê³„ì‚°
 		public void RefreshLineInfo()
 		{
-			// À§Ä¡ Á¤º¸ ÀúÀå
+			// ìœ„ì¹˜ ì •ë³´ ì €ì¥
 			if (gameObject.layer == CollideLayer.HuntLineDrawing)
 			{
 				if (iContainIndex == 0)
@@ -157,7 +159,7 @@ namespace GGZ
 			}
 		}
 
-		// ¼± Á¤º¸ Àû¿ë : º¸À¯ÇÑ ¼±ºĞ°ªÀ» ÅëÇØ Ãâ·Â / Ãæµ¹ ÄÄÆ÷³ÍÆ® ÃÖ½ÅÈ­
+		// ì„  ì •ë³´ ì ìš© : ë³´ìœ í•œ ì„ ë¶„ê°’ì„ í†µí•´ ì¶œë ¥ / ì¶©ëŒ ì»´í¬ë„ŒíŠ¸ ìµœì‹ í™”
 		public void ApplyLine()
 		{
 			colEdge.SetPoints(listLinePos);
@@ -165,27 +167,27 @@ namespace GGZ
 			rdrLine.SetPosition(1, listLinePos[1]);
 		}
 
-		// ÀÛ¼ºÁßÀÎ »ç³É¼±À¸·Î Àû¿ë
+		// ì‘ì„±ì¤‘ì¸ ì‚¬ëƒ¥ì„ ìœ¼ë¡œ ì ìš©
 		public void ApplyDrawLine(bool isDrawing)
 		{
-			// Å¸ÀÔ ¼³Á¤
-			iObjectType = GlobalDefine.ObjectData.ObjectType.ciHuntLine;
+			// íƒ€ì… ì„¤ì •
+			iObjectType |= ObjectData.ObjectType.ciHuntLine;
 			gameObject.layer = isDrawing ? CollideLayer.HuntLineDrawing : CollideLayer.HuntLineDrawings;
 
 			colEdge.isTrigger = true;
 		}
 
-		// »ç³ÉÅÍ ¿Ü°û¼±À¸·Î Àû¿ë
+		// ì‚¬ëƒ¥í„° ì™¸ê³½ì„ ìœ¼ë¡œ ì ìš©
 		public void ApplyHuntZone(bool isHole)
 		{
-			// Å¸ÀÔ ¼³Á¤
+			// íƒ€ì… ì„¤ì •
 			gameObject.layer = CollideLayer.HuntLineDrawed;
 
 			iObjectType |= isHole ?
-				GlobalDefine.ObjectData.ObjectType.ciHuntZoneHole :
-				GlobalDefine.ObjectData.ObjectType.ciHuntZoneOutline;
+				ObjectData.ObjectType.ciHuntZoneHole :
+				ObjectData.ObjectType.ciHuntZoneOutline;
 
-			// Edge Collider »çÀÌ°ª º¸Á¤
+			// Edge Collider ì‚¬ì´ê°’ ë³´ì •
 			List<Vector2> listOutlineCollider = new List<Vector2>(listLinePos);
 			for (int i = 0; i < 2; ++i)
 			{
@@ -201,10 +203,10 @@ namespace GGZ
 			rdrLine.SetPosition(1, listOutlineCollider[1]);
 		}
 
-		// ÀÌÀü »ç³É¼± ÁöÁ¡¿¡ ´ëÇÑ °¢µµ °è»ê
+		// ì´ì „ ì‚¬ëƒ¥ì„  ì§€ì ì— ëŒ€í•œ ê°ë„ ê³„ì‚°
 		public void CalcOwnAngle(bool isCalcNextPointAngle, int iSetDirection = Direction8.ciDir_5)
 		{
-			// ÄÁÅ×ÀÌ³Ê ³» ±âÁ¸ °¢µµ Á¦°Å
+			// ì»¨í…Œì´ë„ˆ ë‚´ ê¸°ì¡´ ê°ë„ ì œê±°
 			if (null != hLine)
 			{
 				hLine.fWindingAngle -= this.fDegreeByPrevPoint;
@@ -212,8 +214,8 @@ namespace GGZ
 
 			Battle_HPoint hpPrev = PointPrev;
 
-			// 0¹øÂ° Index´Â °¢µµ 0
-			// ±× ¿Ü °è»ê
+			// 0ë²ˆì§¸ IndexëŠ” ê°ë„ 0
+			// ê·¸ ì™¸ ê³„ì‚°
 			if (this != hpPrev)
 			{
 				if (this.iContainIndex != 0)
@@ -247,7 +249,7 @@ namespace GGZ
 				}
 			}
 
-			// ÄÁÅ×ÀÌ³Ê ³» »õ °¢µµ ÀÔ·Â
+			// ì»¨í…Œì´ë„ˆ ë‚´ ìƒˆ ê°ë„ ì…ë ¥
 			if (null != hLine)
 			{
 				hLine.fWindingAngle += this.fDegreeByPrevPoint;
@@ -259,7 +261,7 @@ namespace GGZ
 		{
 			if (null != SceneMain_Battle.Single)
 			{
-				if (SceneMain_Battle.Single.mcsHZone.isDebug && GlobalUtility.Digit.Include(iObjectType, GlobalDefine.ObjectData.ObjectType.ciHuntZoneOutline))
+				if (SceneMain_Battle.Single.mcsHZone.isDebug && GlobalUtility.Digit.Include(iObjectType, ObjectData.ObjectType.ciHuntZoneOutline))
 				{
 					Gizmos.color = new Color(1, 0, 0);
 

@@ -77,7 +77,7 @@ public static class MethodExtend
 	// 	return list[GC.GetRandom(0, list.Count)];
 	// }
 
-	public static void Resize<T>(this List<T> list, int size, System.Func<T> initFunc)
+	public static void Resize<T>(this List<T> list, int size, System.Func<T> initFunc = null)
 	{
 		int cur = list.Count;
 		if (size < cur)
@@ -99,7 +99,7 @@ public static class MethodExtend
 		Resize(list, size, () => new T());
 	}
 
-	/// <summary> ¼±Çü ¼øÈ¸ ÈÄ, °íÀ¯ °ªÀÌ¶ó¸é Ãß°¡ ÈÄ true ¹İÈ¯ </summary>
+	/// <summary> ì„ í˜• ìˆœíšŒ í›„, ê³ ìœ  ê°’ì´ë¼ë©´ ì¶”ê°€ í›„ true ë°˜í™˜ </summary>
 	public static bool AddUnique<T>(this List<T> list, T obj)
 	{
 		if (list.Contains(obj))
@@ -175,7 +175,7 @@ public static class MethodExtend
 
 	#region // ----- Dictionary ----- //
 
-	#region Dictionary.LoopLinear - Dictionary enumerator ³» foreach¿¡ ÀÇÇÑ boxing, unboxing Â÷´Ü ¸Ş¼Òµå, 4.x¿¡¼± ¹Ì»ç¿ë
+	#region Dictionary.LoopLinear - Dictionary enumerator ë‚´ foreachì— ì˜í•œ boxing, unboxing ì°¨ë‹¨ ë©”ì†Œë“œ, 4.xì—ì„  ë¯¸ì‚¬ìš©
 
 	public static void LoopLinear<TKey, TValue>(this IDictionary<TKey, TValue> dict, System.Action<TValue> act)
 	{
@@ -184,8 +184,8 @@ public static class MethodExtend
 			act(listValue[i]);
 	}
 
-	/// <summary> boolÀ» ¹İÈ¯ÇÏ´Â Func·Î ¹İº¹¹® Á¦¾î °¡´É </summary>
-	/// <returns> break¸¦ ÅëÇØ Áß´ÜµÇ¾úÀ» °æ¿ì false </returns>
+	/// <summary> boolì„ ë°˜í™˜í•˜ëŠ” Funcë¡œ ë°˜ë³µë¬¸ ì œì–´ ê°€ëŠ¥ </summary>
+	/// <returns> breakë¥¼ í†µí•´ ì¤‘ë‹¨ë˜ì—ˆì„ ê²½ìš° false </returns>
 	public static bool LoopLinear<TKey, TValue>(this IDictionary<TKey, TValue> dict, System.Func<TValue, bool> act, bool isBreak = true)
 	{
 		List<TValue> listValue = new List<TValue>(dict.Values);
@@ -209,8 +209,8 @@ public static class MethodExtend
 			act(listKey[i]);
 	}
 
-	/// <summary> boolÀ» ¹İÈ¯ÇÏ´Â Func·Î ¹İº¹¹® Á¦¾î °¡´É </summary>
-	/// <returns> break¸¦ ÅëÇØ Áß´ÜµÇ¾úÀ» °æ¿ì false </returns>
+	/// <summary> boolì„ ë°˜í™˜í•˜ëŠ” Funcë¡œ ë°˜ë³µë¬¸ ì œì–´ ê°€ëŠ¥ </summary>
+	/// <returns> breakë¥¼ í†µí•´ ì¤‘ë‹¨ë˜ì—ˆì„ ê²½ìš° false </returns>
 	public static bool LoopLinear<TKey, TValue>(this IDictionary<TKey, TValue> dict, System.Func<TKey, bool> act, bool isBreak = true)
 	{
 		List<TKey> listKey = new List<TKey>(dict.Keys);
@@ -232,8 +232,8 @@ public static class MethodExtend
 		LoopLinear(dict, key => action(key, dict[key]));
 	}
 
-	/// <summary> boolÀ» ¹İÈ¯ÇÏ´Â Func·Î ¹İº¹¹® Á¦¾î °¡´É </summary>
-	/// <returns> break¸¦ ÅëÇØ Áß´ÜµÇ¾úÀ» °æ¿ì false </returns>
+	/// <summary> boolì„ ë°˜í™˜í•˜ëŠ” Funcë¡œ ë°˜ë³µë¬¸ ì œì–´ ê°€ëŠ¥ </summary>
+	/// <returns> breakë¥¼ í†µí•´ ì¤‘ë‹¨ë˜ì—ˆì„ ê²½ìš° false </returns>
 	public static bool LoopLinear<TKey, TValue>(this IDictionary<TKey, TValue> dict, System.Func<TKey, TValue, bool> act, bool isBreak = true)
 	{
 		return LoopLinear(dict, key => act(key, dict[key]), isBreak);
@@ -251,7 +251,7 @@ public static class MethodExtend
 	public class RequireStruct<T> where T : struct { private RequireStruct() { } }
 	public class RequireClass<T> where T : class { private RequireClass() { } }
 
-	#region Dictionary.GetSafe - °ª È¹µæ, ½ÇÆĞ ½Ã Ãß°¡
+	#region Dictionary.GetSafe - ê°’ íšë“, ì‹¤íŒ¨ ì‹œ ì¶”ê°€
 
 	public static TDerive GetSafe<TKey, TValue, TDerive>(this IDictionary<TKey, TValue> dict, TKey key, TValue defValue = null, RequireClass<TDerive> PleaseIgnoreThisParameter = null)
 		where TValue : class
@@ -296,7 +296,7 @@ public static class MethodExtend
 
 	#endregion
 
-	#region Dictionary.GetDef - °ª È¹µæ, ½ÇÆĞ ½Ã Default ¹İÈ¯
+	#region Dictionary.GetDef - ê°’ íšë“, ì‹¤íŒ¨ ì‹œ Default ë°˜í™˜
 
 	public static TDerive GetDef<TKey, TValue, TDerive>(this IDictionary<TKey, TValue> dict, TKey key, TValue defValue = null, RequireClass<TDerive> PleaseIgnoreThisParameter = null)
 		where TValue : class
@@ -330,7 +330,7 @@ public static class MethodExtend
 
 	#endregion
 
-	#region Dictionary.SetSafe - °ª ¼³Á¤, ½ÇÆĞ ½Ã Ãß°¡
+	#region Dictionary.SetSafe - ê°’ ì„¤ì •, ì‹¤íŒ¨ ì‹œ ì¶”ê°€
 
 	public static TDerive SetSafe<TKey, TValue, TDerive>(this IDictionary<TKey, TValue> dict, TKey key, TValue value, RequireClass<TDerive> PleaseIgnoreThisParameter = null)
 		where TValue : class
@@ -371,7 +371,7 @@ public static class MethodExtend
 
 	#endregion
 
-	#region Dictionary.ActSafe - °ª Á¶ÀÛ, ½ÇÆĞ ½Ã Ãß°¡
+	#region Dictionary.ActSafe - ê°’ ì¡°ì‘, ì‹¤íŒ¨ ì‹œ ì¶”ê°€
 
 	public static TValue ActSafe<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, System.Action<bool, TValue> act, RequireStruct<TValue> PleaseIgnoreThisParameter = null)
 		where TValue : struct
@@ -464,6 +464,11 @@ public static class MethodExtend
 		v.x = (cos * tx) - (sin * ty);
 		v.y = (sin * tx) + (cos * ty);
 		return v;
+	}
+
+	public static Vector3 Vec3(this Vector2 v)
+	{
+		return new Vector3(v.x, v.y, 0);
 	}
 
 	// ----- Transform ----- //

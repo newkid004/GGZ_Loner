@@ -9,15 +9,33 @@ namespace GGZ
 	public class Battle_BehaviourPlayer : Battle_BaseBehaviour
 	{
 		// Char Ref
-		public new Battle_CharacterPlayer characterOwn { get => (Battle_CharacterPlayer)base.characterOwn; }
-
-		public Battle_BhvPlayerHuntline bhvHuntline { get; protected set; }
-		public Battle_BhvPlayerBullet bhvBullet { get; protected set; }
-
-		public Battle_BehaviourPlayer()
+		public new Battle_CharacterPlayer characterOwn 
 		{
-			bhvHuntline = new Battle_BhvPlayerHuntline(this);
-			bhvBullet = new Battle_BhvPlayerBullet(this);
+			get => (Battle_CharacterPlayer)base.characterOwn; 
+			set => base.characterOwn = value;
+		}
+
+		public Battle_BhvModulePlayerHuntline bhvHuntline { get; protected set; }
+		public Battle_BhvModulePlayerAttack bhvBullet { get; protected set; }
+
+		public override void Init(Battle_BaseCharacter initChar)
+		{
+			base.Init(initChar);
+
+			bhvHuntline = new Battle_BhvModulePlayerHuntline(this);
+
+			Game.Item.Equipment.EClass eWeaponClass = MainManager.Single.player.eClass;
+
+			switch (eWeaponClass)
+			{
+				case Game.Item.Equipment.EClass.Summon: break;
+				case Game.Item.Equipment.EClass.Worrier: break;
+				case Game.Item.Equipment.EClass.Caster: break;
+				case Game.Item.Equipment.EClass.Explorer: break;
+				case Game.Item.Equipment.EClass.Gunner: bhvBullet = new Battle_BhvModulePAGunner(this); break;
+			}
+
+			bhvBullet.isFire = true;
 		}
 
 		private void OnCollisionEnter2D(Collision2D collision) => bhvHuntline.OnCollisionEnter2D(collision);
@@ -30,7 +48,10 @@ namespace GGZ
 
 		private void Update()
 		{
+			float fTime = Time.deltaTime;
+
 			bhvHuntline.Update();
+			bhvBullet.Update(fTime);
 		}
 	}
 }

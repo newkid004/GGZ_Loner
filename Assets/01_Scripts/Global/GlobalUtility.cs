@@ -1,4 +1,4 @@
-﻿#define _USE_CLIPPER_
+#define _USE_CLIPPER_
 
 using System;
 using System.Collections;
@@ -371,6 +371,7 @@ namespace GGZ
 			public static int OR(int iSource, int iValue) => iSource | iValue;
 			public static int ELSE(int iSource) => ~iSource;
 			public static int PICK(int iSource, int iValue) => AND(iSource, ELSE(iValue));
+			public static int BOOL(int iSource, int iValue, bool b) => b ? OR(iSource, iValue) : PICK(iSource, iValue);
 		}
 
 		// UI 관련

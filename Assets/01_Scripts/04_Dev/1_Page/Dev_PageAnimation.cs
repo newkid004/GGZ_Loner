@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,8 +38,8 @@ namespace GGZ
 			}
 
 			public Dropdown dropdown;
-			public int iSelectionIndex = 0;
-
+			
+			[HideInInspector] public int iSelectionIndex = 0;
 			[SerializeField] public List<Selectable> listLinkedSelection = new List<Selectable>();
 
 			public string strSelection => dropdown.options[iSelectionIndex].text;
@@ -96,18 +98,18 @@ namespace GGZ
 			bool isPopup = true;
 			Dev_PopupTextSubmit.Info initInfo = new Dev_PopupTextSubmit.Info();
 
-			initInfo.strTitle = "Ç×¸ñ Ãß°¡ : ¾Ö´Ï¸ŞÀÌ¼Ç";
+			initInfo.strTitle = "í•­ëª© ì¶”ê°€ : ì• ë‹ˆë©”ì´ì…˜";
 
 			switch ((AniSelectionItem.EType)iAniAddTypeSelectionIndex)
 			{
 				case AniSelectionItem.EType.UnitID:
 				{
-					initInfo.strDescription = "Ãß°¡µÉ ¾Ö´Ï¸ŞÀÌ¼Ç À¯´Ö ID¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.\n(¼ıÀÚ)";
+					initInfo.strDescription = "ì¶”ê°€ë  ì• ë‹ˆë©”ì´ì…˜ ìœ ë‹› IDë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.\n(ìˆ«ì)";
 					initInfo.actSubmit = (str) =>
 					{
 						bool isErrorAlert = true;
 						Dev_PopupAlert.Info initInfoAlert = new Dev_PopupAlert.Info();
-						initInfoAlert.strTitle = "¿À·ù - Ç×¸ñ Ãß°¡ : ¾Ö´Ï¸ŞÀÌ¼Ç";
+						initInfoAlert.strTitle = "ì˜¤ë¥˜ - í•­ëª© ì¶”ê°€ : ì• ë‹ˆë©”ì´ì…˜";
 
 						if (int.TryParse(str, out int iUnitID))
 						{
@@ -126,12 +128,12 @@ namespace GGZ
 							}
 							else
 							{
-								initInfoAlert.strDescription = $"ÀÌ¹Ì Á¸ÀçÇÏ´Â ID ÀÔ´Ï´Ù.\n{iUnitID}, {strUnitName}";
+								initInfoAlert.strDescription = $"ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ID ì…ë‹ˆë‹¤.\n{iUnitID}, {strUnitName}";
 							}
 						}
 						else
 						{
-							initInfoAlert.strDescription = "¿Ã¹Ù¸£Áö ¾ÊÀº ID ÀÔ´Ï´Ù.\n" + str;
+							initInfoAlert.strDescription = "ì˜¬ë°”ë¥´ì§€ ì•Šì€ ID ì…ë‹ˆë‹¤.\n" + str;
 						}
 
 						if (isErrorAlert)
@@ -144,7 +146,7 @@ namespace GGZ
 
 				case AniSelectionItem.EType.AniName:
 				{
-					initInfo.strDescription = "Ãß°¡µÉ ¸íÄªÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.\n";
+					initInfo.strDescription = "ì¶”ê°€ë  ëª…ì¹­ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.\n";
 					initInfo.actSubmit = (str) =>
 					{
 						bool isErrorAlert = true;
@@ -170,8 +172,8 @@ namespace GGZ
 						if (isErrorAlert)
 						{
 							Dev_PopupAlert.Info initInfoAlert = new Dev_PopupAlert.Info();
-							initInfoAlert.strTitle = "¿À·ù - Ç×¸ñ Ãß°¡ : ¾Ö´Ï¸ŞÀÌ¼Ç";
-							initInfoAlert.strDescription = $"ÀÌ¹Ì Á¸ÀçÇÏ´Â ¸íÄªÀÔ´Ï´Ù.\n{str}";
+							initInfoAlert.strTitle = "ì˜¤ë¥˜ - í•­ëª© ì¶”ê°€ : ì• ë‹ˆë©”ì´ì…˜";
+							initInfoAlert.strDescription = $"ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ëª…ì¹­ì…ë‹ˆë‹¤.\n{str}";
 							Dev_PopupBase.Get<Dev_PopupAlert>().Init(initInfoAlert).Open();
 						}
 					};
@@ -209,7 +211,7 @@ namespace GGZ
 		{
 			Dev_PopupYorNSubmit.Info initInfo = new Dev_PopupYorNSubmit.Info();
 
-			initInfo.strTitle = "Ç×¸ñ Á¦°Å : ¾Ö´Ï¸ŞÀÌ¼Ç";
+			initInfo.strTitle = "í•­ëª© ì œê±° : ì• ë‹ˆë©”ì´ì…˜";
 			initInfo.strDescription = string.Empty;
 
 			AniSelectionItem itemType = listAniSelectionItem[(int)AniSelectionItem.EType.AniType];
@@ -223,7 +225,7 @@ namespace GGZ
 			{
 				case AniSelectionItem.EType.UnitID:
 				{
-					initInfo.strDescription += "ÇÏÀ§ Ç×¸ñµµ ¸ğµÎ Á¦°ÅµË´Ï´Ù.\n°è¼Ó ÁøÇàÇÒ±î¿ä?";
+					initInfo.strDescription += "í•˜ìœ„ í•­ëª©ë„ ëª¨ë‘ ì œê±°ë©ë‹ˆë‹¤.\nê³„ì† ì§„í–‰í• ê¹Œìš”?";
 					initInfo.actYes = () =>
 					{
 						dictSelectionType.Remove(itemUnit.iSelectionIndex);
@@ -236,7 +238,7 @@ namespace GGZ
 
 				case AniSelectionItem.EType.AniName:
 				{
-					initInfo.strDescription += "ÇÏÀ§ Ç×¸ñµµ ¸ğµÎ Á¦°ÅµË´Ï´Ù.\n°è¼Ó ÁøÇàÇÒ±î¿ä?";
+					initInfo.strDescription += "í•˜ìœ„ í•­ëª©ë„ ëª¨ë‘ ì œê±°ë©ë‹ˆë‹¤.\nê³„ì† ì§„í–‰í• ê¹Œìš”?";
 					initInfo.actYes = () =>
 					{
 						int iUnitID = int.Parse(itemUnit.strSelection.Split(',')[0]);
@@ -252,7 +254,7 @@ namespace GGZ
 
 				case AniSelectionItem.EType.AniData:
 				{
-					// Áï½Ã ½ÇÇà
+					// ì¦‰ì‹œ ì‹¤í–‰
 					int iUnitID = int.Parse(itemUnit.strSelection.Split(',')[0]);
 
 					string str = itemName.strSelection;
@@ -271,7 +273,7 @@ namespace GGZ
 		{
 			Dev_PopupTextSubmit.Info initInfo = new Dev_PopupTextSubmit.Info();
 
-			initInfo.strTitle = "Ç×¸ñ ¼öÁ¤ : ¾Ö´Ï¸ŞÀÌ¼Ç";
+			initInfo.strTitle = "í•­ëª© ìˆ˜ì • : ì• ë‹ˆë©”ì´ì…˜";
 
 			AniSelectionItem itemType = listAniSelectionItem[(int)AniSelectionItem.EType.AniType];
 			AniSelectionItem itemUnit = listAniSelectionItem[(int)AniSelectionItem.EType.UnitID];
@@ -285,7 +287,7 @@ namespace GGZ
 				{
 					int iUnitIDOld = int.Parse(itemUnit.strSelection.Split(',')[0]);
 
-					initInfo.strDescription = "¼öÁ¤µÉ ¾Ö´Ï¸ŞÀÌ¼Ç À¯´Ö ID¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.\n(¼ıÀÚ)";
+					initInfo.strDescription = "ìˆ˜ì •ë  ì• ë‹ˆë©”ì´ì…˜ ìœ ë‹› IDë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.\n(ìˆ«ì)";
 					initInfo.actSubmit = (str) =>
 					{
 						bool isErrorAlert = true;
@@ -307,12 +309,12 @@ namespace GGZ
 							}
 							else
 							{
-								initInfoAlert.strDescription = $"ÀÌ¹Ì Á¸ÀçÇÏ´Â ID ÀÔ´Ï´Ù.\n{iUnitID}, {itemUnit.strSelection}";
+								initInfoAlert.strDescription = $"ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ID ì…ë‹ˆë‹¤.\n{iUnitID}, {itemUnit.strSelection}";
 							}
 						}
 						else
 						{
-							initInfoAlert.strDescription = "¿Ã¹Ù¸£Áö ¾ÊÀº ID ÀÔ´Ï´Ù.\n" + str;
+							initInfoAlert.strDescription = "ì˜¬ë°”ë¥´ì§€ ì•Šì€ ID ì…ë‹ˆë‹¤.\n" + str;
 						}
 
 						if (isErrorAlert)
@@ -325,7 +327,7 @@ namespace GGZ
 
 				case AniSelectionItem.EType.AniName:
 				{
-					initInfo.strDescription = "¼öÁ¤µÉ ¸íÄªÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.\n";
+					initInfo.strDescription = "ìˆ˜ì •ë  ëª…ì¹­ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.\n";
 					initInfo.actSubmit = (str) =>
 					{
 						bool isErrorAlert = true;
@@ -348,8 +350,8 @@ namespace GGZ
 						if (isErrorAlert)
 						{
 							Dev_PopupAlert.Info initInfoAlert = new Dev_PopupAlert.Info();
-							initInfoAlert.strTitle = "¿À·ù - Ç×¸ñ Ãß°¡ : ¾Ö´Ï¸ŞÀÌ¼Ç";
-							initInfoAlert.strDescription = $"ÀÌ¹Ì Á¸ÀçÇÏ´Â ¸íÄªÀÔ´Ï´Ù.\n{str}";
+							initInfoAlert.strTitle = "ì˜¤ë¥˜ - í•­ëª© ì¶”ê°€ : ì• ë‹ˆë©”ì´ì…˜";
+							initInfoAlert.strDescription = $"ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ëª…ì¹­ì…ë‹ˆë‹¤.\n{str}";
 							Dev_PopupBase.Get<Dev_PopupAlert>().Init(initInfoAlert).Open();
 						}
 					};
@@ -362,7 +364,7 @@ namespace GGZ
 
 		public void OnChangeAniSelectionItem(int iDropdownItemIndex)
 		{
-			// ¸Ş´º ºñÈ°¼ºÈ­ ( ¼±ÅÃÇÑ Ç×¸ñÀº ºñÈ°¼ºÈ­ X )
+			// ë©”ë‰´ ë¹„í™œì„±í™” ( ì„ íƒí•œ í•­ëª©ì€ ë¹„í™œì„±í™” X )
 			for (int i = iAniSelectionItemIndex + 1; i < (int)AniSelectionItem.EType.MAX; ++i)
 			{
 				AniSelectionItem item = listAniSelectionItem[i];
@@ -375,13 +377,13 @@ namespace GGZ
 				}
 			}
 
-			// °¢ µå·Ó´Ù¿î¿¡¼­ ¼±ÅÃÇÑ Ç×¸ñ Index ÀúÀå
+			// ê° ë“œë¡­ë‹¤ìš´ì—ì„œ ì„ íƒí•œ í•­ëª© Index ì €ì¥
 			if (-1 < iDropdownItemIndex)
 			{
 				listAniSelectionItem[iAniSelectionItemIndex].iSelectionIndex = iDropdownItemIndex;
 			}
 
-			// Local function : Dropdown ÃÖ½ÅÈ­
+			// Local function : Dropdown ìµœì‹ í™”
 			void RefreshDropdown(AniSelectionItem.EType eType, List<string> listOption)
 			{
 				AniSelectionItem item = listAniSelectionItem[(int)eType];
@@ -391,13 +393,13 @@ namespace GGZ
 				item.listLinkedSelection.ForEach(sel => sel.interactable = item.dropdown.interactable);
 			}
 
-			// Local function : Dropdown ¿É¼Ç °ËÁõ
+			// Local function : Dropdown ì˜µì…˜ ê²€ì¦
 			bool CheckItemType(AniSelectionItem.EType eType)
 			{
 				return iAniSelectionItemIndex <= (int)eType && listAniSelectionItem[(int)eType].dropdown.interactable;
 			}
 
-			// Å¸ÀÔº° Ç×¸ñ ÃÊ±âÈ­, ÀÛ¼º
+			// íƒ€ì…ë³„ í•­ëª© ì´ˆê¸°í™”, ì‘ì„±
 			if (iAniSelectionItemIndex <= (int)AniSelectionItem.EType.None)
 			{
 				List<string> listOption = new List<string>();
@@ -415,27 +417,35 @@ namespace GGZ
 
 				List<string> listOption = new List<string>();
 
+				System.Func<int, string> funcGetter = null;
+
 				switch (itemType.iSelectionIndex)
 				{
-					case 0:
-					case 2:
-					AnimationManager.Single.listModule[itemType.iSelectionIndex].ForEach((iUnitID, dict) =>
-					{
-						string strName = CSVData.Battle.Status.Unit.Manager.Get(iUnitID).Name;
-						dictSelectionUnit.Add(iUnitID, strName);
-						listOption.Add($"{iUnitID},{strName}");
-					});;
-					break;
+					case (int)AnimationManager.EAniType.Unit: funcGetter = (id) => CSVData.Battle.Status.Unit.Manager.Get(id)?.Name; break;
+					case (int)AnimationManager.EAniType.Boss: funcGetter = (id) => CSVData.Battle.Status.Boss.Manager.Get(id)?.Name; break;
 
-					case 1:
-					AnimationManager.Single.listModule[itemType.iSelectionIndex].ForEach((iUnitID, dict) =>
+					case (int)AnimationManager.EAniType.Effect: 
+					case (int)AnimationManager.EAniType.Bullet:
 					{
-						string strName = CSVData.Battle.Status.Boss.Manager.Get(iUnitID).Name;
-						dictSelectionUnit.Add(iUnitID, strName);
-						listOption.Add($"{iUnitID},{strName}");
-					});
-					break;
+						funcGetter = (id) => CSVData.Battle.Anim.AniGroupNameDev.Manager.Get((itemType.iSelectionIndex, id))?.Name;
+						break;
+					}
+#if _debug
+					default:
+					{
+						string strError = $"{this.GetType().Name} : {System.Reflection.MethodBase.GetCurrentMethod().Name}\n";
+						Debug.LogError(strError + $"Invalid AniType ({itemType.iSelectionIndex})");
+						return;
+					}
+#endif
 				}
+
+				AnimationManager.Single.listModule[itemType.iSelectionIndex].ForEach((iID, dict) =>
+				{
+					string strName = funcGetter(iID);
+					dictSelectionUnit.Add(iID, strName);
+					listOption.Add($"{iID},{strName}");
+				});
 
 				RefreshDropdown(AniSelectionItem.EType.UnitID, listOption);
 			}
@@ -585,7 +595,7 @@ namespace GGZ
 		{
 			if (Input.GetKey(KeyCode.LeftControl))
 			{
-				if (Input.GetKeyDown(KeyCode.E)) // Equal ( »çÀÌ¿¡ ¼±ÅÃµÈ ¸¶Å©µéÀ» ¸ğµÎ °°Àº °£°İÀ¸·Î )
+				if (Input.GetKeyDown(KeyCode.E)) // Equal ( ì‚¬ì´ì— ì„ íƒëœ ë§ˆí¬ë“¤ì„ ëª¨ë‘ ê°™ì€ ê°„ê²©ìœ¼ë¡œ )
 				{
 					if (3 <= slistSelectMarkIndex.Count)
 					{
@@ -616,7 +626,7 @@ namespace GGZ
 					}
 				}
 
-				if (Input.GetKeyDown(KeyCode.A)) // All ( ¸ğµç ¸¶Å© ¼±ÅÃ )
+				if (Input.GetKeyDown(KeyCode.A)) // All ( ëª¨ë“  ë§ˆí¬ ì„ íƒ )
 				{
 					slistSelectMarkIndex.Clear();
 
@@ -686,7 +696,7 @@ namespace GGZ
 			if (aniModule.isPlay)
 			{
 				aniModule.Pause();
-				txtAniPlay.text = "¢º";
+				txtAniPlay.text = "â–¶";
 			}
 			else
 			{
@@ -708,7 +718,7 @@ namespace GGZ
 			aniModule.Stop();
 			sldAniSection.value = 0;
 
-			txtAniPlay.text = "¢º";
+			txtAniPlay.text = "â–¶";
 		}
 
 		public void OnComplateAnimation(bool isComplate, bool isRepeat)
@@ -926,7 +936,7 @@ namespace GGZ
 			Dev_PopupSimpleAlert.Info info = new Dev_PopupSimpleAlert.Info();
 			info.fViewTime = 1;
 			info.fDisposeTime = 0.5f;
-			info.strDescription = "ÀúÀå ¿Ï·á";
+			info.strDescription = "ì €ì¥ ì™„ë£Œ";
 
 			Dev_PopupBase.Get<Dev_PopupSimpleAlert>().Init(info).Open();
 		}
@@ -943,7 +953,7 @@ namespace GGZ
 			Dev_PopupSimpleAlert.Info info = new Dev_PopupSimpleAlert.Info();
 			info.fViewTime = 1;
 			info.fDisposeTime = 0.5f;
-			info.strDescription = "ºÒ·¯¿À±â ¿Ï·á";
+			info.strDescription = "ë¶ˆëŸ¬ì˜¤ê¸° ì™„ë£Œ";
 
 			Dev_PopupBase.Get<Dev_PopupSimpleAlert>().Init(info).Open();
 		}
@@ -1011,7 +1021,7 @@ namespace GGZ
 
 			var pair = adSelection.listPair.Back();
 
-			// ¸¶Áö¸· ºÎºĞÀ» ±âÁ¸¿¡ ÀÖ´ø ±¸°£º¸´Ù ÀÛ°ÔÇÒ ¼ö ¾øÀ½
+			// ë§ˆì§€ë§‰ ë¶€ë¶„ì„ ê¸°ì¡´ì— ìˆë˜ êµ¬ê°„ë³´ë‹¤ ì‘ê²Œí•  ìˆ˜ ì—†ìŒ
 			if (fSetLength < fNowLength - pair.timeLength)
 				return;
 
@@ -1068,7 +1078,7 @@ namespace GGZ
 		{
 			if (pobjSelectionModifyItem == null || pobjSelectionModifyItem.imgThumbnail == null)
 			{
-				Debug.LogWarning("¼±ÅÃµÈ ½ºÇÁ¶óÀÌÆ®°¡ ¾øÀ½");
+				Debug.LogWarning("ì„ íƒëœ ìŠ¤í”„ë¼ì´íŠ¸ê°€ ì—†ìŒ");
 				return;
 			}
 
@@ -1082,7 +1092,7 @@ namespace GGZ
 		{
 			if (pobjSelectionModifyItem == null || pobjSelectionModifyItem.imgThumbnail == null)
 			{
-				Debug.LogWarning("¼±ÅÃµÈ ½ºÇÁ¶óÀÌÆ®°¡ ¾øÀ½");
+				Debug.LogWarning("ì„ íƒëœ ìŠ¤í”„ë¼ì´íŠ¸ê°€ ì—†ìŒ");
 				return;
 			}
 

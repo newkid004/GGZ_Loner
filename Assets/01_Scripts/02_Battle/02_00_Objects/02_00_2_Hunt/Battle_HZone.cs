@@ -15,16 +15,16 @@ namespace GGZ
 		public MeshFilter filMesh;
 		public MeshRenderer rdrMesh;
 
-		public Vector2 vec2Center;										// Áß½É À§Ä¡
-		public List<List<Battle_HPoint>> listDirectionalPoint;			// ÆÈºĞ¸é ±âÁØ »ç³ÉÁ¡ Ä³½Ì
+		public Vector2 vec2Center;										// ì¤‘ì‹¬ ìœ„ì¹˜
+		public List<List<Battle_HPoint>> listDirectionalPoint;			// íŒ”ë¶„ë©´ ê¸°ì¤€ ì‚¬ëƒ¥ì  ìºì‹±
 
 		[Header("Ref : HuntZoneOutline")]
-		public Battle_HLine lineEdge;									// ¿ÜºÎ »ç³ÉÅÍ ¿Ü°û¼±
+		public Battle_HLine lineEdge;									// ì™¸ë¶€ ì‚¬ëƒ¥í„° ì™¸ê³½ì„ 
 		
 		[Header("Ref : HuntZoneHole")]
-		public HashSet<Battle_HLine> hsHlcHoles;						// ³»ºÎ ±¸¸Û ¿Ü°û¼±
+		public HashSet<Battle_HLine> hsHlcHoles;						// ë‚´ë¶€ êµ¬ë© ì™¸ê³½ì„ 
 
-		// »ï°¢ °è»ê ÂüÁ¶
+		// ì‚¼ê° ê³„ì‚° ì°¸ì¡°
 		public Poly2Mesh.Polygon p2mPolygon { get; private set; }
 
 		protected override void Init()
@@ -40,7 +40,9 @@ namespace GGZ
 
 			hsHlcHoles = new HashSet<Battle_HLine>();
 
-			base.iObjectType |= ObjectData.ObjectType.ciHuntZone;
+			base.iObjectType |= 
+				ObjectData.ObjectType.ciHuntZone |
+				ObjectData.ObjectType.ciAlly;
 			// base.iAttribute |= ObjectData.Attribute.ciBasic_Character;
 
 			p2mPolygon = new Poly2Mesh.Polygon();
@@ -119,12 +121,12 @@ namespace GGZ
 			filMesh.mesh = Poly2Mesh.CreateMesh(p2mPolygon);
 		}
 
-		// ÇöÀç Zone¿¡ À§Ä¡ÇÑ °´Ã¼ Å½»ö / È¹µæ
+		// í˜„ì¬ Zoneì— ìœ„ì¹˜í•œ ê°ì²´ íƒìƒ‰ / íšë“
 		public bool SearchPlacedObject(out List<ValueTuple<Battle_BaseObject, int>> listOutput, int iObjectTypeFilterFlag, int iObjectLayer = CollideLayer.flagZoneIntersectBasic)
 		{
-			/* <Æ©ÇÃ Çü½Ä>
-			 * 1 : Battle_BaseObject	: À§Ä¡ÇÑ °´Ã¼
-			 * 2 : int					: À§Ä¡ÇÑ °´Ã¼ Å¸ÀÔ
+			/* <íŠœí”Œ í˜•ì‹>
+			 * 1 : Battle_BaseObject	: ìœ„ì¹˜í•œ ê°ì²´
+			 * 2 : int					: ìœ„ì¹˜í•œ ê°ì²´ íƒ€ì…
 			 */
 
 			listOutput = null;
@@ -159,13 +161,13 @@ namespace GGZ
 		public override void TriggeredByHuntZoneExtendPlaced(Battle_HZone hzSpawned, List<Vector2> listExtendPoint)
 		{
 			base.TriggeredByHuntZoneExtendPlaced(hzSpawned, listExtendPoint);
-			// Container¿¡¼­ È£Ãâ Áß ( Push Æ÷ÇÔ!! )
+			// Containerì—ì„œ í˜¸ì¶œ ì¤‘ ( Push í¬í•¨!! )
 		}
 
 		public override void TriggeredByHuntZoneSpawnPlaced(Battle_HZone hzSpawned)
 		{
 			base.TriggeredByHuntZoneSpawnPlaced(hzSpawned);
-			// Container¿¡¼­ È£Ãâ Áß ( Push Æ÷ÇÔ!! )
+			// Containerì—ì„œ í˜¸ì¶œ ì¤‘ ( Push í¬í•¨!! )
 		}
 
 		public override void TriggeredByHuntZoneDamagedPlaced(Battle_HZone hzSpawned)
@@ -173,7 +175,7 @@ namespace GGZ
 			base.TriggeredByHuntZoneDamagedPlaced(hzSpawned);
 
 #if _debug
-			// Å×½ºÆ® : ¹İÂ¦ÀÌ
+			// í…ŒìŠ¤íŠ¸ : ë°˜ì§ì´
 			Color clrSource = rdrMesh.material.color;
 			rdrMesh.material.color = Color.red;
 			rdrMesh.material.DOColor(clrSource, 0.5f);

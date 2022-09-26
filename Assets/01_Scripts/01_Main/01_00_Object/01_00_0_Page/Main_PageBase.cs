@@ -28,7 +28,7 @@ namespace GGZ
 
 		public Main_PopupBase AddPopup(Main_PopupBase.EType eType) 
 		{
-			Main_PopupBase popup = SceneMain_Main.Single.mcsPopup.Pop(eType, this.transform);
+			Main_PopupBase popup = SceneMain_OMain.Single.mcsPopup.Pop(eType, this.transform);
 
 			List<Main_PopupBase> listActivePopup = dictActivePopupList.GetSafe((int)eType);
 			listActivePopup.Add(popup);
@@ -48,7 +48,7 @@ namespace GGZ
 				OnDelPopup(popup);
 				popup.OnDisablePopup(this);
 
-				SceneMain_Main.Single.mcsPopup.Push(popup);
+				SceneMain_OMain.Single.mcsPopup.Push(popup);
 			}
 #if _debug
 			else

@@ -26,14 +26,14 @@ namespace GGZ
 
 		public void Init()
 		{
-			InitPlayerCharacter();
+			InitPlayerCharacterPos();
 		}
 
-		private void InitPlayerCharacter()
+		private void InitPlayerCharacterPos()
 		{
 			Battle_CharacterPlayer charPlayer = SceneMain_Battle.Single.charPlayer;
 
-			// ÃÊ±â »ç³ÉÅÍ¿¡ ÇÃ·¹ÀÌ¾î À§Ä¡ ¼³Á¤
+			// ì´ˆê¸° ì‚¬ëƒ¥í„°ì— í”Œë ˆì´ì–´ ìœ„ì¹˜ ì„¤ì •
 			Battle_HZone hzFirst = SceneMain_Battle.Single.mcsHZone.zoneStart;
 
 			Vector2 vec2MinPos = new Vector2();

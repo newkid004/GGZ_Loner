@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SA_Field
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 1
+      readable: 1
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 512
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 707ca56be67c9754294e58b3fbe753f4, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: cc6c44b76b7605040834bf72e65ae8ce, type: 3}
+  - {fileID: 21300000, guid: c9f5bbf734be2024e96fdc3e512a49b6, type: 3}
+  - {fileID: 21300000, guid: 626da838a29e41e479bb67f0a0019694, type: 3}
+  - {fileID: 21300000, guid: bccc43aea151afd4caa6b6be1df9f656, type: 3}
+  - {fileID: 21300000, guid: 3e153aae3b042934eaea94bfb8e44a4e, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Field_001_Main_Subway02
+  - Field_001_Main_Shadow
+  - Field_001_Main_Back
+  - Field_001_Main_TelephonePole
+  - Field_001_Main_Subway01
+  m_RenderDataMap: {}
+  m_Tag: SA_Field
+  m_IsVariant: 0

@@ -28,6 +28,18 @@ namespace GGZ
 					public int UnitID;
 					public int[] DataIDs;
 				}
+
+#if _debug
+				public class AniGroupNameDev : CSVObjectBase<AniGroupNameDev, (int, int)>
+				{
+					public override (int, int) GetKey() => (AniType, ID);
+					
+					public int AniType;
+					public int ID;
+
+					public string Name;
+				}
+#endif
 			}
 
 			public static class Item
@@ -54,6 +66,15 @@ namespace GGZ
 					public int Type;
 					public int Index;
 					public float Value;
+				}
+
+				public class WeaponEffect : CSVObjectBase<WeaponEffect, int>
+				{
+					public override int GetKey() => ID;
+
+					public int ID;
+
+					public int BulletAniGroupIndex;
 				}
 			}
 

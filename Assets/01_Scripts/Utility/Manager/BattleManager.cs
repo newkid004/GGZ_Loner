@@ -90,10 +90,10 @@ namespace GGZ
 			asyncOperSceneLoad.completed += (asyncOper) =>
 			{
 				// 스테이지 화면
-				SceneMain_Main.Single.mcsPage.OpenPage(Main_PageBase.EID.Stage);
+				SceneMain_OMain.Single.mcsPage.OpenPage(Main_PageBase.EID.Stage);
 
 				// 보상 팝업 출력
-				Main_PopupRewardAfterStageComplate pu = (Main_PopupRewardAfterStageComplate)SceneMain_Main.Single.mcsPage.pgCurrent.AddPopup(Main_PopupBase.EType.RewardAfterStageComplate);
+				Main_PopupRewardAfterStageComplate pu = (Main_PopupRewardAfterStageComplate)SceneMain_OMain.Single.mcsPage.pgCurrent.AddPopup(Main_PopupBase.EType.RewardAfterStageComplate);
 
 				// 클리어 정보 전달
 				pu.Init(nowLevel, iHardness);

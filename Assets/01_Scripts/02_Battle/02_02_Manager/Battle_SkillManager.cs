@@ -29,55 +29,55 @@ namespace GGZ
 
 			int dgCompareFlag;
 
-			dgCompareFlag = 1 << 0;		// 0 : ÀÚ±â ÀÚ½Å
+			dgCompareFlag = 1 << 0;		// 0 : ìžê¸° ìžì‹ 
 			if (Digit.Include(dgCompareFlag, info.csvTargetingPreset.Flag))
 			{
 				dgType = Digit.OR(dgType, info.objOwner == info.objTarget ? (dgCompareFlag) : 0);
 			}
 
-			dgCompareFlag = 1 << 1;		// 1 : ¾Æ±º (»ó´ëÀû)
+			dgCompareFlag = 1 << 1;		// 1 : ì•„êµ° (ìƒëŒ€ì )
 			if (Digit.Include(dgCompareFlag, info.csvTargetingPreset.Flag))
 			{
 				dgType = Digit.OR(dgType, info.isActiveAlly == Digit.Include(ObjectData.ObjectType.ciAlly, info.objTarget.iObjectType) ? (dgCompareFlag) : 0);
 			}
 
-			dgCompareFlag = 1 << 2;		// 2 : Àû±º (»ó´ëÀû)
+			dgCompareFlag = 1 << 2;		// 2 : ì êµ° (ìƒëŒ€ì )
 			if (Digit.Include(dgCompareFlag, info.csvTargetingPreset.Flag))
 			{
 				dgType = Digit.OR(dgType, info.isActiveAlly == Digit.Declude(ObjectData.ObjectType.ciAlly, info.objTarget.iObjectType) ? (dgCompareFlag) : 0);
 			}
 
-			dgCompareFlag = 1 << 3;		// 3 : ÇÃ·¹ÀÌ¾î
+			dgCompareFlag = 1 << 3;		// 3 : í”Œë ˆì´ì–´
 			if (Digit.Include(dgCompareFlag, info.csvTargetingPreset.Flag))
 			{
 				dgType = Digit.OR(dgType, info.isActiveAlly == Digit.Include(ObjectData.ObjectType.ciPlayer, info.objTarget.iObjectType) ? (dgCompareFlag) : 0);
 			}
 
-			dgCompareFlag = 1 << 4;		// 4 : ¸ó½ºÅÍ
+			dgCompareFlag = 1 << 4;		// 4 : ëª¬ìŠ¤í„°
 			if (Digit.Include(dgCompareFlag, info.csvTargetingPreset.Flag))
 			{
 				dgType = Digit.OR(dgType, info.isActiveAlly == Digit.Declude(ObjectData.ObjectType.ciPlayer, info.objTarget.iObjectType) ? (dgCompareFlag) : 0);
 			}
 
-			dgCompareFlag = 1 << 5;		// 5 : º¸½º
+			dgCompareFlag = 1 << 5;		// 5 : ë³´ìŠ¤
 			if (Digit.Include(dgCompareFlag, info.csvTargetingPreset.Flag))
 			{
 				dgType = Digit.OR(dgType, info.isActiveAlly == Digit.Include(ObjectData.ObjectType.ciBoss, info.objTarget.iObjectType) ? (dgCompareFlag) : 0);
 			}
 
-			dgCompareFlag = 1 << 6;		// 6 : Á¦ÀÛµÈ »ç³ÉÅÍ
+			dgCompareFlag = 1 << 6;		// 6 : ì œìž‘ëœ ì‚¬ëƒ¥í„°
 			if (Digit.Include(dgCompareFlag, info.csvTargetingPreset.Flag))
 			{
 				dgType = Digit.OR(dgType, info.isActiveAlly == Digit.Include(ObjectData.ObjectType.ciHuntZone | ObjectData.ObjectType.ciHuntZoneOutline, info.objTarget.iObjectType) ? (dgCompareFlag) : 0);
 			}
 
-			dgCompareFlag = 1 << 7;		// 7 : Á¦ÀÛÁßÀÎ »ç³É¼±
+			dgCompareFlag = 1 << 7;		// 7 : ì œìž‘ì¤‘ì¸ ì‚¬ëƒ¥ì„ 
 			if (Digit.Include(dgCompareFlag, info.csvTargetingPreset.Flag))
 			{
 				dgType = Digit.OR(dgType, info.isActiveAlly == Digit.Include(ObjectData.ObjectType.ciHuntLine, info.objTarget.iObjectType) ? (dgCompareFlag) : 0);
 			}
 
-			dgCompareFlag = 1 << 8;		// 8 : ÅºÈ¯
+			dgCompareFlag = 1 << 8;		// 8 : íƒ„í™˜
 			if (Digit.Include(dgCompareFlag, info.csvTargetingPreset.Flag))
 			{
 				dgType = Digit.OR(dgType, info.isActiveAlly == Digit.Include(ObjectData.ObjectType.ciBullet, info.objTarget.iObjectType) ? (dgCompareFlag) : 0);
@@ -98,11 +98,11 @@ namespace GGZ
 
 			public Battle_BaseBullet bltHit;
 
-			// °ª º¸Á¤ ( Á¤¼ö )
+			// ê°’ ë³´ì • ( ì •ìˆ˜ )
 			public int		iIParamAddition;
 			public float	fFParamAddition;
 
-			// °ª º¸Á¤ ( ºñÀ² )
+			// ê°’ ë³´ì • ( ë¹„ìœ¨ )
 			public float	fIParamPercent;
 			public float	fFParamPercent;
 
@@ -135,40 +135,16 @@ namespace GGZ
 
 			switch (info.csvSkillActive.ActiveType)
 			{
-				case 0:		// Bullet »ý¼º			- [BulletID / ]
+				case 0:		// Bullet ìƒì„±			- [BulletID / ]
 				{
 					int iBulletID = info.csvSkillActive.ParamInts[0];
 					var blt = Battle_BulletManager.Single.Create(iBulletID, (Battle_BaseCharacter)info.objOwner);
 
-					if (info.vec2Dir == Vector2.zero)
-					{
-						blt.vec2Direction = Battle_BulletManager.Single.GetBulletDirection(info.objOwner, info.objTarget);
-					}
-					else
-					{
-						blt.vec2Direction = info.vec2Dir;
-					}
-
-					if (info.vec2Pos == Vector2.zero)
-					{
-						if (Digit.Include(info.objOwner.iObjectType, ObjectData.ObjectType.ciCharacter))
-						{
-							blt.transform.position = Battle_BulletManager.Single.GetBulletPosition((Battle_BaseCharacter)info.objOwner, info.objTarget, blt);
-						}
-						else
-						{
-							blt.transform.position = info.objOwner.transform.position;
-						}
-
-					}
-					else
-					{
-						blt.transform.position = info.vec2Pos;
-					}
+					Battle_BulletManager.Single.Fire(blt, (Battle_BaseCharacter)info.objTarget, ref info);
 				}
 				break;
 
-				case 1:		// Buff Àû¿ë			- [BuffID / Time, Tick, Value]
+				case 1:		// Buff ì ìš©			- [BuffID / Time, Tick, Value]
 				{
 					int iBuffID = -1;
 
@@ -190,7 +166,7 @@ namespace GGZ
 				}
 				break;
 
-				case 2:		// ¶Ç´Ù¸¥ Skill ¹ßµ¿	- [SkillID, .. / ]
+				case 2:		// ë˜ë‹¤ë¥¸ Skill ë°œë™	- [SkillID, .. / ]
 				{
 					var stSkillInfo = info;
 

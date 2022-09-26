@@ -112,7 +112,7 @@ namespace GGZ
 
 		private void OnComplateWalkIdle()
 		{
-			CustomRoutine.CallLate(0.5f, () => SceneMain_Main.Single.mcsPage.OpenPage(eProcessPage));
+			CustomRoutine.CallLate(0.5f, () => SceneMain_OMain.Single.mcsPage.OpenPage(eProcessPage));
 		}
 	}
 }

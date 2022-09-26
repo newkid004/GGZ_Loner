@@ -9,9 +9,14 @@ namespace GGZ
 		private static Dictionary<GameObject, List<Dev_Interact_PanelButton>> dictParent =
 			new Dictionary<GameObject, List<Dev_Interact_PanelButton>>();
 
-		private static Dev_Interact_PanelButton pbActive = null;
+		private static HashSet<Dev_Interact_PanelButton> hsProcessQueue = 
+			new HashSet<Dev_Interact_PanelButton>();
 
-		public bool isInteract = false;
+		private static Dev_Interact_PanelButton pbActive = null;
+		private static bool isBlocking = false;
+
+		private bool isInteract = false;
+		public bool isBlockAcitve = false;
 
 		[SerializeField]
 		private GameObject objParent;
@@ -54,13 +59,16 @@ namespace GGZ
 				{
 					if (child != pbActive && child != this && child.gameObject.activeInHierarchy == false)
 					{
-						child.gameObject.SetActive(true);
+						if (isBlocking == false)
+						{
+							child?.gameObject.SetActive(true);
+						}
 					}
 				}
 
 				foreach (var objLink in listInverseLinkedObject)
 				{
-					objLink.SetActive(isEnable);
+					objLink?.SetActive(isEnable && objParent.activeInHierarchy);
 				}
 
 				if (pbActive == this)

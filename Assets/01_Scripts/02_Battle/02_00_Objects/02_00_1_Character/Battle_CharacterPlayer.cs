@@ -25,10 +25,10 @@ namespace GGZ
 			get => base.iDirection;
 			set
 			{
-				// ¹æÇâ ÀüÈ¯ Æ®¸®°Å
+				// ë°©í–¥ ì „í™˜ íŠ¸ë¦¬ê±°
 				if (value != _iDirection)
 				{
-					// »ç³É¼±À» ±×¸± ¶§, ¹İ´ë ¹æÇâÀÌ¸é ÀüÈ¯ÇÏÁö ¾ÊÀ½
+					// ì‚¬ëƒ¥ì„ ì„ ê·¸ë¦´ ë•Œ, ë°˜ëŒ€ ë°©í–¥ì´ë©´ ì „í™˜í•˜ì§€ ì•ŠìŒ
 					if (behaviorOwn.bhvHuntline.isCharDrawingHuntLine)
 					{
 						Battle_HPoint hlpDrawing = SceneMain_Battle.Single.mcsHLine.nowDrawingPoint;
@@ -43,8 +43,13 @@ namespace GGZ
 			}
 		}
 
+		private bool isInitted = false;
+		public void DoInit() => Init();
 		protected override void Init()
 		{
+			if (isInitted)
+				return;
+
 			base.Init();
 
 			base.iObjectType |= 
@@ -53,8 +58,13 @@ namespace GGZ
 			base.iAttribute |= ObjectData.Attribute.ciBasic_Player;
 
 			iCharacterID = 0;
+
 			InitCharacterStatus();
 			InitEquipmentStatus();
+
+			behaviorOwn.Init(this);
+
+			isInitted = true;
 		}
 
 		private void InitCharacterStatus()
@@ -113,7 +123,7 @@ namespace GGZ
 			{
 				if (isMove)
 				{
-					// »ç³ÉÅÍ ³»ºÎ ÀÌµ¿
+					// ì‚¬ëƒ¥í„° ë‚´ë¶€ ì´ë™
 					MoveDirectional();
 				}
 				else
@@ -125,12 +135,12 @@ namespace GGZ
 			{
 				if (isMove)
 				{
-					// »ç³É¼± ÀÛ¼º ÀÌµ¿
+					// ì‚¬ëƒ¥ì„  ì‘ì„± ì´ë™
 					MoveDirectional();
 				}
 				else if (false == bhvPlayer.bhvHuntline.isDownHuntLineBtn && false == bhvPlayer.bhvHuntline.isCharInHuntZone)
 				{
-					// »ç³É¼± µÇµ¹¾Æ¿À±â
+					// ì‚¬ëƒ¥ì„  ë˜ëŒì•„ì˜¤ê¸°
 					MoveReturnToHuntZone();
 				}
 				else
@@ -178,7 +188,7 @@ namespace GGZ
 
 			if (fPrevDistance < fMoveReturnSpeedInTime)
 			{
-				// °Å¸® º¸Á¤
+				// ê±°ë¦¬ ë³´ì •
 				fMoveReturnSpeedInTime -= fPrevDistance;
 
 				if (hpLast == null || hpLast.PointPrev == null)
@@ -194,18 +204,18 @@ namespace GGZ
 				transform.position = vec2PrevPoint;
 				RigidbodyOwn.velocity = vec2PrevDirection;
 
-				// º¸Á¤ »ç³ÉÁ¡ Á¦°Å
+				// ë³´ì • ì‚¬ëƒ¥ì  ì œê±°
 				SceneMain_Battle.Single.mcsHLine.CancelDrawPoint();
 
 				// if (hlpLast == SceneMain_Battle.Single.mcsHLine.nowDrawingPoint)
 				// {
-				// 	// º¸Á¤ »ç³É¼± Á¦°Å
+				// 	// ë³´ì • ì‚¬ëƒ¥ì„  ì œê±°
 				// 	SceneMain_Battle.Single.mcsHLine.CancelDrawLine();
 				// }
 			}
 			else
 			{
-				// ÀÏ¹İ µÇµ¹¾Æ°¡±â
+				// ì¼ë°˜ ë˜ëŒì•„ê°€ê¸°
 				Vector2 vec2NormalDirection = -Direction8.GetNormalByDirection(hpLast.iDirectionDraw);
 				RigidbodyOwn.velocity = fMoveReturnSpeed * vec2NormalDirection;
 			}

@@ -45,7 +45,9 @@ namespace GGZ
 			listPointPos = new List<Vector2>();
 			hZone = null;
 
-			iObjectType = GlobalDefine.ObjectData.ObjectType.ciHuntLine;
+			iObjectType |= 
+				ObjectData.ObjectType.ciHuntLine |
+				ObjectData.ObjectType.ciAlly;
 		}
 
 		public void Reset()
@@ -55,7 +57,9 @@ namespace GGZ
 			listPointPos.Clear();
 			hZone = null;
 
-			iObjectType = GlobalDefine.ObjectData.ObjectType.ciHuntLine;
+			iObjectType = 
+				ObjectData.ObjectType.ciHuntLine |
+				ObjectData.ObjectType.ciAlly;
 
 			fWindingAngle = 0f;
 		}
@@ -87,7 +91,7 @@ namespace GGZ
 			hlp.ApplyLine();
  			hlp.CalcOwnAngle(false, iSetDirection);
 
-			// ÀÛ¼ºÁßÀÎ »ç³É¼± Àû¿ë
+			// ì‘ì„±ì¤‘ì¸ ì‚¬ëƒ¥ì„  ì ìš©
 			if (this == SceneMain_Battle.Single.mcsHLine.nowDrawingLine)
 			{
 				hlp.ApplyDrawLine(true);
@@ -109,7 +113,7 @@ namespace GGZ
 			listPoint.RemoveAt(iLastIndex);
 			listPointPos.RemoveAt(iLastIndex);
 
-			// ÀÛ¼ºÁßÀÎ »ç³É¼± Àû¿ë
+			// ì‘ì„±ì¤‘ì¸ ì‚¬ëƒ¥ì„  ì ìš©
 			if (null == hZone)
 			{
 				hlpLast = GetLinePoint(listPoint.Count - 1);
@@ -122,7 +126,7 @@ namespace GGZ
 			return hlpLast;
 		}
 
-		// »ç³ÉÅÍ¿¡¸¸ »ç¿ë
+		// ì‚¬ëƒ¥í„°ì—ë§Œ ì‚¬ìš©
 		public void ReplaceLinePoint(List<Vector2> listNewPoint)
 		{
 			listPoint.ForEach(p => p.Push());
@@ -169,7 +173,7 @@ namespace GGZ
 			listPoint = listHlc;
 			listPointPos.Clear();
 
-			// ÂüÁ¶ °»½Å
+			// ì°¸ì¡° ê°±ì‹ 
 			int iCount = listPoint.Count;
 			for (int i = 0; i < iCount; ++i)
 			{
@@ -186,7 +190,7 @@ namespace GGZ
 				listPointPos.Add(hlp.transform.localPosition);
 			}
 
-			// Point Á¤º¸ ÀÔ·Â
+			// Point ì •ë³´ ì…ë ¥
 			for (int i = 0; i < iCount; ++i)
 			{
 				Battle_HPoint hlp = listPoint[i];
@@ -219,16 +223,16 @@ namespace GGZ
 			return listPoint[iIndex];
 		}
 
-		/// <summary> »ç³ÉÅÍ ÀüÈ¯ ÀÛ¾÷ </summary>
+		/// <summary> ì‚¬ëƒ¥í„° ì „í™˜ ì‘ì—… </summary>
 		public bool ProcessToCreateHuntZone(int iContactIndex, Vector2 vec2ContactPosition)
 		{
-			// ÁøÇàÁßÀÎ »ç³ÉÁ¡À» ±âÁØÀ¸·Î ÀÛ¾÷
+			// ì§„í–‰ì¤‘ì¸ ì‚¬ëƒ¥ì ì„ ê¸°ì¤€ìœ¼ë¡œ ì‘ì—…
 			Battle_HPoint hpNow = SceneMain_Battle.Single.mcsHLine.nowDrawingPoint;
 			Battle_HPoint hpNext = hpNow.PointNext;
 
 			hpNow.PosWorld = vec2ContactPosition;
 
-			// Ãæµ¹Á¤º¸ °»½Å
+			// ì¶©ëŒì •ë³´ ê°±ì‹ 
 			hpNow.RefreshLineInfo();
 			hpNow.ApplyLine();
 			if (hpNext != null)
@@ -237,7 +241,7 @@ namespace GGZ
 				hpNext.ApplyLine();
 			}
 
-			// Ãæµ¹ ÁöÁ¡ Á¦¿Ü Á¦°Å : Á¦°ÅµÇ´Â °¢µµ º¸Á¤
+			// ì¶©ëŒ ì§€ì  ì œì™¸ ì œê±° : ì œê±°ë˜ëŠ” ê°ë„ ë³´ì •
 			for (int i = 0; i < iContactIndex; ++i)
 			{
 				Battle_HPoint hpRemove = listPoint[i];
@@ -251,7 +255,7 @@ namespace GGZ
 			listPoint[0].fDegreeByPrevPoint = 0;
 			listPoint[0].ApplyLine();
 
-			// º¯°æµÈ ÁöÁ¡ Àû¿ë, »ç³ÉÅÍ·Î °´Ã¼Å¸ÀÔ º¯È¯
+			// ë³€ê²½ëœ ì§€ì  ì ìš©, ì‚¬ëƒ¥í„°ë¡œ ê°ì²´íƒ€ì… ë³€í™˜
 			for (int i = 0; i < listPoint.Count; ++i)
 			{
 				Battle_HPoint hlp = listPoint[i];
@@ -270,16 +274,20 @@ namespace GGZ
 		{
 			listPoint[0].RefreshLineInfo();
 
+			iObjectType = GlobalUtility.Digit.PICK(iObjectType,
+				ObjectData.ObjectType.ciHuntZoneHole |
+				ObjectData.ObjectType.ciHuntZoneOutline);
+
 			if (isHole)
 			{
 				gameObject.layer = CollideLayer.HuntZoneHole;
-				iObjectType = GlobalDefine.ObjectData.ObjectType.ciHuntZoneHole;
+				iObjectType = GlobalUtility.Digit.OR(iObjectType, ObjectData.ObjectType.ciHuntZoneHole);
 				eEdgeType = EdgeType.Hole;
 			}
 			else
 			{
 				gameObject.layer = CollideLayer.HuntZoneEdge;
-				iObjectType = GlobalDefine.ObjectData.ObjectType.ciHuntZoneOutline;
+				iObjectType = GlobalUtility.Digit.OR(iObjectType, ObjectData.ObjectType.ciHuntZoneOutline);
 				eEdgeType = EdgeType.Outline;
 			}
 		}

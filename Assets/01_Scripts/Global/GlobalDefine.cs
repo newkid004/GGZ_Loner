@@ -8,23 +8,23 @@ namespace GGZ
 
 	namespace GlobalDefine
 	{
-		// Àü¿ª º¯¼ö
+		// ì „ì—­ ë³€ìˆ˜
 		public static class GVar
 		{
 			public const float c_fDegreeError = -100f;
 
 			public static class Zone
 			{
-				public const float c_fStartHuntZoneScale = 0.05f;   // Ã³À½ »ç³ÉÅÍ¸¦ ¸¸µé ¶§ ÀüÃ¼ ÇÊµå ´ç ºñÀ²
+				public const float c_fStartHuntZoneScale = 0.05f;   // ì²˜ìŒ ì‚¬ëƒ¥í„°ë¥¼ ë§Œë“¤ ë•Œ ì „ì²´ í•„ë“œ ë‹¹ ë¹„ìœ¨
 
-				public const float c_fHuntZoneOutlineNarrowInterval = 0f;					// »ç³ÉÅÍ ¿Ü°û Ãæµ¹°£°İ Ãà¼Ò °£°İ
-				public const float c_fPlayerMoveInHuntZoneOutlineCorrectInterval = 1f;		// ÇÃ·¹ÀÌ¾îÀÇ »ç³ÉÅÍ ³»ºÎ Ãæµ¹ º¸Á¤ °£°İ
+				public const float c_fHuntZoneOutlineNarrowInterval = 0f;					// ì‚¬ëƒ¥í„° ì™¸ê³½ ì¶©ëŒê°„ê²© ì¶•ì†Œ ê°„ê²©
+				public const float c_fPlayerMoveInHuntZoneOutlineCorrectInterval = 1f;		// í”Œë ˆì´ì–´ì˜ ì‚¬ëƒ¥í„° ë‚´ë¶€ ì¶©ëŒ ë³´ì • ê°„ê²©
 			}
 
 			public static class StatusEffect
 			{
-				public const float c_fKnockbackTime = 1.0f;				// Æ¨°Ü³ª°¡´Â ±âº» ½Ã°£
-				public const float c_fKnockbackDistance = 1.0f;			// Æ¨°Ü³ª°¡´Â ±âº» °Å¸®
+				public const float c_fKnockbackTime = 1.0f;				// íŠ•ê²¨ë‚˜ê°€ëŠ” ê¸°ë³¸ ì‹œê°„
+				public const float c_fKnockbackDistance = 1.0f;			// íŠ•ê²¨ë‚˜ê°€ëŠ” ê¸°ë³¸ ê±°ë¦¬
 			}
 
 			public enum EWindingOrder
@@ -62,68 +62,68 @@ namespace GGZ
 				(1 << HuntZoneEdge);
 		}
 
-		// À§Ä¡¿¡ µû¸¥ 8¹æÇâ Á¤ÀÇ
+		// ìœ„ì¹˜ì— ë”°ë¥¸ 8ë°©í–¥ ì •ì˜
 		public static class Direction8
 		{
 			public enum EJoinState
 			{
 				Error,
-				/// <summary> ÀÚ½Å </summary>
+				/// <summary> ìì‹  </summary>
 				Own,
 
-				/// <summary> ´ë°¢ °ü°è </summary>
+				/// <summary> ëŒ€ê° ê´€ê³„ </summary>
 				Diagonal,
 
-				/// <summary> ¼öÁ÷ °ü°è </summary>
+				/// <summary> ìˆ˜ì§ ê´€ê³„ </summary>
 				Perpendicular,
 
-				/// <summary> ¹İ´ë ´ë°¢ (µĞ°¢) </summary>
+				/// <summary> ë°˜ëŒ€ ëŒ€ê° (ë‘”ê°) </summary>
 				Obtuse,
 
-				/// <summary> ¹İ´ë </summary>
+				/// <summary> ë°˜ëŒ€ </summary>
 				Inverse,
 
-				/// <summary> Å°ÆĞµå ¼ıÀÚ </summary>
+				/// <summary> í‚¤íŒ¨ë“œ ìˆ«ì </summary>
 				Number,
 			}
 
 			#region Direction Constants
 
-			// ÁøÇà ¹æÇâ
+			// ì§„í–‰ ë°©í–¥
 			public const int ciProcess_Non = 0b00;
 			public const int ciProcess_Inc = 0b01;
 			public const int ciProcess_Dec = 0b11;
 
-			// ¹æÇâ Ãà
-			public const int ciDir_X = 0b0100;		// XÃà ¹æÇâ
-			public const int ciDir_Y = 0b0001;		// YÃà ¹æÇâ
+			// ë°©í–¥ ì¶•
+			public const int ciDir_X = 0b0100;		// Xì¶• ë°©í–¥
+			public const int ciDir_Y = 0b0001;		// Yì¶• ë°©í–¥
 
-			// ºñÆ®¸¶½ºÅ©
-			public const int ciDir_Mask_X = 0b1100;	  // ºñÆ®¸¶½ºÅ© : XÃà
-			public const int ciDir_Mask_Y = 0b0011;   // ºñÆ®¸¶½ºÅ© : YÃà
-			public const int ciDir_Mask_Inc = 0b01;   // ºñÆ®¸¶½ºÅ© : ÁÂÇ¥ Áõ°¡
-			public const int ciDir_Mask_Dec = 0b10;   // ºñÆ®¸¶½ºÅ© : ÁÂÇ¥ °¨¼Ò
+			// ë¹„íŠ¸ë§ˆìŠ¤í¬
+			public const int ciDir_Mask_X = 0b1100;	  // ë¹„íŠ¸ë§ˆìŠ¤í¬ : Xì¶•
+			public const int ciDir_Mask_Y = 0b0011;   // ë¹„íŠ¸ë§ˆìŠ¤í¬ : Yì¶•
+			public const int ciDir_Mask_Inc = 0b01;   // ë¹„íŠ¸ë§ˆìŠ¤í¬ : ì¢Œí‘œ ì¦ê°€
+			public const int ciDir_Mask_Dec = 0b10;   // ë¹„íŠ¸ë§ˆìŠ¤í¬ : ì¢Œí‘œ ê°ì†Œ
 
-			// Å°ÆĞµå ±â¹İ ¹æÇâ
-			public const int ciDir_1 = (ciDir_X * ciProcess_Dec) | (ciDir_Y * ciProcess_Dec);	// X °¨¼Ò, Y °¨¼Ò, BIN : 0b1111 , DEC : 15
-			public const int ciDir_2 = (ciDir_X * ciProcess_Non) | (ciDir_Y * ciProcess_Dec);	// X °¨¼Ò, Y °¨¼Ò, BIN : 0b0011 , DEC : 3
-			public const int ciDir_3 = (ciDir_X * ciProcess_Inc) | (ciDir_Y * ciProcess_Dec);	// X °¨¼Ò, Y °¨¼Ò, BIN : 0b0111 , DEC : 7
-			public const int ciDir_4 = (ciDir_X * ciProcess_Dec) | (ciDir_Y * ciProcess_Non);	// X °¨¼Ò, Y °¨¼Ò, BIN : 0b1100 , DEC : 12
-			public const int ciDir_5 = (ciDir_X * ciProcess_Non) | (ciDir_Y * ciProcess_Non);	// X °¨¼Ò, Y °¨¼Ò, BIN : 0b0000 , DEC : 0
-			public const int ciDir_6 = (ciDir_X * ciProcess_Inc) | (ciDir_Y * ciProcess_Non);	// X °¨¼Ò, Y °¨¼Ò, BIN : 0b0100 , DEC : 4
-			public const int ciDir_7 = (ciDir_X * ciProcess_Dec) | (ciDir_Y * ciProcess_Inc);	// X °¨¼Ò, Y °¨¼Ò, BIN : 0b1101 , DEC : 13
-			public const int ciDir_8 = (ciDir_X * ciProcess_Non) | (ciDir_Y * ciProcess_Inc);	// X °¨¼Ò, Y °¨¼Ò, BIN : 0b0001 , DEC : 1
-			public const int ciDir_9 = (ciDir_X * ciProcess_Inc) | (ciDir_Y * ciProcess_Inc);	// X °¨¼Ò, Y °¨¼Ò, BIN : 0b0101 , DEC : 5
+			// í‚¤íŒ¨ë“œ ê¸°ë°˜ ë°©í–¥
+			public const int ciDir_1 = (ciDir_X * ciProcess_Dec) | (ciDir_Y * ciProcess_Dec);	// X ê°ì†Œ, Y ê°ì†Œ, BIN : 0b1111 , DEC : 15
+			public const int ciDir_2 = (ciDir_X * ciProcess_Non) | (ciDir_Y * ciProcess_Dec);	// X ê°ì†Œ, Y ê°ì†Œ, BIN : 0b0011 , DEC : 3
+			public const int ciDir_3 = (ciDir_X * ciProcess_Inc) | (ciDir_Y * ciProcess_Dec);	// X ê°ì†Œ, Y ê°ì†Œ, BIN : 0b0111 , DEC : 7
+			public const int ciDir_4 = (ciDir_X * ciProcess_Dec) | (ciDir_Y * ciProcess_Non);	// X ê°ì†Œ, Y ê°ì†Œ, BIN : 0b1100 , DEC : 12
+			public const int ciDir_5 = (ciDir_X * ciProcess_Non) | (ciDir_Y * ciProcess_Non);	// X ê°ì†Œ, Y ê°ì†Œ, BIN : 0b0000 , DEC : 0
+			public const int ciDir_6 = (ciDir_X * ciProcess_Inc) | (ciDir_Y * ciProcess_Non);	// X ê°ì†Œ, Y ê°ì†Œ, BIN : 0b0100 , DEC : 4
+			public const int ciDir_7 = (ciDir_X * ciProcess_Dec) | (ciDir_Y * ciProcess_Inc);	// X ê°ì†Œ, Y ê°ì†Œ, BIN : 0b1101 , DEC : 13
+			public const int ciDir_8 = (ciDir_X * ciProcess_Non) | (ciDir_Y * ciProcess_Inc);	// X ê°ì†Œ, Y ê°ì†Œ, BIN : 0b0001 , DEC : 1
+			public const int ciDir_9 = (ciDir_X * ciProcess_Inc) | (ciDir_Y * ciProcess_Inc);	// X ê°ì†Œ, Y ê°ì†Œ, BIN : 0b0101 , DEC : 5
 
 			public static readonly int[] ciArrDir = new int[] { ciDir_1, ciDir_2, ciDir_3, ciDir_4, ciDir_6, ciDir_7, ciDir_8, ciDir_9 };
 			public static readonly Dictionary<int, int[]> cdictJoinDirArray = new Dictionary<int, int[]>
 			{
-				// 0 : ÀÚ½Å
-				// 1 2 : ´ë°¢ ÀÎÁ¢ ( ½Ã°è ¹æÇâ )
-				// 3 4 : ¼öÁ÷ ÀÎÁ¢ ( ½Ã°è ¹æÇâ )
-				// 5 6 : ¹İ ´ë°¢ ÀÎÁ¢ ( ½Ã°è ¹æÇâ )
-				// 7 : ¹İ´ë ¹æÇâ	
-				// 8 : Å°ÆĞµå ¼ıÀÚ	// 0		1		 2		  3		   4		5		 6		  7			8
+				// 0 : ìì‹ 
+				// 1 2 : ëŒ€ê° ì¸ì ‘ ( ì‹œê³„ ë°©í–¥ )
+				// 3 4 : ìˆ˜ì§ ì¸ì ‘ ( ì‹œê³„ ë°©í–¥ )
+				// 5 6 : ë°˜ ëŒ€ê° ì¸ì ‘ ( ì‹œê³„ ë°©í–¥ )
+				// 7 : ë°˜ëŒ€ ë°©í–¥	
+				// 8 : í‚¤íŒ¨ë“œ ìˆ«ì	// 0		1		 2		  3		   4		5		 6		  7			8
 				{ ciDir_1, new int[] { ciDir_1, ciDir_4, ciDir_2, ciDir_7, ciDir_3, ciDir_8, ciDir_6, ciDir_9,	1 } }, 
 				{ ciDir_2, new int[] { ciDir_2, ciDir_1, ciDir_3, ciDir_4, ciDir_6, ciDir_7, ciDir_9, ciDir_8,	2 } }, 
 				{ ciDir_3, new int[] { ciDir_3, ciDir_2, ciDir_6, ciDir_1, ciDir_9, ciDir_4, ciDir_8, ciDir_7,	3 } },
@@ -136,7 +136,7 @@ namespace GGZ
 
 			#endregion Direction Constants
 
-			/// <summary> ¹æÇâ¿¡ µû¸¥ Á¤±Ô°ª ¹İÈ¯ </summary>
+			/// <summary> ë°©í–¥ì— ë”°ë¥¸ ì •ê·œê°’ ë°˜í™˜ </summary>
 			public static Vector2 GetNormalByDirection(int iDirection)
 			{
 				Vector2Int vec2Result = new Vector2Int(
@@ -153,7 +153,7 @@ namespace GGZ
 			}
 
 
-			/// <summary> °Å¸®¿¡ µû¸¥ Á¤±Ô°ª ¹İÈ¯ </summary>
+			/// <summary> ê±°ë¦¬ì— ë”°ë¥¸ ì •ê·œê°’ ë°˜í™˜ </summary>
 			public static Vector2 GetNormalToInterval(Vector2 vec2From, Vector2 vec2To)
 			{
 				Vector2 vec2Result = Vector2.zero;
@@ -161,7 +161,7 @@ namespace GGZ
 
 				if (vec2PosDistance.x == 0)
 				{
-					// xÁÂÇ¥ 0 ³ª´©±â ¿¹¿Ü Ã³¸®
+					// xì¢Œí‘œ 0 ë‚˜ëˆ„ê¸° ì˜ˆì™¸ ì²˜ë¦¬
 					vec2Result.y = 0f < vec2PosDistance.y ? 1 : -1;
 				}
 				else
@@ -169,17 +169,17 @@ namespace GGZ
 					float fAtan = Mathf.Atan2(vec2PosDistance.y, vec2PosDistance.x);
 					float fAbsAtan = Mathf.Abs(fAtan);
 
-					// ¹æÇâ ¼³Á¤ : X(°ªÀÇ Àı´ë°ªÀÌ PIÁ¦°öÀÇ Àı¹İ ÀÌÇÏ), Y(¾ç¼ö °ª)
+					// ë°©í–¥ ì„¤ì • : X(ê°’ì˜ ì ˆëŒ€ê°’ì´ PIì œê³±ì˜ ì ˆë°˜ ì´í•˜), Y(ì–‘ìˆ˜ ê°’)
 					vec2Result.x = fAbsAtan < Trigonometric.f1PIDiv2 ? 1 : -1;
 					vec2Result.y = 0f < fAtan ? 1 : 0;
 
-					// ´ë°¢ ÀÌµ¿ È®ÀÎ : YÃà ÀÌµ¿ Á¦°Å
+					// ëŒ€ê° ì´ë™ í™•ì¸ : Yì¶• ì´ë™ ì œê±°
 					if (Trigonometric.f2PIDiv3 / 2f < Mathf.Abs(Trigonometric.f1PIDiv2 - fAbsAtan))
 					{
 						vec2Result.y = 0;
 					}
 
-					// ´ë°¢ ÀÌµ¿ È®ÀÎ : XÃà ÀÌµ¿ Á¦°Å
+					// ëŒ€ê° ì´ë™ í™•ì¸ : Xì¶• ì´ë™ ì œê±°
 					if (Mathf.Abs(Trigonometric.f1PIDiv2 - fAbsAtan) < Trigonometric.f1PIDiv3 / 2f)
 					{
 						vec2Result.x = 0;
@@ -189,13 +189,13 @@ namespace GGZ
 				return vec2Result;
 			}
 
-			/// <summary> Á¤±Ô°ª¿¡ µû¸¥ ¹æÇâ ¹İÈ¯ </summary>
+			/// <summary> ì •ê·œê°’ì— ë”°ë¥¸ ë°©í–¥ ë°˜í™˜ </summary>
 			public static int GetDirectionToNormal(Vector2 vec2Normal)
 			{
 				return GetDirectionToInterval(Vector2.zero, vec2Normal);
 			}
 
-			/// <summary> °Å¸®¿¡ µû¸¥ ¹æÇâ ¹İÈ¯ </summary>
+			/// <summary> ê±°ë¦¬ì— ë”°ë¥¸ ë°©í–¥ ë°˜í™˜ </summary>
 			public static int GetDirectionToInterval(Vector2 vec2From, Vector2 vec2To)
 			{
 				int iResultDirection;
@@ -204,7 +204,7 @@ namespace GGZ
 
 				if (vec2PosDistance.x == 0)
 				{
-					// xÁÂÇ¥ 0 ³ª´©±â ¿¹¿Ü Ã³¸®
+					// xì¢Œí‘œ 0 ë‚˜ëˆ„ê¸° ì˜ˆì™¸ ì²˜ë¦¬
 					iResultDirection = ciDir_Y * (0f < vec2PosDistance.y ? ciProcess_Inc : ciProcess_Dec);
 				}
 				else
@@ -212,19 +212,19 @@ namespace GGZ
 					float fAtan = Mathf.Atan2(vec2PosDistance.y, vec2PosDistance.x);
 					float fAbsAtan = Mathf.Abs(fAtan);
 
-					// ¹æÇâ ¼³Á¤ : X(°ªÀÇ Àı´ë°ªÀÌ PIÁ¦°öÀÇ Àı¹İ ÀÌÇÏ), Y(¾ç¼ö °ª)
+					// ë°©í–¥ ì„¤ì • : X(ê°’ì˜ ì ˆëŒ€ê°’ì´ PIì œê³±ì˜ ì ˆë°˜ ì´í•˜), Y(ì–‘ìˆ˜ ê°’)
 					iResultDirection =
 						(ciDir_X * (fAbsAtan < Trigonometric.f1PIDiv2 ? ciProcess_Inc : ciProcess_Dec)) |
 						(ciDir_Y * (0f < fAtan ? ciProcess_Inc : ciProcess_Dec));
 					
-					// ´ë°¢ ÀÌµ¿ È®ÀÎ : YÃà ÀÌµ¿ Á¦°Å
+					// ëŒ€ê° ì´ë™ í™•ì¸ : Yì¶• ì´ë™ ì œê±°
 					if (Trigonometric.f2PIDiv3 / 2f < Mathf.Abs(Trigonometric.f1PIDiv2 - fAbsAtan))
 					{
-						// Á¦¿Ü °ª ºñÆ®¸¶½ºÅ·
+						// ì œì™¸ ê°’ ë¹„íŠ¸ë§ˆìŠ¤í‚¹
 						iResultDirection &= ciDir_Mask_X;
 					}
 
-					// ´ë°¢ ÀÌµ¿ È®ÀÎ : XÃà ÀÌµ¿ Á¦°Å
+					// ëŒ€ê° ì´ë™ í™•ì¸ : Xì¶• ì´ë™ ì œê±°
 					if (Mathf.Abs(Trigonometric.f1PIDiv2 - fAbsAtan) < Trigonometric.f1PIDiv3 / 2f)
 					{
 						iResultDirection &= ciDir_Mask_Y;
@@ -249,13 +249,13 @@ namespace GGZ
 					(0 < iDirY ? (iDirY ^ (ciDir_Y * ciDir_Mask_Dec)) : 0);
 			}
 
-			/// <summary> °¢ ¹æÇâ¿¡ µû¸¥ °¢µµ ¹İÈ¯ </summary>
+			/// <summary> ê° ë°©í–¥ì— ë”°ë¥¸ ê°ë„ ë°˜í™˜ </summary>
 			public static float GetDegreeToDirection(int iDirFrom, int iDirTo)
 			{
 				Vector2 vec2NormalFrom;
 				Vector2 vec2NormalTo;
 
-				// °¢µµ°¡ ¾øÀ» ¶§ Ç×»ó 0µµ
+				// ê°ë„ê°€ ì—†ì„ ë•Œ í•­ìƒ 0ë„
 				if (iDirFrom == ciDir_5)
 				{
 					iDirFrom = ciDir_6;
@@ -298,40 +298,40 @@ namespace GGZ
 			}
 		}
 
-		// °´Ã¼ °ü·Ã µ¥ÀÌÅÍ Á¤ÀÇ
+		// ê°ì²´ ê´€ë ¨ ë°ì´í„° ì •ì˜
 		public static class ObjectData
 		{
-			// °´Ã¼ Á¾·ù Á¤ÀÇ
+			// ê°ì²´ ì¢…ë¥˜ ì •ì˜
 			public static class ObjectType
 			{
 				public const int ciNone = 0;
 
-				// ÇØ´çÇÏ´Â Á¾·ù¿¡ ´ëÇÑ Bit index			// Á¾·ù ¸íÄª
-				public const int ciCharacter			= 1 << 0;	// Ä³¸¯ÅÍ
-				public const int ciPlayer				= 1 << 1;	// ÇÃ·¹ÀÌ¾î
-				public const int ciAlly					= 1 << 2;	// ¾Æ±º
-				public const int ciBoss					= 1 << 3;	// º¸½º
-				public const int ciPlayerPet			= 1 << 4;	// ÇÃ·¹ÀÌ¾îÀÇ Æê
-				public const int ciHuntZone				= 1 << 5;	// »ç³ÉÅÍ
-				public const int ciHuntZoneOutline		= 1 << 6;	// »ç³ÉÅÍ ¿Ü°û
-				public const int ciHuntZoneHole			= 1 << 7;	// »ç³ÉÅÍ ±¸¸Û
-				public const int ciHuntLine				= 1 << 8;	// ÀÛ¼ºÁßÀÎ »ç³É¼±
-				public const int ciBullet				= 1 << 9;	// ÃÑ¾Ë
+				// í•´ë‹¹í•˜ëŠ” ì¢…ë¥˜ì— ëŒ€í•œ Bit index			// ì¢…ë¥˜ ëª…ì¹­
+				public const int ciCharacter			= 1 << 0;	// ìºë¦­í„°
+				public const int ciPlayer				= 1 << 1;	// í”Œë ˆì´ì–´
+				public const int ciAlly					= 1 << 2;	// ì•„êµ°
+				public const int ciBoss					= 1 << 3;	// ë³´ìŠ¤
+				public const int ciPlayerPet			= 1 << 4;	// í”Œë ˆì´ì–´ì˜ í«
+				public const int ciHuntZone				= 1 << 5;	// ì‚¬ëƒ¥í„°
+				public const int ciHuntZoneOutline		= 1 << 6;	// ì‚¬ëƒ¥í„° ì™¸ê³½
+				public const int ciHuntZoneHole			= 1 << 7;	// ì‚¬ëƒ¥í„° êµ¬ë©
+				public const int ciHuntLine				= 1 << 8;	// ì‘ì„±ì¤‘ì¸ ì‚¬ëƒ¥ì„ 
+				public const int ciBullet				= 1 << 9;	// ì´ì•Œ
 			}
 
-			// Ä³¸¯ÅÍ ¼Ó¼º Á¤ÀÇ
+			// ìºë¦­í„° ì†ì„± ì •ì˜
 			public static class Attribute
 			{
 				public const int ciNone = 0;
 
-				// Çàµ¿ °¡´É Bit index						// ¸íÄª		ON											OFF
-				public const int ciDeath		= 1 << 0;	// »ç¸Á		»ç¸Á Ã³¸® °¡´É								Á×Áö ¾ÊÀ½
-				public const int ciResurrection = 1 << 1;	// ºÎÈ°		¶óÀÌÇÁ °¨¼Ò ÈÄ ºÎÈ°							¶óÀÌÇÁ °ü°è ¾øÀÌ ¿µ±¸ »ç¸Á Ã³¸®
-				public const int ciHealth		= 1 << 2;	// Ã¼·Â		Ã¼·Â ¼Ò¸ğ ÈÄ ÀÓ°è°ª ¹Ì¸¸ÀÏ ¶§ »ç¸Á Ã³¸®		Ã¼·Â ¼Ò¸ğ ¾øÀ½
-				public const int ciMove			= 1 << 3;	// ÀÌµ¿		ÀÌµ¿ °¡´É									ÀÌµ¿ ºÒ°¡
-				public const int ciCollision	= 1 << 4;	// Ãæµ¹		´Ù¸¥ Ãæµ¹ °¡´ÉÇÑ °´Ã¼¿Í Ãæµ¹ °¡´É			Ãæµ¹ ¾øÀ½
-				public const int ciAttack		= 1 << 5;	// °ø°İ		ÀåÂøµÈ °ø°İ ¸ğµâµéÀÇ Çàµ¿ ½ÇÇà °¡´É			Çàµ¿ ¾øÀ½
-				public const int ciSkill		= 1 << 6;	// ½ºÅ³		ÀåÂøµÈ ½ºÅ³ ¸ğµâµéÀÇ Çàµ¿ ½ÇÇà °¡´É			Çàµ¿ ¾øÀ½
+				// í–‰ë™ ê°€ëŠ¥ Bit index						// ëª…ì¹­		ON											OFF
+				public const int ciDeath		= 1 << 0;	// ì‚¬ë§		ì‚¬ë§ ì²˜ë¦¬ ê°€ëŠ¥								ì£½ì§€ ì•ŠìŒ
+				public const int ciResurrection = 1 << 1;	// ë¶€í™œ		ë¼ì´í”„ ê°ì†Œ í›„ ë¶€í™œ							ë¼ì´í”„ ê´€ê³„ ì—†ì´ ì˜êµ¬ ì‚¬ë§ ì²˜ë¦¬
+				public const int ciHealth		= 1 << 2;	// ì²´ë ¥		ì²´ë ¥ ì†Œëª¨ í›„ ì„ê³„ê°’ ë¯¸ë§Œì¼ ë•Œ ì‚¬ë§ ì²˜ë¦¬		ì²´ë ¥ ì†Œëª¨ ì—†ìŒ
+				public const int ciMove			= 1 << 3;	// ì´ë™		ì´ë™ ê°€ëŠ¥									ì´ë™ ë¶ˆê°€
+				public const int ciCollision	= 1 << 4;	// ì¶©ëŒ		ë‹¤ë¥¸ ì¶©ëŒ ê°€ëŠ¥í•œ ê°ì²´ì™€ ì¶©ëŒ ê°€ëŠ¥			ì¶©ëŒ ì—†ìŒ
+				public const int ciAttack		= 1 << 5;	// ê³µê²©		ì¥ì°©ëœ ê³µê²© ëª¨ë“ˆë“¤ì˜ í–‰ë™ ì‹¤í–‰ ê°€ëŠ¥			í–‰ë™ ì—†ìŒ
+				public const int ciSkill		= 1 << 6;	// ìŠ¤í‚¬		ì¥ì°©ëœ ìŠ¤í‚¬ ëª¨ë“ˆë“¤ì˜ í–‰ë™ ì‹¤í–‰ ê°€ëŠ¥			í–‰ë™ ì—†ìŒ
 
 				public const int ciBasic_Character = ciDeath | ciHealth | ciMove | ciCollision | ciAttack;
 				public const int ciBasic_Player = ciDeath | ciResurrection | ciHealth | ciMove | ciAttack | ciSkill;
@@ -343,7 +343,7 @@ namespace GGZ
 			{
 				public abstract int iValueRange { get; }
 
-				protected T[] varValueArray;
+				[SerializeField] protected T[] varValueArray;
 
 				protected StatusBase() => 
 					varValueArray = new T[iValueRange];
@@ -362,25 +362,25 @@ namespace GGZ
 				}
 			}
 
-			// ±âº» ºÎ¿© ½ºÅ×ÀÌÅÍ½º
+			// ê¸°ë³¸ ë¶€ì—¬ ìŠ¤í…Œì´í„°ìŠ¤
 			[System.Serializable]
 			public class StatusBasic : StatusBase<float>
 			{
 				public enum EDefine
 				{
 					// Health
-					Life,							// ¶óÀÌÇÁ
-					HealthMax,						// ÃÖ´ë Ã¼·Â
-					HealthNow,						// ÇöÀç Ã¼·Â
+					Life,							// ë¼ì´í”„
+					HealthMax,						// ìµœëŒ€ ì²´ë ¥
+					HealthNow,						// í˜„ì¬ ì²´ë ¥
 
 					// Battle
-					AttackPower,					// °ø°İ·Â
-					DefendPower,					// ¹æ¾î·Â
-					PropertyAttackPower,			// ¼Ó¼º °ø°İ·Â
+					AttackPower,					// ê³µê²©ë ¥
+					DefendPower,					// ë°©ì–´ë ¥
+					PropertyAttackPower,			// ì†ì„± ê³µê²©ë ¥
 
 					// Control
-					AttackSpeed,					// °ø°İ ¼Óµµ
-					MoveSpeed,						// ÀÌµ¿ ¼Óµµ
+					AttackSpeed,					// ê³µê²© ì†ë„
+					MoveSpeed,						// ì´ë™ ì†ë„
 
 					MAX
 				}
@@ -394,18 +394,18 @@ namespace GGZ
 				public float fDefendPower			{ get => Get((int)EDefine.DefendPower); set => Set((int)EDefine.DefendPower, value); }
 				public float fPropertyAttackPower	{ get => Get((int)EDefine.PropertyAttackPower); set => Set((int)EDefine.PropertyAttackPower, value); }
 
-				public float fAttackSpeed			{ get => Get((int)EDefine.AttackSpeed); set => Set((int)EDefine.AttackSpeed, value); }
+				public float fAttackSpeed			{ get => Get((int)EDefine.AttackSpeed); set => Set((int)EDefine.AttackSpeed, value); }		// 1ì´ˆì— Në²ˆ ê³µê²©
 				public float fMoveSpeed				{ get => Get((int)EDefine.MoveSpeed); set => Set((int)EDefine.MoveSpeed, value); }
 			}
 
-			// È¿°ú ºÎ¿© ½ºÅ×ÀÌÅÍ½º
+			// íš¨ê³¼ ë¶€ì—¬ ìŠ¤í…Œì´í„°ìŠ¤
 			[System.Serializable]
 			public class StatusEffect : StatusBase<float>
 			{
 				public enum EDefine
 				{
-					Weight,							// ¹«°Ô : ÇØ´ç ¼öÄ¡°¡ ³ôÀ»¼ö·Ï ³·°Ô, Âª°Ô Æ¨°Ü³² ( 0ÀÏ °æ¿ì ¿À·ù )
-					AirHold,						// Ã¼°ø : ÇØ´ç ¼öÄ¡°¡ ³ôÀ»¼ö·Ï ¿À·¡ Æ¨°Ü³² ( 0ÀÏ °æ¿ì ¿À·ù )
+					Weight,							// ë¬´ê²Œ : í•´ë‹¹ ìˆ˜ì¹˜ê°€ ë†’ì„ìˆ˜ë¡ ë‚®ê²Œ, ì§§ê²Œ íŠ•ê²¨ë‚¨ ( 0ì¼ ê²½ìš° ì˜¤ë¥˜ )
+					AirHold,						// ì²´ê³µ : í•´ë‹¹ ìˆ˜ì¹˜ê°€ ë†’ì„ìˆ˜ë¡ ì˜¤ë˜ íŠ•ê²¨ë‚¨ ( 0ì¼ ê²½ìš° ì˜¤ë¥˜ )
 
 					MAX
 				}
@@ -415,13 +415,13 @@ namespace GGZ
 				public float fAirHold				{ get => Get((int)EDefine.AirHold); set => Set((int)EDefine.AirHold, value); }
 			}
 
-			// ÀüÅõ ºÎ¿© ½ºÅ×ÀÌÅÍ½º
+			// ì „íˆ¬ ë¶€ì—¬ ìŠ¤í…Œì´í„°ìŠ¤
 			[System.Serializable]
 			public class StatusBattle : StatusBase<float>
 			{
 				public enum EDefine
 				{
-					SkillCooltimeRate,				// ½ºÅ³ ÄğÅ¸ÀÓ ºñÀ² (1.0 = 100%)
+					SkillCooltimeRate,				// ìŠ¤í‚¬ ì¿¨íƒ€ì„ ë¹„ìœ¨ (1.0 = 100%)
 
 					MAX
 				}
@@ -430,14 +430,14 @@ namespace GGZ
 				public float fSkillCooltimeRate { get => Get((int)EDefine.SkillCooltimeRate); set => Set((int)EDefine.SkillCooltimeRate, value); }
 			}
 
-			// ÇÃ·¹ÀÌ¾î ºÎ¿© ½ºÅ×ÀÌÅÍ½º
+			// í”Œë ˆì´ì–´ ë¶€ì—¬ ìŠ¤í…Œì´í„°ìŠ¤
 			[System.Serializable]
 			public class StatusPlayer : StatusBase<float>
 			{
 				public enum EDefine
 				{
-					HuntingGroundAttackPower,		// »ç³ÉÅÍ °ø°İ·Â
-					HuntlineDrawReturnSpeed,		// »ç³É¼± ÀÛ¼º µÇµ¹¸®±â ¼Óµµ
+					HuntingGroundAttackPower,		// ì‚¬ëƒ¥í„° ê³µê²©ë ¥
+					HuntlineDrawReturnSpeed,		// ì‚¬ëƒ¥ì„  ì‘ì„± ë˜ëŒë¦¬ê¸° ì†ë„
 
 					MAX
 				}
@@ -447,24 +447,24 @@ namespace GGZ
 				public float fHuntlineDrawReturnSpeed { get => Get((int)EDefine.HuntlineDrawReturnSpeed); set => Set((int)EDefine.HuntlineDrawReturnSpeed, value); }
 			}
 
-			// ¸ó½ºÅÍ ºÎ¿© ½ºÅ×ÀÌÅÍ½º
+			// ëª¬ìŠ¤í„° ë¶€ì—¬ ìŠ¤í…Œì´í„°ìŠ¤
 			[System.Serializable]
 			public class StatusMonster
 			{
-				public float fAlertRadius = 1.0f;			// °æ°è ¹İ°æ : 0ÀÌ¸é ºñ¼±°ø
-				public float fAlertTime = 1.0f;				// °æ°è ½Ã°£ : 0ÀÌ¸é Çàµ¿ ¾øÀ½
-				public float fAggressiveMoveSpeed = 1.5f;	// ¹ß°¢ ½Ã ÀÌµ¿ ¼Óµµ Áõ°¡À²
+				public float fAlertRadius = 1.0f;			// ê²½ê³„ ë°˜ê²½ : 0ì´ë©´ ë¹„ì„ ê³µ
+				public float fAlertTime = 1.0f;				// ê²½ê³„ ì‹œê°„ : 0ì´ë©´ í–‰ë™ ì—†ìŒ
+				public float fAggressiveMoveSpeed = 1.5f;	// ë°œê° ì‹œ ì´ë™ ì†ë„ ì¦ê°€ìœ¨
 
-				public float fAttackRadius = 1.0f;			// °ø°İ ¹İ°æ : °æ°è»óÅÂÀÏ °æ¿ì ÇØ´ç ¹üÀ§ ³»¶ó¸é °ø°İ
+				public float fAttackRadius = 1.0f;			// ê³µê²© ë°˜ê²½ : ê²½ê³„ìƒíƒœì¼ ê²½ìš° í•´ë‹¹ ë²”ìœ„ ë‚´ë¼ë©´ ê³µê²©
 
-				public bool isAlly = false;					// ¾Æ±º ¿©ºÎ
-				public bool isSummoned = false;				// ¼ÒÈ¯¹° ¿©ºÎ
+				public bool isAlly = false;					// ì•„êµ° ì—¬ë¶€
+				public bool isSummoned = false;				// ì†Œí™˜ë¬¼ ì—¬ë¶€
 			}
 
 
 		}
 
-		// °ÔÀÓ ³» Á¤ÀÇ
+		// ê²Œì„ ë‚´ ì •ì˜
 		public static class Game
 		{
 			public static class Item
@@ -477,7 +477,7 @@ namespace GGZ
 					MAX
 				}
 
-				// ÀÏ¹İ : 0
+				// ì¼ë°˜ : 0
 				public static class Common
 				{
 					public static class TypeSub
@@ -486,32 +486,32 @@ namespace GGZ
 					}
 				}
 
-				// Àåºñ : 1
+				// ì¥ë¹„ : 1
 				public static class Equipment
 				{
-					// Âø¿ë ºÎÀ§
+					// ì°©ìš© ë¶€ìœ„
 					public enum ESlot
 					{
-						Weapon,		// ¹«±â
+						Weapon,		// ë¬´ê¸°
 
-						// °©¿Ê
-						Head,		// ¸Ó¸®
-						Body,		// »óÃ¼
-						Leg,		// ÇÏÃ¼
-						Foot,		// ½Å¹ß
-						Glove,		// Àå°©
+						// ê°‘ì˜·
+						Head,		// ë¨¸ë¦¬
+						Body,		// ìƒì²´
+						Leg,		// í•˜ì²´
+						Foot,		// ì‹ ë°œ
+						Glove,		// ì¥ê°‘
 
-						// Àå½Å±¸
-						Necklace,	// ¸ñ°ÉÀÌ
-						Earring,	// ±Í°ÉÀÌ
-						Bracelet,	// ÆÈÂî
-						Ring,		// ¹İÁö
+						// ì¥ì‹ êµ¬
+						Necklace,	// ëª©ê±¸ì´
+						Earring,	// ê·€ê±¸ì´
+						Bracelet,	// íŒ”ì°Œ
+						Ring,		// ë°˜ì§€
 
 						Max
 					}
 					public const int ciSlotCount = (int)ESlot.Max;
 
-					// ÇÊ¼ö Âø¿ë Àåºñ ( ¹«±â, Å¬·¡½º )
+					// í•„ìˆ˜ ì°©ìš© ì¥ë¹„ ( ë¬´ê¸°, í´ë˜ìŠ¤ )
 					public enum EClass
 					{
 						All			= 0x00,
@@ -528,7 +528,7 @@ namespace GGZ
 
 		public static class Environment
 		{
-			public static System.Text.Encoding DefaultEncoding = System.Text.Encoding.GetEncoding("utf-8");
+			public static System.Text.Encoding DefaultEncoding = System.Text.Encoding.Unicode; //.GetEncoding("utf-8");
 		}
 	}
 }

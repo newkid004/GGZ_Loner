@@ -1,3 +1,4 @@
+using GGZ.GlobalDefine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -128,6 +129,12 @@ namespace GGZ
 
 			switch (iID)
 			{
+				case -(int)Game.Item.Equipment.EClass.Summon:	objResult = mPoolBuff.Pop<Battle_PlayerBuffGunner>(); break;
+				case -(int)Game.Item.Equipment.EClass.Worrier:	objResult = mPoolBuff.Pop<Battle_PlayerBuffGunner>(); break;
+				case -(int)Game.Item.Equipment.EClass.Caster:	objResult = mPoolBuff.Pop<Battle_PlayerBuffGunner>(); break;
+				case -(int)Game.Item.Equipment.EClass.Explorer:	objResult = mPoolBuff.Pop<Battle_PlayerBuffGunner>(); break;
+				case -(int)Game.Item.Equipment.EClass.Gunner:	objResult = mPoolBuff.Pop<Battle_PlayerBuffGunner>(); break;
+
 				case 5: objResult = mPoolBuff.Pop<Battle_BuffTest5>(); break;
 				case 6: objResult = mPoolBuff.Pop<Battle_BuffTest6>(); break;
 				case 7: objResult = mPoolBuff.Pop<Battle_BuffTest7>(); break;

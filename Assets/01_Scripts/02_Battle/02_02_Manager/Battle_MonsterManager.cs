@@ -29,7 +29,7 @@ namespace GGZ
 			charMonster.ReconnectRefSelf();
 
 			return (T)charMonster;
-		} // Push´Â °ü¸®µÇ¸ç ±¸ÇöÇÒ ÇÊ¿ä ¾øÀ½
+		} // PushëŠ” ê´€ë¦¬ë˜ë©° êµ¬í˜„í•  í•„ìš” ì—†ìŒ
 
 		public void AnimateKnockbackByZone(Battle_BaseMonster csMonster, Vector2 vec2TargetPos)
 		{
@@ -100,6 +100,28 @@ namespace GGZ
 
 			monObject.AniModule.SetGroup(aniGroup);
 			monObject.AniModule.Play(0);
+		}
+
+		public Battle_BaseMonster GetClosestMonster()
+		{
+			Battle_BaseMonster objResult = null;
+			var charPlayer = SceneMain_Battle.Single.charPlayer;
+
+			float fMaxInterval = float.MaxValue;
+			oPool.LoopOnActiveTotal((mon) =>
+			{
+				if (GlobalUtility.Digit.Include(mon.iObjectType, GlobalDefine.ObjectData.ObjectType.ciAlly))
+					return;
+
+				float fDistance = Vector2.Distance( charPlayer.transform.position.Vec2(), mon.transform.position.Vec2());
+				if (fDistance < fMaxInterval)
+				{
+					objResult = mon;
+					fMaxInterval = fDistance;
+				}
+			});
+
+			return objResult;
 		}
 
 #if _debug

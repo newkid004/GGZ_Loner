@@ -38,6 +38,8 @@ namespace GGZ
 				break;
 			}
 
+			objResult.Init(objMonster);
+
 			return objResult;
 		}
 
@@ -61,7 +63,7 @@ namespace GGZ
 
 			switch (bhvMonster.csvPatternData.Type)
 			{
-				// ¹«ÀÛÀ§ ¼±ÅÃ
+				// ë¬´ì‘ìœ„ ì„ íƒ
 				// 0 : PatternDataIndex - Min
 				// 1 : PatternDataIndex - Max 
 				case 0:
@@ -70,11 +72,11 @@ namespace GGZ
 				}
 				break;
 
-				// ´ë±â
-				// 0 : ½Ã°£
-				// 1 : ÀÏ¹İ ¿Ï·á ÈÄ PatternDataIndex
-				// 2 : (°æ°è µîÀ¸·Î) º¯µ¿ º¯°æ ÈÄ PatternDataIndex
-				// 3 : °ø°İ ¹üÀ§ ³» PatternDataIndex
+				// ëŒ€ê¸°
+				// 0 : ì‹œê°„
+				// 1 : ì¼ë°˜ ì™„ë£Œ í›„ PatternDataIndex
+				// 2 : (ê²½ê³„ ë“±ìœ¼ë¡œ) ë³€ë™ ë³€ê²½ í›„ PatternDataIndex
+				// 3 : ê³µê²© ë²”ìœ„ ë‚´ PatternDataIndex
 				case 1:
 				{
 					bhvMonster.fStateTimeBasic = bhvMonster.csvPatternData.Params[0];
@@ -87,11 +89,11 @@ namespace GGZ
 				}
 				break;
 
-				// ÀÌµ¿
-				// 0 : ½Ã°£
-				// 1 : ÀÏ¹İ ¿Ï·á ÈÄ PatternDataIndex
-				// 2 : (°æ°è µîÀ¸·Î) º¯µ¿ º¯°æ ÈÄ PatternDataIndex
-				// 3 : °ø°İ ¹üÀ§ ³» PatternDataIndex
+				// ì´ë™
+				// 0 : ì‹œê°„
+				// 1 : ì¼ë°˜ ì™„ë£Œ í›„ PatternDataIndex
+				// 2 : (ê²½ê³„ ë“±ìœ¼ë¡œ) ë³€ë™ ë³€ê²½ í›„ PatternDataIndex
+				// 3 : ê³µê²© ë²”ìœ„ ë‚´ PatternDataIndex
 				case 2:
 				{
 					bhvMonster.fStateTimeBasic = bhvMonster.csvPatternData.Params[0];
@@ -104,11 +106,11 @@ namespace GGZ
 				}
 				break;
 
-				// Çàµ¿
-				// 0 : Çàµ¿ ÆÇÁ¤ AniDataSeqenceIndex
-				// 1 : Çàµ¿ ½Ã°£ ¹üÀ§ ( 0.0 ~ 1.0 )
-				// 2 : Çàµ¿ ´ë±â ÈÄ SkillID
-				// 3 : Çàµ¿ ¿Ï·á ÈÄ PatternDataIndex
+				// í–‰ë™
+				// 0 : í–‰ë™ íŒì • AniDataSeqenceIndex
+				// 1 : í–‰ë™ ì‹œê°„ ë²”ìœ„ ( 0.0 ~ 1.0 )
+				// 2 : í–‰ë™ ëŒ€ê¸° í›„ SkillID
+				// 3 : í–‰ë™ ì™„ë£Œ í›„ PatternDataIndex
 				case 3:
 				{
 					if (isChangeMoveState)
@@ -118,11 +120,11 @@ namespace GGZ
 				}
 				break;
 
-				// Å½»ö
-				// 0 : ½Ã°£
-				// 1 : Å½»ö ¼º°ø ½Ã PatternDataIndex
-				// 2 : °ø°İ ¹üÀ§ ³» PatternDataIndex
-				// 3 : Å½»ö ½ÇÆĞ ½Ã PatternDataIndex
+				// íƒìƒ‰
+				// 0 : ì‹œê°„
+				// 1 : íƒìƒ‰ ì„±ê³µ ì‹œ PatternDataIndex
+				// 2 : ê³µê²© ë²”ìœ„ ë‚´ PatternDataIndex
+				// 3 : íƒìƒ‰ ì‹¤íŒ¨ ì‹œ PatternDataIndex
 				case 4:
 				{
 					bhvMonster.fStateTimeBasic = bhvMonster.csvPatternData.Params[0];
@@ -139,41 +141,41 @@ namespace GGZ
 
 			switch (bhvMonster.csvPatternData.Type)
 			{
-				// ´ë±â
-				// 0 : ½Ã°£
-				// 1 : ÀÏ¹İ ¿Ï·á ÈÄ PatternDataIndex
-				// 2 : (°æ°è µîÀ¸·Î) º¯µ¿ º¯°æ ÈÄ PatternDataIndex
-				// 3 : °ø°İ ¹üÀ§ ³» PatternDataIndex
+				// ëŒ€ê¸°
+				// 0 : ì‹œê°„
+				// 1 : ì¼ë°˜ ì™„ë£Œ í›„ PatternDataIndex
+				// 2 : (ê²½ê³„ ë“±ìœ¼ë¡œ) ë³€ë™ ë³€ê²½ í›„ PatternDataIndex
+				// 3 : ê³µê²© ë²”ìœ„ ë‚´ PatternDataIndex
 				case 1:
 				{
 					ProcessBeginPattern(bhvMonster, (int)bhvMonster.csvPatternData.Params[2], false);
 				}
 				break;
 
-				// ÀÌµ¿
-				// 0 : ½Ã°£
-				// 1 : ÀÏ¹İ ¿Ï·á ÈÄ PatternDataIndex
-				// 2 : (°æ°è µîÀ¸·Î) º¯µ¿ º¯°æ ÈÄ PatternDataIndex
-				// 3 : °ø°İ ¹üÀ§ ³» PatternDataIndex
+				// ì´ë™
+				// 0 : ì‹œê°„
+				// 1 : ì¼ë°˜ ì™„ë£Œ í›„ PatternDataIndex
+				// 2 : (ê²½ê³„ ë“±ìœ¼ë¡œ) ë³€ë™ ë³€ê²½ í›„ PatternDataIndex
+				// 3 : ê³µê²© ë²”ìœ„ ë‚´ PatternDataIndex
 				case 2:
 				{
 					ProcessBeginPattern(bhvMonster, (int)bhvMonster.csvPatternData.Params[2], false);
 				}
 				break;
 
-				// Çàµ¿
-				// 0 : Çàµ¿ ÆÇÁ¤ AniDataSeqenceIndex
-				// 1 : Çàµ¿ ½Ã°£ ¹üÀ§ ( 0.0 ~ 1.0 )
-				// 2 : Çàµ¿ ´ë±â ÈÄ SkillID
-				// 3 : Çàµ¿ ¿Ï·á ÈÄ PatternDataIndex
+				// í–‰ë™
+				// 0 : í–‰ë™ íŒì • AniDataSeqenceIndex
+				// 1 : í–‰ë™ ì‹œê°„ ë²”ìœ„ ( 0.0 ~ 1.0 )
+				// 2 : í–‰ë™ ëŒ€ê¸° í›„ SkillID
+				// 3 : í–‰ë™ ì™„ë£Œ í›„ PatternDataIndex
 				case 3:
 				break;
 
-				// Å½»ö
-				// 0 : ½Ã°£
-				// 1 : Å½»ö ¼º°ø ½Ã PatternDataIndex
-				// 2 : °ø°İ ¹üÀ§ ³» PatternDataIndex
-				// 3 : Å½»ö ½ÇÆĞ ½Ã PatternDataIndex
+				// íƒìƒ‰
+				// 0 : ì‹œê°„
+				// 1 : íƒìƒ‰ ì„±ê³µ ì‹œ PatternDataIndex
+				// 2 : ê³µê²© ë²”ìœ„ ë‚´ PatternDataIndex
+				// 3 : íƒìƒ‰ ì‹¤íŒ¨ ì‹œ PatternDataIndex
 				case 4:
 				{
 					ProcessBeginPattern(bhvMonster, (int)bhvMonster.csvPatternData.Params[1], false);
@@ -186,41 +188,41 @@ namespace GGZ
 		{
 			switch (bhvMonster.csvPatternData.Type)
 			{
-				// ´ë±â
-				// 0 : ½Ã°£
-				// 1 : ÀÏ¹İ ¿Ï·á ÈÄ PatternDataIndex
-				// 2 : (°æ°è µîÀ¸·Î) º¯µ¿ º¯°æ ÈÄ PatternDataIndex
-				// 3 : °ø°İ ¹üÀ§ ³» PatternDataIndex
+				// ëŒ€ê¸°
+				// 0 : ì‹œê°„
+				// 1 : ì¼ë°˜ ì™„ë£Œ í›„ PatternDataIndex
+				// 2 : (ê²½ê³„ ë“±ìœ¼ë¡œ) ë³€ë™ ë³€ê²½ í›„ PatternDataIndex
+				// 3 : ê³µê²© ë²”ìœ„ ë‚´ PatternDataIndex
 				case 1:
 				{
 					ProcessBeginPattern(bhvMonster, (int)bhvMonster.csvPatternData.Params[3], true);
 				}
 				break;
 
-				// ÀÌµ¿
-				// 0 : ½Ã°£
-				// 1 : ÀÏ¹İ ¿Ï·á ÈÄ PatternDataIndex
-				// 2 : (°æ°è µîÀ¸·Î) º¯µ¿ º¯°æ ÈÄ PatternDataIndex
-				// 3 : °ø°İ ¹üÀ§ ³» PatternDataIndex
+				// ì´ë™
+				// 0 : ì‹œê°„
+				// 1 : ì¼ë°˜ ì™„ë£Œ í›„ PatternDataIndex
+				// 2 : (ê²½ê³„ ë“±ìœ¼ë¡œ) ë³€ë™ ë³€ê²½ í›„ PatternDataIndex
+				// 3 : ê³µê²© ë²”ìœ„ ë‚´ PatternDataIndex
 				case 2:
 				{
 					ProcessBeginPattern(bhvMonster, (int)bhvMonster.csvPatternData.Params[3], true);
 				}
 				break;
 
-				// Çàµ¿
-				// 0 : Çàµ¿ ÆÇÁ¤ AniDataSeqenceIndex
-				// 1 : Çàµ¿ ½Ã°£ ¹üÀ§ ( 0.0 ~ 1.0 )
-				// 2 : Çàµ¿ ´ë±â ÈÄ SkillID
-				// 3 : Çàµ¿ ¿Ï·á ÈÄ PatternDataIndex
+				// í–‰ë™
+				// 0 : í–‰ë™ íŒì • AniDataSeqenceIndex
+				// 1 : í–‰ë™ ì‹œê°„ ë²”ìœ„ ( 0.0 ~ 1.0 )
+				// 2 : í–‰ë™ ëŒ€ê¸° í›„ SkillID
+				// 3 : í–‰ë™ ì™„ë£Œ í›„ PatternDataIndex
 				case 3:
 				break;
 
-				// Å½»ö
-				// 0 : ½Ã°£
-				// 1 : Å½»ö ¼º°ø ½Ã PatternDataIndex
-				// 2 : °ø°İ ¹üÀ§ ³» PatternDataIndex
-				// 3 : Å½»ö ½ÇÆĞ ½Ã PatternDataIndex
+				// íƒìƒ‰
+				// 0 : ì‹œê°„
+				// 1 : íƒìƒ‰ ì„±ê³µ ì‹œ PatternDataIndex
+				// 2 : ê³µê²© ë²”ìœ„ ë‚´ PatternDataIndex
+				// 3 : íƒìƒ‰ ì‹¤íŒ¨ ì‹œ PatternDataIndex
 				case 4:
 				{
 					ProcessBeginPattern(bhvMonster, (int)bhvMonster.csvPatternData.Params[2], true);
@@ -233,39 +235,39 @@ namespace GGZ
 		{
 			switch (bhvMonster.csvPatternData.Type)
 			{
-				// ¹«ÀÛÀ§ ¼±ÅÃ
+				// ë¬´ì‘ìœ„ ì„ íƒ
 				// 0 : PatternDataIndex - Min
 				// 1 : PatternDataIndex - Max 
 				case 0:
 				break;
 
-				// ´ë±â
-				// 0 : ½Ã°£
-				// 1 : ÀÏ¹İ ¿Ï·á ÈÄ PatternDataIndex
-				// 2 : (°æ°è µîÀ¸·Î) º¯µ¿ º¯°æ ÈÄ PatternDataIndex
-				// 3 : °ø°İ ¹üÀ§ ³» PatternDataIndex
+				// ëŒ€ê¸°
+				// 0 : ì‹œê°„
+				// 1 : ì¼ë°˜ ì™„ë£Œ í›„ PatternDataIndex
+				// 2 : (ê²½ê³„ ë“±ìœ¼ë¡œ) ë³€ë™ ë³€ê²½ í›„ PatternDataIndex
+				// 3 : ê³µê²© ë²”ìœ„ ë‚´ PatternDataIndex
 				case 1:
 				{
 					ProcessBeginPattern(bhvMonster, (int)bhvMonster.csvPatternData.Params[2], true);
 				}
 				break;
 
-				// ÀÌµ¿
-				// 0 : ½Ã°£
-				// 1 : ÀÏ¹İ ¿Ï·á ÈÄ PatternDataIndex
-				// 2 : (°æ°è µîÀ¸·Î) º¯µ¿ º¯°æ ÈÄ PatternDataIndex
-				// 3 : °ø°İ ¹üÀ§ ³» PatternDataIndex
+				// ì´ë™
+				// 0 : ì‹œê°„
+				// 1 : ì¼ë°˜ ì™„ë£Œ í›„ PatternDataIndex
+				// 2 : (ê²½ê³„ ë“±ìœ¼ë¡œ) ë³€ë™ ë³€ê²½ í›„ PatternDataIndex
+				// 3 : ê³µê²© ë²”ìœ„ ë‚´ PatternDataIndex
 				case 2:
 				{
 					ProcessBeginPattern(bhvMonster, (int)bhvMonster.csvPatternData.Params[2], true);
 				}
 				break;
 
-				// Çàµ¿
-				// 0 : Çàµ¿ ÆÇÁ¤ AniDataSeqenceIndex
-				// 1 : Çàµ¿ ½Ã°£ ¹üÀ§ ( 0.0 ~ 1.0 )
-				// 2 : Çàµ¿ ´ë±â ÈÄ SkillID
-				// 3 : Çàµ¿ ¿Ï·á ÈÄ PatternDataIndex
+				// í–‰ë™
+				// 0 : í–‰ë™ íŒì • AniDataSeqenceIndex
+				// 1 : í–‰ë™ ì‹œê°„ ë²”ìœ„ ( 0.0 ~ 1.0 )
+				// 2 : í–‰ë™ ëŒ€ê¸° í›„ SkillID
+				// 3 : í–‰ë™ ì™„ë£Œ í›„ PatternDataIndex
 				case 3:
 				{
 					bhvMonster.eSubState = Battle_BehaviourMonster.ESubState.None;
@@ -273,11 +275,11 @@ namespace GGZ
 				}
 				break;
 
-				// Å½»ö
-				// 0 : ½Ã°£
-				// 1 : Å½»ö ¼º°ø ½Ã PatternDataIndex
-				// 2 : °ø°İ ¹üÀ§ ³» PatternDataIndex
-				// 3 : Å½»ö ½ÇÆĞ ½Ã PatternDataIndex
+				// íƒìƒ‰
+				// 0 : ì‹œê°„
+				// 1 : íƒìƒ‰ ì„±ê³µ ì‹œ PatternDataIndex
+				// 2 : ê³µê²© ë²”ìœ„ ë‚´ PatternDataIndex
+				// 3 : íƒìƒ‰ ì‹¤íŒ¨ ì‹œ PatternDataIndex
 				case 4:
 				{
 					ProcessBeginPattern(bhvMonster, (int)bhvMonster.csvPatternData.Params[3], true);
